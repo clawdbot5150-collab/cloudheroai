@@ -383,7 +383,10 @@ let activeSort = 'featured';
 let searchQuery = '';
 
 // ── RENDER ──
-function render() {
+function renderTools(filter = 'all', search = '') {
+  activeCategory = filter;
+  searchQuery = search;
+  
   let filtered = [...tools];
   
   // Category filter
@@ -467,21 +470,26 @@ function renderFeaturedCard(t){
   </div>`;
 }
 
-function formatCat(c){
-  const map={writing:'Writing & Content',image:'Image & Design',automation:'Automation',analytics:'Analytics',code:'Code',video:'Video & Audio',productivity:'Productivity',marketing:'Marketing','customer-service':'Customer Service',research:'Research'};
-  return map[c] || c;
+function formatCat(cat){
+  const map = {
+    'writing': 'Writing & Content',
+    'image': 'Image & Design',
+    'automation': 'Automation',
+    'analytics': 'Analytics & Data',
+    'code': 'Code & Development',
+    'video': 'Video & Audio',
+    'productivity': 'Productivity',
+    'marketing': 'Marketing',
+    'customer-service': 'Customer Service',
+    'research': 'Research'
+  };
+  return map[cat] || cat;
 }
 
-function trackClick(id){
-  console.log('Affiliate click tracked: tool', id);
-}
-
-function revealCards(){
-  setTimeout(() => {
-    document.querySelectorAll('.reveal').forEach((el, i) => {
-      setTimeout(() => el.classList.add('on'), i * 50);
-    });
-  }, 100);
+function trackClick(toolId){
+  // Track affiliate click (would send to backend in production)
+  console.log(`Click tracked: Tool #${toolId} at ${new Date().toISOString()}`);
+  // In production: fetch('/api/track-click', {method: 'POST', body: JSON.stringify({toolId, timestamp: Date.now()})})
 }
 
 // Sort buttons
@@ -497,7 +505,7 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
 // document.querySelectorAll('.nav-tab').forEach(btn => {
 //   btn.addEventListener('click', () => {
 //     activeCategory = btn.dataset.filter;
-//     render(activeCategory, searchQuery);
+//     renderTools(activeCategory, searchQuery);
 //   });
 // });
 
@@ -505,9 +513,7 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
 const heroSearch = document.getElementById('heroSearch');
 if (heroSearch) {
   heroSearch.addEventListener('input', e => {
-    searchQuery = e.target.value.toLowerCase().trim();
-    render();
-    revealCards();
+    renderTools(activeCategory, e.target.value);
   });
 }
 
@@ -519,15 +525,20 @@ document.querySelectorAll('.chip[data-cat]').forEach(chip => {
     const cat = chip.dataset.cat;
     activeCategory = cat;
     
-    activeCategory = cat;
-    render();
-    revealCards();
+    // Sync with nav tabs
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    const matchingTab = document.querySelector(`.nav-tab[data-filter="${cat}"]`);
+    if (matchingTab) matchingTab.classList.add('active');
+    
+    renderTools(cat, searchQuery);
+    
+    // Scroll to results
     document.getElementById('directory').scrollIntoView({ behavior: 'smooth' });
   });
 });
 
 // Initial render
-render();
+renderTools();
 
 // Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -569,53 +580,72 @@ document.querySelectorAll('.atab').forEach(tab => {
   });
 });
 
-function addTool(){
+// Add tool function
+function addTool() {
   const name = document.getElementById('f-name').value.trim();
   const category = document.getElementById('f-category').value;
   const tagline = document.getElementById('f-tagline').value.trim();
+  const desc = document.getElementById('f-desc').value.trim();
   const url = document.getElementById('f-url').value.trim();
+  const affiliate = document.getElementById('f-affiliate').value.trim();
+  const commission = document.getElementById('f-commission').value.trim();
   const pricing = document.getElementById('f-pricing').value;
+  const icon = document.getElementById('f-icon').value.trim();
+  const color = document.getElementById('f-color').value;
+  const featured = document.getElementById('f-featured').checked;
   
-  if(!name || !category || !tagline || !url || !pricing){
-    showToast('⚠️ Please fill required fields','#ff4081');
+  // Validation
+  if (!name || !category || !tagline || !url || !pricing) {
+    showToast('⚠️ Please fill all required fields');
     return;
   }
   
-  const tool = {
-    id: Date.now(),
+  // Create new tool object
+  const newTool = {
+    id: nextId++,
     name,
     category,
     tagline,
-    desc: document.getElementById('f-desc').value.trim(),
+    desc: desc || tagline,
     url,
-    affiliate: document.getElementById('f-affiliate').value.trim(),
-    commission: document.getElementById('f-commission').value.trim(),
+    affiliate: affiliate || url,
+    commission: commission || '',
     pricing,
-    icon: document.getElementById('f-icon').value.trim() || '🤖',
-    color: document.getElementById('f-color').value,
-    featured: document.getElementById('f-featured').checked,
+    icon: icon || '🤖',
+    color: color || '#0d1117',
+    featured,
     dateAdded: Date.now()
   };
   
-  tools.unshift(tool);
+  // Add to tools array
+  tools.push(newTool);
+  
+  // Save to localStorage
   saveTools();
-  render();
-  revealCards();
-  showToast('✓ Tool added to directory');
+  
+  // Re-render
+  renderTools();
   
   // Reset form
-  ['f-name','f-category','f-tagline','f-desc','f-url','f-affiliate','f-commission','f-pricing','f-icon'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.value='';
-  });
-  document.getElementById('f-featured').checked = false;
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-category').value = '';
+  document.getElementById('f-tagline').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-url').value = '';
+  document.getElementById('f-affiliate').value = '';
+  document.getElementById('f-commission').value = '';
+  document.getElementById('f-pricing').value = '';
+  document.getElementById('f-icon').value = '';
   document.getElementById('f-color').value = '#0d1117';
+  document.getElementById('f-featured').checked = false;
+  
+  showToast('✓ Tool added successfully!');
 }
 
-function showToast(message, color = '#00f0ff') {
+// Toast notification
+function showToast(message) {
   const toast = document.getElementById('toast');
   toast.textContent = message;
-  toast.style.background = color;
   toast.classList.add('show');
   setTimeout(() => {
     toast.classList.remove('show');
@@ -623,31 +653,33 @@ function showToast(message, color = '#00f0ff') {
 }
 
 // Open submit modal
-// ── ADMIN ──
-function openAdmin(){
-  document.getElementById('admin-panel').classList.add('open');
-  renderManageList();
-}
-
-function closeAdmin(){
-  document.getElementById('admin-panel').classList.remove('open');
-}
-
-function openSubmit(){
+function openSubmit() {
   document.getElementById('submit-modal').classList.add('open');
 }
 
-function closeSubmit(){
+// Close submit modal
+function closeSubmit() {
   document.getElementById('submit-modal').classList.remove('open');
 }
 
+// Open admin panel
+function openAdmin() {
+  document.getElementById('admin-panel').classList.add('open');
+}
+
 // Filter category
-function filterCategory(cat, btn){
+function filterCategory(cat, btn) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
   activeCategory = cat;
-  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  render();
-  revealCards();
+  
+  // Sync with chips
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  const matchingChip = document.querySelector(`.chip[data-cat="${cat}"]`);
+  if (matchingChip) matchingChip.classList.add('active');
+  
+  renderTools(cat, searchQuery);
+  document.getElementById('directory').scrollIntoView({ behavior: 'smooth' });
 }
 
 // Public submit tool function
@@ -678,38 +710,45 @@ function submitTool() {
   closeSubmit();
 }
 
-// ── FILTERS ──
-function handleSearch(){
-  searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
-  render();
-  revealCards();
+// Search functionality
+function handleSearch() {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  renderTools(activeCategory, searchTerm);
 }
 
-function filterPricing(p, btn){
-  activePricing = p;
-  document.querySelectorAll('.chip').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  render();
-  revealCards();
+function filterPricing(pricing, btn) {
+  document.querySelectorAll('.filters .chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  activePricing = pricing;
+  renderTools(activeCategory, searchQuery);
 }
 
-function sortTools(s, btn){
-  activeSort = s;
-  document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  render();
-  revealCards();
+function sortTools(method, btn) {
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeSort = method;
+  renderTools(activeCategory, searchQuery);
 }
 
-function switchAdminTab(tab, btn){
-  document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  document.getElementById('tab-add').style.display = tab==='add' ? 'block' : 'none';
-  document.getElementById('tab-manage').style.display = tab==='manage' ? 'block' : 'none';
-  if(tab==='manage') renderManageList();
+function switchAdminTab(tab, btn) {
+  // Update active tab button
+  document.querySelectorAll('.atab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  
+  // Hide all tab content
+  document.getElementById('tab-add').style.display = 'none';
+  document.getElementById('tab-manage').style.display = 'none';
+  
+  // Show selected tab
+  document.getElementById(`tab-${tab}`).style.display = 'block';
+  
+  // If switching to manage tab, update the tools list
+  if (tab === 'manage') {
+    updateManageList();
+  }
 }
 
-function renderManageList() {
+function updateManageList() {
   const list = document.getElementById('manage-list');
   if (tools.length === 0) {
     list.innerHTML = '<div style="text-align:center;padding:60px;color:var(--dimmer);">No tools yet. Add your first tool!</div>';
@@ -745,8 +784,8 @@ function deleteTool(index) {
   if (confirm('Are you sure you want to delete this tool?')) {
     tools.splice(index, 1);
     saveTools();
-    renderManageList();
-    render();
+    updateManageList();
+    renderTools();
     showToast('✓ Tool deleted');
   }
 }
@@ -792,18 +831,20 @@ function getFilteredTools() {
   return filtered;
 }
 
-function updateStats(){
+function updateStats() {
+  const categories = [...new Set(tools.map(t => t.category))];
+  const freeTools = tools.filter(t => t.pricing === 'free').length;
+  const affiliateTools = tools.filter(t => t.commission && t.commission.length > 0).length;
+  
   document.getElementById('statTotal').textContent = tools.length;
-  document.getElementById('statFree').textContent = tools.filter(t=>t.pricing==='free'||t.pricing==='freemium').length;
-  const cats = [...new Set(tools.map(t=>t.category))];
-  document.getElementById('statCategories').textContent = cats.length;
-  document.getElementById('statAffiliate').textContent = tools.filter(t=>t.affiliate&&t.commission).length;
+  document.getElementById('statFree').textContent = freeTools;
+  document.getElementById('statCategories').textContent = categories.length;
+  document.getElementById('statAffiliate').textContent = affiliateTools;
 }
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
-  render();
-  revealCards();
+  renderTools(); // Initial render with all tools
 });
 </script>
 
