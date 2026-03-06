@@ -80,9 +80,80 @@ footer{text-align:center;padding:40px 20px;color:var(--dimmer);font-size:0.9rem;
 #tools-grid{grid-template-columns:1fr;}
 .categories{justify-content:flex-start;overflow-x:auto;}
 }
+
+/* ── TECH CURSOR ── */
+body, a, button, input { cursor: none !important; }
+
+#cursor-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: #00f0ff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, box-shadow 0.2s;
+}
+
+#cursor-ring {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(0, 240, 255, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s;
+  animation: rotateCursor 8s linear infinite;
+}
+
+#cursor-ring::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -2px;
+  right: -2px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.4), transparent);
+  transform: translateY(-50%);
+}
+
+#cursor-ring::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  bottom: -2px;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, rgba(0, 240, 255, 0.4), transparent);
+  transform: translateX(-50%);
+}
+
+body.cursor-hover #cursor-dot {
+  width: 12px;
+  height: 12px;
+  box-shadow: 0 0 15px #00f0ff, 0 0 30px #00f0ff;
+}
+
+body.cursor-hover #cursor-ring {
+  width: 60px;
+  height: 60px;
+  border-color: rgba(0, 240, 255, 0.8);
+}
+
+@keyframes rotateCursor {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
 </style>
 </head>
 <body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
 
 <section id="hero">
   <div class="hero-badge">✦ The Definitive AI Tools Directory</div>
@@ -243,8 +314,35 @@ function updateStats() {
 }
 
 // Initialize
+
+// ── TECH CURSOR ──
+const cursorDot = document.getElementById('cursor-dot');
+const cursorRing = document.getElementById('cursor-ring');
+let mouseX = 0, mouseY = 0;
+let ringX = 0, ringY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  cursorDot.style.left = mouseX + 'px';
+  cursorDot.style.top = mouseY + 'px';
+});
+
+function animateRing() {
+  ringX += (mouseX - ringX) * 0.15;
+  ringY += (mouseY - ringY) * 0.15;
+  cursorRing.style.left = ringX + 'px';
+  cursorRing.style.top = ringY + 'px';
+  requestAnimationFrame(animateRing);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   render();
+  animateRing();
+  document.querySelectorAll('a, button, .tool-card, input').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
   console.log('CloudHero AI loaded:', tools.length, 'tools');
 });
 </script>
