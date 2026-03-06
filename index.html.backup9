@@ -188,17 +188,6 @@ footer{text-align:center;padding:60px 48px;border-top:1px solid var(--border2);}
 .atab.active{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:700;}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
-
-/* ── TOOL LIST ── */
-.tool-list-item{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border2);gap:16px;}
-.tli-name{font-family:'Syne',sans-serif;font-size:1rem;color:var(--white);margin-bottom:4px;}
-.tli-cat{font-size:.8rem;color:var(--dim);}
-.tli-actions{display:flex;gap:8px;}
-.tli-btn{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.05em;text-transform:uppercase;padding:8px 14px;border:none;cursor:none;transition:all .2s;}
-.tli-btn.feature{background:var(--gold);color:var(--bg);}
-.tli-btn.feature:hover{background:#c9a351;}
-.tli-btn.delete{background:#ff4081;color:var(--bg);}
-.tli-btn.delete:hover{background:#ff2060;}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
 .form-group{display:flex;flex-direction:column;gap:8px;}
 .form-group.full{grid-column:span 2;}
@@ -487,19 +476,12 @@ function trackClick(id){
   console.log('Affiliate click tracked: tool', id);
 }
 
-// ── SCROLL REVEAL ──
 function revealCards(){
-  setTimeout(()=>{
-    const obs = new IntersectionObserver(entries=>{
-      entries.forEach((e,i)=>{
-        if(e.isIntersecting){
-          setTimeout(()=>e.target.classList.add('on'), i*40);
-          obs.unobserve(e.target);
-        }
-      });
-    },{threshold:.05});
-    document.querySelectorAll('.reveal:not(.on)').forEach(el=>obs.observe(el));
-  }, 50);
+  setTimeout(() => {
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+      setTimeout(() => el.classList.add('on'), i * 50);
+    });
+  }, 100);
 }
 
 // Sort buttons
@@ -630,13 +612,14 @@ function addTool(){
   document.getElementById('f-color').value = '#0d1117';
 }
 
-// ── TOAST ──
-function showToast(msg, color='var(--green)'){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = color;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 3000);
+function showToast(message, color = '#00f0ff') {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.style.background = color;
+  toast.classList.add('show');
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
 }
 
 // Open submit modal
@@ -667,17 +650,32 @@ function filterCategory(cat, btn){
   revealCards();
 }
 
-function submitTool(){
+// Public submit tool function
+function submitTool() {
   const name = document.getElementById('s-name').value.trim();
-  if(!name){
-    showToast('Please enter a tool name','#ff4081');
+  const url = document.getElementById('s-url').value.trim();
+  const cat = document.getElementById('s-cat').value;
+  const reason = document.getElementById('s-reason').value.trim();
+  const email = document.getElementById('s-email').value.trim();
+  
+  if (!name || !url) {
+    showToast('⚠️ Please enter tool name and website');
     return;
   }
-  showToast('✓ Submission received — thank you!');
+  
+  // In production, this would send to backend API
+  console.log('Tool submission:', {name, url, cat, reason, email});
+  
+  showToast('✓ Submission received! We\'ll review it soon.');
+  
+  // Reset form
+  document.getElementById('s-name').value = '';
+  document.getElementById('s-url').value = '';
+  document.getElementById('s-cat').selectedIndex = 0;
+  document.getElementById('s-reason').value = '';
+  document.getElementById('s-email').value = '';
+  
   closeSubmit();
-  ['s-name','s-url','s-reason','s-email'].forEach(id=>{
-    document.getElementById(id).value='';
-  });
 }
 
 // ── FILTERS ──
@@ -711,44 +709,46 @@ function switchAdminTab(tab, btn){
   if(tab==='manage') renderManageList();
 }
 
-function renderManageList(){
+function renderManageList() {
   const list = document.getElementById('manage-list');
-  if(!tools.length){
-    list.innerHTML = '<p style="color:var(--dim);text-align:center;padding:32px;">No tools yet.</p>';
+  if (tools.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:60px;color:var(--dimmer);">No tools yet. Add your first tool!</div>';
     return;
   }
-  list.innerHTML = tools.map(t => `
-    <div class="tool-list-item" id="tli-${t.id}">
+  
+  list.innerHTML = tools.map((t, i) => `
+    <div style="padding:20px;border-bottom:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center;">
       <div>
-        <div class="tli-name">${t.icon} ${t.name}</div>
-        <div class="tli-cat">${formatCat(t.category)} · ${t.pricing}${t.featured?' · ⭐️ featured':''}</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <span style="font-size:2rem;">${t.icon}</span>
+          <div>
+            <h4 style="font-family:'Syne',sans-serif;font-size:1.1rem;color:var(--white);">${t.name}</h4>
+            <div style="color:var(--dim);font-size:.85rem;">${t.category} • ${t.pricingType}${t.featured ? ' • ⭐ Featured' : ''}</div>
+          </div>
+        </div>
+        <p style="color:var(--dimmer);font-size:.9rem;">${t.tagline}</p>
       </div>
-      <div class="tli-actions">
-        <button class="tli-btn feature" onclick="toggleFeatured(${t.id})">${t.featured?'Unfeature':'Feature'}</button>
-        <button class="tli-btn delete" onclick="deleteTool(${t.id})">Delete</button>
+      <div style="display:flex;gap:12px;">
+        <button onclick="editTool(${i})" style="padding:8px 16px;background:var(--cyan);color:var(--bg);border:none;cursor:none;font-family:'Space Mono',monospace;font-size:.7rem;">Edit</button>
+        <button onclick="deleteTool(${i})" style="padding:8px 16px;background:#ff4444;color:var(--bg);border:none;cursor:none;font-family:'Space Mono',monospace;font-size:.7rem;">Delete</button>
       </div>
-    </div>`).join('');
+    </div>
+  `).join('');
 }
 
-function toggleFeatured(id){
-  const t = tools.find(t=>t.id===id);
-  if(t){
-    t.featured = !t.featured;
+function editTool(index) {
+  // TODO: Implement edit functionality
+  showToast('Edit functionality coming soon!');
+}
+
+function deleteTool(index) {
+  if (confirm('Are you sure you want to delete this tool?')) {
+    tools.splice(index, 1);
     saveTools();
-    render();
-    revealCards();
     renderManageList();
-    showToast(t.featured?'⭐️ Marked as featured':'Removed from featured');
+    render();
+    showToast('✓ Tool deleted');
   }
-}
-
-function deleteTool(id){
-  tools = tools.filter(t=>t.id!==id);
-  saveTools();
-  render();
-  revealCards();
-  renderManageList();
-  showToast('Tool removed','#ff4081');
 }
 
 function closeAdmin() {
@@ -800,75 +800,12 @@ function updateStats(){
   document.getElementById('statAffiliate').textContent = tools.filter(t=>t.affiliate&&t.commission).length;
 }
 
-// ── CURSOR ──
-const cur = document.getElementById('cur'), trail = document.getElementById('cur-trail');
-let mx=0,my=0,tx=0,ty=0;
-document.addEventListener('mousemove', e=>{
-  mx=e.clientX;
-  my=e.clientY;
-  cur.style.left=mx+'px';
-  cur.style.top=my+'px';
-});
-(function loop(){
-  tx+=(mx-tx)*.12;
-  ty+=(my-ty)*.12;
-  trail.style.left=tx+'px';
-  trail.style.top=ty+'px';
-  requestAnimationFrame(loop);
-})();
-document.querySelectorAll('a,button,.tool-card').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{
-    cur.style.width='16px';
-    cur.style.height='16px';
-    trail.style.width='52px';
-    trail.style.height='52px';
-  });
-  el.addEventListener('mouseleave',()=>{
-    cur.style.width='8px';
-    cur.style.height='8px';
-    trail.style.width='32px';
-    trail.style.height='32px';
-  });
-});
-
-// ── STAT COUNTERS ──
-function animateStats(){
-  document.querySelectorAll('.stat-num').forEach(el=>{
-    const target = parseInt(el.textContent);
-    if(!target) return;
-    let cur2=0;
-    const step=Math.ceil(target/40);
-    const t=setInterval(()=>{
-      cur2=Math.min(cur2+step,target);
-      el.textContent=cur2;
-      if(cur2>=target)clearInterval(t);
-    },30);
-  });
-}
-
-// ── INIT ──
-render();
-revealCards();
-setTimeout(animateStats, 400);
-
-// Close modals on backdrop click
-document.getElementById('admin-panel').addEventListener('click', e=>{
-  if(e.target===document.getElementById('admin-panel')) closeAdmin();
-});
-document.getElementById('submit-modal').addEventListener('click', e=>{
-  if(e.target===document.getElementById('submit-modal')) closeSubmit();
-});
-
-// Keyboard shortcut: Ctrl+Shift+A = admin
-document.addEventListener('keydown', e=>{
-  if(e.ctrlKey&&e.shiftKey&&e.key==='A'){
-    e.preventDefault();
-    openAdmin();
-  }
+// Initialize on load
+document.addEventListener('DOMContentLoaded', () => {
+  render();
+  revealCards();
 });
 </script>
-</body>
-</html>
 
 <!-- SUBMIT MODAL (public) -->
 <div id="submit-modal">
