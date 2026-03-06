@@ -411,85 +411,69 @@ function renderTools(filter = 'all', search = '') {
   else if(activeSort === 'commission') filtered.sort((a,b) => (b.commission?1:0)-(a.commission?1:0));
   else if(activeSort === 'newest') filtered.sort((a,b) => b.dateAdded - a.dateAdded);
   
-  // Update counters
-  const count = document.getElementById('showing-count');
-  count.textContent = filtered.length === tools.length ? `all ${tools.length} tools` : `${filtered.length} of ${tools.length} tools`;
-  document.getElementById('searchCount').textContent = searchQuery ? `${filtered.length} results` : '';
+  updateSearchCount();
+  updateStats();
   
-  if(!filtered.length){
-    grid.innerHTML = `<div class="no-results"><h3>No tools found</h3><p>Try a different search or filter</p></div>`;
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="no-results">
+        <h3>No tools found</h3>
+        <p>Try adjusting your search or filters</p>
+      </div>
+    `;
     return;
   }
   
-  grid.innerHTML = filtered.map(t => {
-    const isFirst = t.featured && filtered.indexOf(t) === 0;
-    if(isFirst) return renderFeaturedCard(t);
-    return renderCard(t);
-  }).join('');
-  
-  updateStats();
-}
-
-function renderCard(t){
-  const affLink = t.affiliate || t.url;
-  return `<div class="tool-card reveal" data-id="${t.id}">
-    <div class="card-top">
-      <div class="tool-icon" style="background:${t.color}">${t.icon || '🤖'}</div>
-      <div class="card-badges">
-        ${t.featured ? '<span class="badge badge-featured">⭐️ Featured</span>' : ''}
-        <span class="badge badge-${t.pricing}">${t.pricing}</span>
+  grid.innerHTML = filtered.map((t, i) => {
+    // First 2 featured tools span 2 columns
+    const featuredFeatured = t.featured && filtered.filter(ft => ft.featured).indexOf(t) < 2;
+    
+    if (featuredFeatured) {
+      return `
+        <div class="tool-card featured-card" data-category="${t.category}">
+          <div class="card-main">
+            <span class="featured-spotlight">⭐ Featured</span>
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+              <div class="tool-icon">${t.icon}</div>
+              <div>
+                <h3 class="tool-name">${t.name}</h3>
+                <div class="tool-category">${t.category}</div>
+              </div>
+            </div>
+            <p class="tool-tagline">${t.tagline}</p>
+            <div style="margin-top:16px;display:flex;gap:12px;align-items:center;">
+              <span class="badge badge-${t.pricing}">${t.pricing === 'free' ? 'Free' : t.pricing === 'freemium' ? 'Freemium' : 'Paid'}</span>
+              ${t.commission ? `<div class="commission-badge"><span>💰</span>${t.commission}</div>` : ''}
+            </div>
+          </div>
+          <div class="card-cta">
+            <a href="#" class="visit-btn" style="padding:12px 24px;font-size:.7rem;">Visit Tool →</a>
+          </div>
+        </div>
+      `;
+    }
+    
+    return `
+      <div class="tool-card" data-category="${t.category}">
+        <div class="card-top">
+          <div class="tool-icon">${t.icon}</div>
+          <div class="card-badges">
+            ${t.featured ? '<span class="badge badge-featured">Featured</span>' : ''}
+            <span class="badge badge-${t.pricing}">${t.pricing === 'free' ? 'Free' : t.pricing === 'freemium' ? 'Freemium' : 'Paid'}</span>
+          </div>
+        </div>
+        <div>
+          <h3 class="tool-name">${t.name}</h3>
+          <div class="tool-category">${t.category}</div>
+          <p class="tool-tagline">${t.tagline}</p>
+        </div>
+        <div class="card-bottom">
+          ${t.commission ? `<div class="commission-badge"><span>💰</span>${t.commission}</div>` : '<div></div>'}
+          <a href="${t.affiliate || t.url}" class="visit-btn" target="_blank" rel="noopener">Visit</a>
+        </div>
       </div>
-    </div>
-    <div>
-      <div class="tool-category">${formatCat(t.category)}</div>
-      <div class="tool-name">${t.name}</div>
-      <div class="tool-tagline">${t.tagline}</div>
-    </div>
-    <div class="card-bottom">
-      <div class="commission-badge">${t.commission ? `<span>💰</span>${t.commission}` : ''}</div>
-      <a href="${affLink}" target="_blank" class="visit-btn" onclick="trackClick(${t.id})">Visit →</a>
-    </div>
-  </div>`;
-}
-
-function renderFeaturedCard(t){
-  const affLink = t.affiliate || t.url;
-  return `<div class="tool-card featured-card reveal" data-id="${t.id}">
-    <div class="tool-icon" style="background:${t.color};width:64px;height:64px;font-size:1.8rem;flex-shrink:0;">${t.icon || '🤖'}</div>
-    <div class="card-main">
-      <span class="featured-spotlight">⭐️ Featured Tool</span>
-      <div class="tool-category">${formatCat(t.category)}</div>
-      <div class="tool-name">${t.name}</div>
-      <div class="tool-tagline" style="margin-top:6px;">${t.tagline}</div>
-      ${t.commission ? `<div class="commission-badge" style="margin-top:10px;"><span>💰</span>${t.commission}</div>` : ''}
-    </div>
-    <div class="card-cta">
-      <span class="badge badge-${t.pricing}" style="display:block;margin-bottom:12px;">${t.pricing}</span>
-      <a href="${affLink}" target="_blank" class="visit-btn" onclick="trackClick(${t.id})" style="display:block;text-align:center;padding:12px 28px;">Visit Site →</a>
-    </div>
-  </div>`;
-}
-
-function formatCat(cat){
-  const map = {
-    'writing': 'Writing & Content',
-    'image': 'Image & Design',
-    'automation': 'Automation',
-    'analytics': 'Analytics & Data',
-    'code': 'Code & Development',
-    'video': 'Video & Audio',
-    'productivity': 'Productivity',
-    'marketing': 'Marketing',
-    'customer-service': 'Customer Service',
-    'research': 'Research'
-  };
-  return map[cat] || cat;
-}
-
-function trackClick(toolId){
-  // Track affiliate click (would send to backend in production)
-  console.log(`Click tracked: Tool #${toolId} at ${new Date().toISOString()}`);
-  // In production: fetch('/api/track-click', {method: 'POST', body: JSON.stringify({toolId, timestamp: Date.now()})})
+    `;
+  }).join('');
 }
 
 // Sort buttons
@@ -714,6 +698,7 @@ function submitTool() {
 function handleSearch() {
   const searchTerm = document.getElementById('searchInput').value.toLowerCase();
   renderTools(activeCategory, searchTerm);
+  updateSearchCount();
 }
 
 function filterPricing(pricing, btn) {
@@ -844,7 +829,8 @@ function updateStats() {
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
-  renderTools(); // Initial render with all tools
+  updateStats();
+  updateSearchCount();
 });
 </script>
 
