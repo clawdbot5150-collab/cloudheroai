@@ -4,1140 +4,249 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CloudHero AI — The Ultimate AI Tools Directory</title>
-<meta name="description" content="Discover the best AI tools for productivity, creativity, and automation. Curated directory of cutting-edge AI platforms.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-:root {
---bg: #060810;
---surface: #0d1117;
---surface2: #131820;
---white: #f0f4ff;
---dim: rgba(240,244,255,0.45);
---dimmer: rgba(240,244,255,0.18);
---cyan: #00f0ff;
---gold: #ffc107;
---green: #00e676;
---pink: #ff4081;
---border: rgba(0,240,255,0.1);
---border2: rgba(240,244,255,0.06);
---card-hover: rgba(0,240,255,0.04);
---shadow: 0 24px 64px rgba(0,0,0,0.6);
+:root{
+--bg:#060810;
+--surface:#0d1117;
+--white:#f0f4ff;
+--dim:#9ba3b4;
+--dimmer:#6b7280;
+--cyan:#00f0ff;
+--gold:#ffc107;
+--green:#00c851;
+--border:#1e2530;
+--border2:#151921;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
 
-/* CURSOR */
-#cur{display:none;}
-#cur-trail{display:none;}
-
-/* GRAIN */
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.04'/%3E%3C/svg%3E");pointer-events:none;z-index:300;opacity:.5;}
-
-/* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,8,16,.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
-.nav-logo{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;letter-spacing:-.01em;}
-.nav-logo span{color:var(--cyan);}
-.nav-center{display:flex;gap:8px;}
-.nav-tab{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:8px 18px;border:1px solid transparent;color:var(--dim);background:transparent;transition:all .25s;border-radius:2px;}
-.nav-tab:hover,.nav-tab.active{border-color:var(--border);color:var(--white);background:var(--surface2);}
-.nav-tab.active{color:var(--cyan);border-color:rgba(0,240,255,.3);}
-.nav-right{display:flex;align-items:center;gap:16px;}
-.submit-btn{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;background:var(--cyan);color:var(--bg);border:none;padding:9px 20px;font-weight:700;transition:opacity .2s;}
-.submit-btn:hover{opacity:.85;}
-.admin-btn{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--dimmer);border:1px solid var(--border2);padding:9px 16px;transition:all .25s;}
-.admin-btn:hover{color:var(--gold);border-color:rgba(255,193,7,.3);}
-
-/* ── HERO ── */
-#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:100px 48px 60px;position:relative;overflow:hidden;}
-
-/* animated mesh */
-.mesh{position:absolute;inset:0;overflow:hidden;z-index:1;}
-.mesh-line{position:absolute;background:linear-gradient(90deg,transparent,rgba(0,240,255,.06),transparent);height:1px;width:100%;animation:meshscan 6s ease-in-out infinite;}
-.mesh-line:nth-child(1){top:20%;animation-delay:0s;}
-.mesh-line:nth-child(2){top:45%;animation-delay:1.5s;}
-.mesh-line:nth-child(3){top:70%;animation-delay:3s;}
-.mesh-col{position:absolute;background:linear-gradient(180deg,transparent,rgba(0,240,255,.06),transparent);width:1px;height:100%;animation:meshscan-v 8s ease-in-out infinite;}
-.mesh-col:nth-child(4){left:25%;animation-delay:.5s;}
-.mesh-col:nth-child(5){left:50%;animation-delay:2s;}
-.mesh-col:nth-child(6){left:75%;animation-delay:3.5s;}
-
-/* orbs */
-.orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:1;}
-.orb-1{width:700px;height:700px;background:radial-gradient(circle,rgba(0,240,255,.07),transparent 70%);top:-200px;left:-100px;animation:orb1 12s ease-in-out infinite;}
-.orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(255,64,129,.06),transparent 70%);bottom:-100px;right:-50px;animation:orb2 10s ease-in-out infinite;}
-.orb-3{width:400px;height:400px;background:radial-gradient(circle,rgba(255,193,7,.05),transparent 70%);top:40%;left:40%;animation:orb3 14s ease-in-out infinite;}
-
-.hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(0,240,255,.25);padding:8px 18px;margin-bottom:36px;background:rgba(0,240,255,.05);opacity:0;animation:fadeup .6s .1s forwards;position:relative;z-index:2;}
-.hero-badge::before{content:'';width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:pulse 2s infinite;}
-
-h1{font-family:'Syne',sans-serif;font-size:clamp(3.5rem,8vw,8rem);font-weight:800;line-height:.92;letter-spacing:-.03em;margin-bottom:28px;opacity:0;animation:fadeup .7s .25s forwards;position:relative;z-index:2;}
+/* Hero */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:100px 20px 60px;}
+.hero-badge{font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(0,240,255,0.25);padding:8px 18px;margin-bottom:36px;background:rgba(0,240,255,0.05);}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:800;line-height:1;margin-bottom:20px;}
 h1 .accent{color:var(--cyan);}
-h1 .outline{color:transparent;-webkit-text-stroke:1px rgba(240,244,255,.2);}
+.hero-sub{font-size:1.1rem;color:var(--dim);max-width:560px;margin-bottom:40px;}
 
-.hero-sub{font-size:1.1rem;font-weight:300;color:var(--dim);max-width:560px;line-height:1.7;margin-bottom:48px;opacity:0;animation:fadeup .7s .4s forwards;position:relative;z-index:2;}
+/* Search */
+.search-wrap{width:100%;max-width:680px;margin:40px auto;}
+.search-bar{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(0,240,255,0.25);color:var(--white);padding:16px 20px;font-size:1rem;outline:none;border-radius:4px;}
+.search-bar:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,240,255,0.1);}
 
-/* SEARCH BAR */
-.search-wrap-hero{width:100%;max-width:680px;position:relative;opacity:0;animation:fadeup .7s .55s forwards;z-index:2;}
-.search-wrap{width:100%;max-width:720px;position:relative;margin:0 auto 32px;}
-.search-bar{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,240,255,.25);color:var(--white);padding:18px 60px 18px 52px;font-family:'DM Sans',sans-serif;font-size:1rem;outline:none;transition:border-color .3s,box-shadow .3s;border-radius:3px;}
-.search-bar:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,240,255,.1),0 24px 48px rgba(0,0,0,.4);}
-.search-bar::placeholder{color:var(--dimmer);}
-.search-icon{position:absolute;left:18px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:1.1rem;pointer-events:none;}
-.search-count{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-family:'Space Mono',monospace;font-size:.6rem;color:var(--dimmer);pointer-events:none;}
-.filters{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+/* Stats */
+.stats{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;padding:40px 20px;background:var(--surface);margin:40px 0;}
+.stat{text-align:center;}
+.stat-num{font-family:'Syne',sans-serif;font-size:2.5rem;color:var(--cyan);font-weight:800;}
+.stat-label{font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-top:8px;}
 
-/* FILTER CHIPS in hero */
-.filters-hero{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:24px;opacity:0;animation:fadeup .7s .7s forwards;position:relative;z-index:2;}
-.chip{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;border:1px solid var(--border2);color:var(--dim);background:transparent;transition:all .2s;border-radius:2px;}
-.chip:hover{border-color:var(--border);color:var(--white);}
-.chip.active{background:var(--cyan);color:var(--bg);border-color:var(--cyan);font-weight:700;}
+/* Categories */
+.categories{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:20px;max-width:1200px;margin:0 auto;}
+.cat-btn{font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 16px;border:1px solid var(--border2);color:var(--dim);background:transparent;transition:all 0.2s;border-radius:2px;}
+.cat-btn:hover{border-color:var(--cyan);color:var(--white);}
+.cat-btn.active{background:var(--cyan);color:var(--bg);border-color:var(--cyan);font-weight:700;}
 
-/* TOAST */
-.toast{position:fixed;bottom:32px;right:32px;background:var(--green);color:var(--bg);font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:14px 24px;z-index:999;transform:translateY(80px);opacity:0;transition:transform .3s,opacity .3s;}
-.toast.show{transform:translateY(0);opacity:1;}
-
-/* SUBMIT MODAL */
-#submit-modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);padding:40px;overflow-y:auto;}
-#submit-modal.open{display:block;}
-.modal-inner{max-width:560px;margin:0 auto;background:var(--surface);border:1px solid rgba(0,240,255,.2);padding:48px;}
-.modal-title{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:8px;}
-.modal-sub{color:var(--dim);font-size:.9rem;margin-bottom:32px;font-weight:300;line-height:1.6;}
-
-/* ANIMATIONS */
-@keyframes fadeup{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-@keyframes meshscan{0%,100%{opacity:0;transform:translateX(-100%)}20%,80%{opacity:1}50%{transform:translateX(100%)}}
-@keyframes meshscan-v{0%,100%{opacity:0;transform:translateY(-100%)}20%,80%{opacity:1}50%{transform:translateY(100%)}}
-@keyframes orb1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}}
-@keyframes orb2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,20px)}}
-@keyframes orb3{0%,100%{transform:translate(0,0)}50%{transform:translate(-20px,30px)}}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
-
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s,transform .6s;}
-.reveal.on{opacity:1;transform:translateY(0);}
-
-/* STATS ROW */
-.stats-row{display:flex;gap:0;border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);background:var(--surface);margin-top:80px;max-width:1400px;margin-left:auto;margin-right:auto;}
-.stat-cell{flex:1;padding:32px 40px;text-align:center;border-right:1px solid var(--border2);}
-.stat-cell:last-child{border-right:none;}
-.stat-num{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:var(--cyan);display:block;line-height:1;}
-.stat-lbl{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dimmer);margin-top:6px;display:block;}
-
-/* ── DIRECTORY ── */
-#directory{padding:80px 48px;max-width:1400px;margin:0 auto;}
-.dir-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:20px;}
-.dir-title{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;}
-.dir-title span{color:var(--cyan);}
-.sort-row{display:flex;gap:8px;flex-wrap:wrap;}
-.sort-btn{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border:1px solid var(--border2);color:var(--dimmer);background:transparent;transition:all .2s;border-radius:2px;}
-.sort-btn:hover,.sort-btn.active{color:var(--white);border-color:var(--border);}
-
-/* TOOL GRID */
-#tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2px;background:var(--border2);}
-
-/* TOOL CARD */
-.tool-card{background:var(--surface);padding:28px;position:relative;overflow:hidden;transition:background .3s;display:flex;flex-direction:column;gap:16px;}
-.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--pink));transform:scaleX(0);transform-origin:left;transition:transform .4s;}
-.tool-card:hover{background:var(--card-hover);}
-.tool-card:hover::before{transform:scaleX(1);}
-.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
-.tool-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;border:1px solid var(--border2);}
-.card-badges{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
-.badge{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:2px;}
-.badge-featured{background:rgba(255,193,7,.12);color:var(--gold);border:1px solid rgba(255,193,7,.25);}
-.badge-free{background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.2);}
-.badge-paid{background:rgba(0,240,255,.08);color:var(--cyan);border:1px solid rgba(0,240,255,.2);}
-.badge-freemium{background:rgba(255,64,129,.08);color:var(--pink);border:1px solid rgba(255,64,129,.2);}
-.tool-name{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;line-height:1.2;}
-.tool-tagline{font-size:.88rem;color:var(--dim);line-height:1.55;font-weight:300;}
-.tool-category{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dimmer);}
-.card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:16px;border-top:1px solid var(--border2);}
-.commission-badge{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.08em;color:var(--green);}
-.commission-badge span{opacity:.5;margin-right:4px;}
-.visit-btn{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);background:transparent;border:1px solid rgba(0,240,255,.2);padding:7px 16px;transition:all .2s;text-decoration:none;display:inline-block;}
+/* Tools Grid */
+#tools{max-width:1400px;margin:0 auto;padding:40px 20px;}
+.dir-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;flex-wrap:wrap;gap:20px;}
+.dir-title{font-family:'Syne',sans-serif;font-size:1.5rem;}
+#tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;}
+.tool-card{background:var(--surface);padding:24px;border-radius:8px;transition:transform 0.2s,box-shadow 0.2s;}
+.tool-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+.tool-icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;border-radius:8px;margin-bottom:16px;}
+.tool-name{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:8px;}
+.tool-cat{font-size:0.75rem;color:var(--dimmer);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;}
+.tool-tagline{color:var(--dim);margin-bottom:16px;font-size:0.95rem;}
+.tool-footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;}
+.badge{font-family:'Space Mono',monospace;font-size:0.65rem;padding:4px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:0.08em;}
+.badge-featured{background:rgba(255,193,7,0.15);color:var(--gold);}
+.badge-free{background:rgba(0,200,81,0.15);color:var(--green);}
+.badge-freemium{background:rgba(255,64,129,0.15);color:#ff4081;}
+.badge-paid{background:rgba(0,240,255,0.15);color:var(--cyan);}
+.visit-btn{font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--cyan);border:1px solid rgba(0,240,255,0.3);padding:8px 16px;border-radius:4px;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.1em;}
 .visit-btn:hover{background:var(--cyan);color:var(--bg);}
+.commission{font-size:0.75rem;color:var(--green);font-weight:600;}
 
-/* ── FOOTER ── */
-footer{text-align:center;padding:60px 48px;border-top:1px solid var(--border2);}
-.footer-text{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dimmer);}
-.footer-text span{color:var(--cyan);}
+/* Footer */
+footer{text-align:center;padding:40px 20px;color:var(--dimmer);font-size:0.9rem;}
 
-/* FEATURED CARD (spans 2) */
-.tool-card.featured-card{grid-column:span 2;flex-direction:row;align-items:center;gap:32px;padding:36px 40px;border-left:2px solid var(--cyan);}
-.featured-card .card-main{flex:1;}
-.featured-card .card-cta{flex-shrink:0;text-align:right;}
-.featured-card .tool-name{font-size:1.5rem;}
-.featured-spotlight{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:block;}
-
-/* NO RESULTS */
-.no-results{grid-column:1/-1;text-align:center;padding:80px;color:var(--dimmer);}
-.no-results h3{font-family:'Syne',sans-serif;font-size:1.5rem;margin-bottom:8px;color:var(--dim);}
-
-/* ── ADMIN PANEL ── */
-#admin-panel{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);overflow-y:auto;padding:40px;}
-#admin-panel.open{display:block;}
-.admin-inner{max-width:800px;margin:0 auto;background:var(--surface);border:1px solid rgba(255,193,7,.2);padding:48px;}
-.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--border2);}
-.admin-title{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;}
-.admin-title span{color:var(--gold);}
-.close-btn{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid var(--border2);color:var(--dim);padding:10px 20px;transition:all .2s;}
-.close-btn:hover{border-color:var(--pink);color:var(--pink);}
-.admin-tabs{display:flex;gap:4px;margin-bottom:36px;}
-.atab{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:10px 22px;border:1px solid var(--border2);color:var(--dim);background:transparent;transition:all .2s;}
-.atab.active{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:700;}
-.tab-content{display:none;}
-.tab-content.active{display:block;}
-
-/* ── TOOL LIST ── */
-.tool-list-item{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border2);gap:16px;}
-.tli-name{font-family:'Syne',sans-serif;font-size:1rem;color:var(--white);margin-bottom:4px;}
-.tli-cat{font-size:.8rem;color:var(--dim);}
-.tli-actions{display:flex;gap:8px;}
-.tli-btn{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.05em;text-transform:uppercase;padding:8px 14px;border:none;transition:all .2s;}
-.tli-btn.feature{background:var(--gold);color:var(--bg);}
-.tli-btn.feature:hover{background:#c9a351;}
-.tli-btn.delete{background:#ff4081;color:var(--bg);}
-.tli-btn.delete:hover{background:#ff2060;}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-.form-group{display:flex;flex-direction:column;gap:8px;}
-.form-group.full{grid-column:span 2;}
-.form-label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);}
-.form-input,.form-select,.form-textarea{background:rgba(255,255,255,.04);border:1px solid var(--border2);color:var(--white);padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .25s;width:100%;}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);}
-.form-textarea{resize:vertical;min-height:90px;}
-.form-select option{background:var(--surface);}
-.form-submit{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;background:var(--gold);color:var(--bg);border:none;padding:14px 32px;font-weight:700;transition:opacity .2s;margin-top:8px;}
-.form-submit:hover{opacity:.85;}
-.tools-list{display:flex;flex-direction:column;gap:12px;max-height:500px;overflow-y:auto;}
-.tool-list-item{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(255,255,255,.03);border:1px solid var(--border2);}
-.tli-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;}
-.tli-cat{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dimmer);}
-.tli-actions{display:flex;gap:8px;}
-.tli-btn{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border:1px solid var(--border2);background:transparent;color:var(--dim);transition:all .2s;}
-.tli-btn:hover{color:var(--white);border-color:var(--border);}
-.tli-btn.delete:hover{color:var(--pink);border-color:rgba(255,64,129,.3);}
-.tli-btn.feature:hover{color:var(--gold);border-color:rgba(255,193,7,.3);}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-nav{padding:0 20px;}
-.nav-center{display:none;}
-#hero{padding:100px 24px 60px;}
-h1{font-size:3rem;}
-.stats-row{flex-wrap:wrap;}
-.stat-cell{min-width:50%;border-bottom:1px solid var(--border2);}
-#directory{padding:60px 20px;}
+/* Mobile */
+@media(max-width:768px){
+.stats{gap:20px;}
+.stat-num{font-size:2rem;}
 #tools-grid{grid-template-columns:1fr;}
-.tool-card.featured-card{grid-column:span 1;flex-direction:column;}
-.admin-inner{padding:28px 20px;}
-.form-grid{grid-template-columns:1fr;}
-.form-group.full{grid-column:span 1;}
+.categories{justify-content:flex-start;overflow-x:auto;}
 }
 </style>
 </head>
 <body>
 
-<div id="cur"></div>
-<div id="cur-trail"></div>
-
-<!-- TOAST -->
-<div class="toast" id="toast">✓ Saved successfully</div>
-
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">Cloud<span>Hero</span> AI</div>
-  <div class="nav-center">
-    <button class="nav-tab active" onclick="filterCategory('all',this)">All Tools</button>
-    <button class="nav-tab" onclick="filterCategory('writing',this)">Writing</button>
-    <button class="nav-tab" onclick="filterCategory('image',this)">Image</button>
-    <button class="nav-tab" onclick="filterCategory('automation',this)">Automation</button>
-    <button class="nav-tab" onclick="filterCategory('analytics',this)">Analytics</button>
-    <button class="nav-tab" onclick="filterCategory('code',this)">Code</button>
-    <button class="nav-tab" onclick="filterCategory('video',this)">Video</button>
-  </div>
-  <div class="nav-right">
-    <button class="submit-btn" onclick="openSubmit()">+ Submit Tool</button>
-    <button class="admin-btn" onclick="openAdmin()">⚙️ Admin</button>
-  </div>
-</nav>
-
-<!-- HERO -->
 <section id="hero">
-  <div class="mesh">
-    <div class="mesh-line"></div><div class="mesh-line"></div><div class="mesh-line"></div>
-    <div class="mesh-col"></div><div class="mesh-col"></div><div class="mesh-col"></div>
-  </div>
-  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-badge">✦ The Definitive AI Tools Directory</div>
+  <h1>Find Your <span class="accent">AI Hero</span> Tool</h1>
+  <p class="hero-sub">Discover the best AI tools for writing, design, code, automation, and more. Curated for creators, marketers, and developers.</p>
   
-  <div style="position:relative;z-index:2;width:100%;display:flex;flex-direction:column;align-items:center;">
-    <div class="hero-badge">✦ The Definitive AI Tools Directory</div>
-    <h1>Find Your <span class="accent">AI</span><br><span class="outline">Hero</span> Tool</h1>
-    <p class="hero-sub">Every powerful AI tool, ranked and reviewed. Discover what the world's best teams are using to move faster, think bigger, and build smarter.</p>
-    
-    <div class="search-wrap-hero">
-      <span class="search-icon">🔍</span>
-      <input type="text" class="search-bar" id="heroSearch" placeholder="Search 500+ AI tools...">
-      <span class="search-count">500 tools</span>
-    </div>
-    
-    <div class="filters-hero">
-      <button class="chip active" data-cat="all">All</button>
-      <button class="chip" data-cat="writing">Writing</button>
-      <button class="chip" data-cat="image">Image</button>
-      <button class="chip" data-cat="automation">Automation</button>
-      <button class="chip" data-cat="analytics">Analytics</button>
-      <button class="chip" data-cat="code">Code</button>
-      <button class="chip" data-cat="video">Video</button>
-    </div>
-  </div>
-</section>
-
-<!-- Search Section -->
-<section style="padding:60px 48px;max-width:1400px;margin:0 auto;">
   <div class="search-wrap">
-    <span class="search-icon">🔍</span>
-    <input type="text" class="search-bar" id="searchInput" placeholder="Search tools, categories, use cases..." oninput="handleSearch()">
-    <span class="search-count" id="searchCount"></span>
-  </div>
-  
-  <div class="filters">
-    <button class="chip active" onclick="filterPricing('all',this)">All Pricing</button>
-    <button class="chip" onclick="filterPricing('free',this)">Free</button>
-    <button class="chip" onclick="filterPricing('freemium',this)">Freemium</button>
-    <button class="chip" onclick="filterPricing('paid',this)">Paid</button>
-    <button class="chip" onclick="filterPricing('featured',this)">⭐️ Featured</button>
+    <input type="text" class="search-bar" id="search" placeholder="Search tools, categories, use cases..." oninput="handleSearch()">
   </div>
 </section>
 
-<!-- STATS -->
-<div class="stats-row" id="statsRow">
-  <div class="stat-cell"><span class="stat-num" id="statTotal">0</span><span class="stat-lbl">Tools Listed</span></div>
-  <div class="stat-cell"><span class="stat-num" id="statFree">0</span><span class="stat-lbl">Free Tools</span></div>
-  <div class="stat-cell"><span class="stat-num" id="statCategories">0</span><span class="stat-lbl">Categories</span></div>
-  <div class="stat-cell"><span class="stat-num" id="statAffiliate">0</span><span class="stat-lbl">Affiliate Partners</span></div>
+<div class="stats">
+  <div class="stat"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Tools Listed</div></div>
+  <div class="stat"><div class="stat-num" id="stat-free">0</div><div class="stat-label">Free Tools</div></div>
+  <div class="stat"><div class="stat-num" id="stat-cat">10</div><div class="stat-label">Categories</div></div>
+  <div class="stat"><div class="stat-num" id="stat-aff">0</div><div class="stat-label">Affiliate Partners</div></div>
 </div>
 
-<!-- DIRECTORY -->
-<section id="directory">
-  <div class="dir-header reveal">
-    <div class="dir-title">Showing <span id="showing-count">all tools</span></div>
-    <div class="sort-row">
-      <button class="sort-btn active" onclick="sortTools('featured',this)">Featured First</button>
-      <button class="sort-btn" onclick="sortTools('name',this)">A–Z</button>
-      <button class="sort-btn" onclick="sortTools('commission',this)">Top Commission</button>
-      <button class="sort-btn" onclick="sortTools('newest',this)">Newest</button>
-    </div>
-  </div>
+<div class="categories">
+  <button class="cat-btn active" onclick="filterCat('all',this)">All Tools</button>
+  <button class="cat-btn" onclick="filterCat('writing',this)">Writing</button>
+  <button class="cat-btn" onclick="filterCat('image',this)">Image</button>
+  <button class="cat-btn" onclick="filterCat('code',this)">Code</button>
+  <button class="cat-btn" onclick="filterCat('video',this)">Video</button>
+  <button class="cat-btn" onclick="filterCat('automation',this)">Automation</button>
+  <button class="cat-btn" onclick="filterCat('productivity',this)">Productivity</button>
+  <button class="cat-btn" onclick="filterCat('marketing',this)">Marketing</button>
+  <button class="cat-btn" onclick="filterCat('analytics',this)">Analytics</button>
+  <button class="cat-btn" onclick="filterCat('customer-service',this)">Customer Service</button>
+  <button class="cat-btn" onclick="filterCat('research',this)">Research</button>
+</div>
 
+<section id="tools">
+  <div class="dir-header">
+    <div class="dir-title">Showing <span id="count">all tools</span></div>
+  </div>
   <div id="tools-grid">
-    <!-- Tools will be injected here -->
+    <!-- Tools will load here -->
   </div>
 </section>
 
 <footer>
-  <p class="footer-text">Built with ⚡ by <span>CloudHero AI</span> · 2026</p>
+  <p>Built with ⚡ by CloudHero AI · 2026</p>
 </footer>
 
 <script>
-// Custom cursor
-const cur = document.getElementById('cur');
-const trail = document.getElementById('cur-trail');
-let mouseX = 0, mouseY = 0;
-let trailX = 0, trailY = 0;
-
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-});
-
-function animate() {
-  cur.style.left = mouseX + 'px';
-  cur.style.top = mouseY + 'px';
-  
-  trailX += (mouseX - trailX) * 0.1;
-  trailY += (mouseY - trailY) * 0.1;
-  trail.style.left = trailX + 'px';
-  trail.style.top = trailY + 'px';
-  
-  requestAnimationFrame(animate);
-}
-animate();
-
-// ── DATA STORE ──
-const defaultTools = [
-  // WRITING & CONTENT (15 tools)
-  {id:1,name:"ChatGPT",category:"writing",tagline:"The world's most used AI assistant for writing, research, and problem-solving.",desc:"OpenAI's flagship conversational AI. Write, analyze, code, research, and brainstorm with one of the most capable language models available.",url:"https://chat.openai.com",affiliate:"https://chat.openai.com",commission:"",pricing:"freemium",icon:"🧠",color:"#1a1f2e",featured:true,dateAdded:Date.now()-86400000*90},
-  {id:2,name:"Jasper AI",category:"writing",tagline:"AI writing platform built for marketing teams and content creators.",desc:"Generate blog posts, ad copy, social content, and more with AI trained on top-performing marketing content.",url:"https://jasper.ai",affiliate:"https://jasper.ai?via=cloudhero",commission:"30% recurring",pricing:"paid",icon:"✍️",color:"#1a1520",featured:true,dateAdded:Date.now()-86400000*88},
-  {id:3,name:"Copy.ai",category:"writing",tagline:"Go from prompt to polished marketing copy in seconds.",desc:"AI-powered copywriting for emails, ads, product descriptions, and social posts. Includes 90+ templates.",url:"https://copy.ai",affiliate:"https://copy.ai?via=cloudhero",commission:"45% first year",pricing:"freemium",icon:"📝",color:"#0f1a1a",featured:false,dateAdded:Date.now()-86400000*86},
-  {id:4,name:"Writesonic",category:"writing",tagline:"AI writer for articles, blogs, ads, and marketing copy.",desc:"Generate SEO-optimized content, product descriptions, and ad copy with GPT-4 powered AI.",url:"https://writesonic.com",affiliate:"https://writesonic.com?fpr=cloudhero",commission:"30% lifetime",pricing:"freemium",icon:"✨",color:"#1a1a25",featured:false,dateAdded:Date.now()-86400000*84},
-  {id:5,name:"Rytr",category:"writing",tagline:"AI writing assistant for fast, affordable content.",desc:"40+ use cases and templates. Write blogs, emails, social posts in 30+ languages.",url:"https://rytr.me",affiliate:"https://rytr.me/?via=cloudhero",commission:"25% recurring",pricing:"freemium",icon:"🖊️",color:"#1a1520",featured:false,dateAdded:Date.now()-86400000*82},
-  {id:6,name:"Wordtune",category:"writing",tagline:"AI-powered writing companion that understands context.",desc:"Rewrite, rephrase, and enhance your writing. Perfect for emails, essays, and professional communication.",url:"https://wordtune.com",affiliate:"https://wordtune.com",commission:"20% recurring",pricing:"freemium",icon:"📖",color:"#0f1a1f",featured:false,dateAdded:Date.now()-86400000*80},
-  {id:7,name:"QuillBot",category:"writing",tagline:"AI paraphrasing and grammar checking tool.",desc:"Rewrite text, check grammar, summarize articles, and improve your writing style.",url:"https://quillbot.com",affiliate:"https://quillbot.com",commission:"30% first payment",pricing:"freemium",icon:"🪶",color:"#1a1a1a",featured:false,dateAdded:Date.now()-86400000*78},
-  {id:8,name:"Grammarly",category:"writing",tagline:"AI writing assistant for clear, mistake-free writing.",desc:"Real-time grammar checking, tone detection, and style suggestions across all your writing.",url:"https://grammarly.com",affiliate:"https://grammarly.com",commission:"$20/sale",pricing:"freemium",icon:"✅",color:"#0f1a0f",featured:true,dateAdded:Date.now()-86400000*76},
-  {id:9,name:"Anyword",category:"writing",tagline:"AI copywriting with predictive performance scoring.",desc:"Generate marketing copy that's proven to convert. Analyze and optimize before publishing.",url:"https://anyword.com",affiliate:"https://anyword.com?fp_ref=cloudhero",commission:"30% recurring",pricing:"paid",icon:"📊",color:"#1a1020",featured:false,dateAdded:Date.now()-86400000*74},
-  {id:10,name:"ContentBot",category:"writing",tagline:"AI content generation for bloggers and marketers.",desc:"Generate long-form blog content, landing pages, ad copy, and more in minutes.",url:"https://contentbot.ai",affiliate:"https://contentbot.ai",commission:"20% recurring",pricing:"paid",icon:"🤖",color:"#1a0f1a",featured:false,dateAdded:Date.now()-86400000*72},
-  {id:11,name:"Frase",category:"writing",tagline:"AI-powered SEO content optimization and research.",desc:"Research, write, and optimize SEO content faster. Analyze top-ranking pages and create better content.",url:"https://frase.io",affiliate:"https://frase.io?via=cloudhero",commission:"30% recurring",pricing:"paid",icon:"📈",color:"#0f1a1a",featured:false,dateAdded:Date.now()-86400000*70},
-  {id:12,name:"Hypotenuse AI",category:"writing",tagline:"AI content writer for ecommerce and marketing teams.",desc:"Generate product descriptions, blog articles, and ad copy at scale. Trained on ecommerce data.",url:"https://hypotenuse.ai",affiliate:"https://hypotenuse.ai",commission:"25% recurring",pricing:"paid",icon:"🛍️",color:"#1a1a1f",featured:false,dateAdded:Date.now()-86400000*68},
-  {id:13,name:"Copysmith",category:"writing",tagline:"AI copywriting for ecommerce and enterprise teams.",desc:"Generate product descriptions, meta tags, ads, and more. Built for teams and agencies.",url:"https://copysmith.ai",affiliate:"https://copysmith.ai",commission:"30% lifetime",pricing:"paid",icon:"⚡",color:"#1a1510",featured:false,dateAdded:Date.now()-86400000*66},
-  {id:14,name:"Peppertype.ai",category:"writing",tagline:"AI content assistant for quick, quality content.",desc:"Generate blog ideas, social posts, ad copy, and more with AI trained on high-performing content.",url:"https://peppertype.ai",affiliate:"https://peppertype.ai",commission:"20% recurring",pricing:"freemium",icon:"🌶️",color:"#1a0a0f",featured:false,dateAdded:Date.now()-86400000*64},
-  {id:15,name:"Longshot AI",category:"writing",tagline:"AI writer for fact-checked, SEO-optimized long-form content.",desc:"Generate blog posts with real-time fact-checking and SEO optimization. Includes semantic SEO scores.",url:"https://longshot.ai",affiliate:"https://longshot.ai",commission:"30% recurring",pricing:"paid",icon:"🎯",color:"#1a1a15",featured:false,dateAdded:Date.now()-86400000*62},
-
-  // IMAGE & DESIGN (15 tools)
-  {id:16,name:"Midjourney",category:"image",tagline:"Create stunning, photorealistic images from text prompts.",desc:"The industry-leading AI image generator. Used by designers, artists, and creators worldwide for everything from concept art to marketing assets.",url:"https://midjourney.com",affiliate:"https://midjourney.com",commission:"",pricing:"paid",icon:"🎨",color:"#1a1a20",featured:true,dateAdded:Date.now()-86400000*60},
-  {id:17,name:"DALL-E 3",category:"image",tagline:"OpenAI's most advanced AI image generator.",desc:"Generate highly detailed images from text descriptions. Built into ChatGPT Plus.",url:"https://openai.com/dall-e-3",affiliate:"https://openai.com/dall-e-3",commission:"",pricing:"paid",icon:"🖼️",color:"#1a1f1a",featured:true,dateAdded:Date.now()-86400000*58},
-  {id:18,name:"Canva AI",category:"image",tagline:"AI-powered design platform for everyone.",desc:"Magic Design, Text to Image, Background Remover, and more AI tools built into the world's easiest design platform.",url:"https://canva.com",affiliate:"https://canva.com",commission:"$36/sale",pricing:"freemium",icon:"🎨",color:"#0f1a1a",featured:false,dateAdded:Date.now()-86400000*56},
-  {id:19,name:"Adobe Firefly",category:"image",tagline:"Adobe's AI image generator built into Creative Cloud.",desc:"Generate images, text effects, and design elements. Commercially safe AI trained on Adobe Stock.",url:"https://firefly.adobe.com",affiliate:"https://firefly.adobe.com",commission:"",pricing:"freemium",icon:"🔥",color:"#1a0a0a",featured:false,dateAdded:Date.now()-86400000*54},
-  {id:20,name:"Stable Diffusion",category:"image",tagline:"Open-source AI image generation.",desc:"Free, open-source image generation you can run locally or via cloud services. Highly customizable.",url:"https://stability.ai",affiliate:"https://stability.ai",commission:"",pricing:"free",icon:"🌊",color:"#0f0f1a",featured:false,dateAdded:Date.now()-86400000*52},
-  {id:21,name:"Leonardo.ai",category:"image",tagline:"AI art generator for game assets and creative projects.",desc:"Generate production-ready art assets. Fine-tuned models for characters, environments, and game art.",url:"https://leonardo.ai",affiliate:"https://leonardo.ai?via=cloudhero",commission:"30% recurring",pricing:"freemium",icon:"🎮",color:"#1a1a1a",featured:false,dateAdded:Date.now()-86400000*50},
-  {id:22,name:"Photoshop AI",category:"image",tagline:"Adobe Photoshop with Generative Fill and AI tools.",desc:"Industry-standard photo editing enhanced with AI. Generative Fill, Neural Filters, and more.",url:"https://adobe.com/photoshop",affiliate:"https://adobe.com/photoshop",commission:"",pricing:"paid",icon:"📷",color:"#0a0a1a",featured:false,dateAdded:Date.now()-86400000*48},
-  {id:23,name:"Playground AI",category:"image",tagline:"Free AI image generator with commercial use rights.",desc:"Generate up to 1,000 images per day for free. Commercial use included.",url:"https://playgroundai.com",affiliate:"https://playgroundai.com",commission:"",pricing:"freemium",icon:"🎪",color:"#1a1015",featured:false,dateAdded:Date.now()-86400000*46},
-  {id:24,name:"DreamStudio",category:"image",tagline:"Stable Diffusion's official web interface.",desc:"Fast, affordable AI image generation powered by Stable Diffusion. Advanced controls and settings.",url:"https://dreamstudio.ai",affiliate:"https://dreamstudio.ai",commission:"",pricing:"paid",icon:"💫",color:"#1a0f1a",featured:false,dateAdded:Date.now()-86400000*44},
-  {id:25,name:"NightCafe",category:"image",tagline:"AI art generator with multiple models and styles.",desc:"Create AI art using Stable Diffusion, DALL-E, and more. Active community and daily challenges.",url:"https://nightcafe.studio",affiliate:"https://nightcafe.studio",commission:"20% recurring",pricing:"freemium",icon:"🌙",color:"#0f0f1f",featured:false,dateAdded:Date.now()-86400000*42},
-  {id:26,name:"Freepik AI",category:"image",tagline:"AI image generator from the Freepik design platform.",desc:"Generate images, expand existing images, and edit photos with AI. Integrated with Freepik's library.",url:"https://freepik.com/ai",affiliate:"https://freepik.com/ai",commission:"30% recurring",pricing:"freemium",icon:"🖌️",color:"#1a1a0f",featured:false,dateAdded:Date.now()-86400000*40},
-  {id:27,name:"Artbreeder",category:"image",tagline:"Collaborative AI art creation and remixing.",desc:"Blend images, generate portraits, landscapes, and more. Community-driven creative platform.",url:"https://artbreeder.com",affiliate:"https://artbreeder.com",commission:"",pricing:"freemium",icon:"🧬",color:"#1a1520",featured:false,dateAdded:Date.now()-86400000*38},
-  {id:28,name:"Craiyon",category:"image",tagline:"Free AI image generator, formerly DALL-E mini.",desc:"Simple, free AI image generation. No signup required. Great for quick concepts.",url:"https://craiyon.com",affiliate:"https://craiyon.com",commission:"",pricing:"free",icon:"🖍️",color:"#1a1a15",featured:false,dateAdded:Date.now()-86400000*36},
-  {id:29,name:"Hotpot.ai",category:"image",tagline:"AI tools for graphics, photos, and writing.",desc:"AI headshot generator, background remover, image upscaler, and more creative tools.",url:"https://hotpot.ai",affiliate:"https://hotpot.ai",commission:"25% recurring",pricing:"freemium",icon:"🔥",color:"#1a0f0f",featured:false,dateAdded:Date.now()-86400000*34},
-  {id:30,name:"Fotor AI",category:"image",tagline:"AI photo editor and design tool.",desc:"AI background removal, image enhancement, design templates, and AI image generation in one platform.",url:"https://fotor.com",affiliate:"https://fotor.com",commission:"30% recurring",pricing:"freemium",icon:"📸",color:"#1a1a1a",featured:false,dateAdded:Date.now()-86400000*32},
-
-  // CODE & DEVELOPMENT (12 tools)
-  {id:31,name:"GitHub Copilot",category:"code",tagline:"AI pair programmer that autocompletes code in real time.",desc:"Trained on billions of lines of code, Copilot suggests whole lines and functions as you type — in any language.",url:"https://github.com/features/copilot",affiliate:"https://github.com/features/copilot",commission:"",pricing:"paid",icon:"💻",color:"#0f1a0f",featured:true,dateAdded:Date.now()-86400000*30},
-  {id:32,name:"Cursor",category:"code",tagline:"AI-first code editor built on VS Code.",desc:"Chat with your codebase, generate features, fix bugs with AI. The future of coding.",url:"https://cursor.sh",affiliate:"https://cursor.sh",commission:"",pricing:"freemium",icon:"⌨️",color:"#1a1a1f",featured:false,dateAdded:Date.now()-86400000*28},
-  {id:33,name:"Tabnine",category:"code",tagline:"AI code completion for your entire team.",desc:"Supports 20+ languages and IDEs. Trained on your codebase for personalized suggestions.",url:"https://tabnine.com",affiliate:"https://tabnine.com?ref=cloudhero",commission:"25% recurring",pricing:"freemium",icon:"🔮",color:"#1a0f1a",featured:false,dateAdded:Date.now()-86400000*26},
-  {id:34,name:"Replit AI",category:"code",tagline:"AI-powered cloud development environment.",desc:"Code, deploy, and collaborate with AI assistance. Built-in debugger and deployment.",url:"https://replit.com",affiliate:"https://replit.com",commission:"",pricing:"freemium",icon:"🚀",color:"#1a1520",featured:false,dateAdded:Date.now()-86400000*24},
-  {id:35,name:"Codeium",category:"code",tagline:"Free AI code completion alternative to Copilot.",desc:"Free forever for individuals. Supports 70+ languages and all major IDEs.",url:"https://codeium.com",affiliate:"https://codeium.com",commission:"",pricing:"free",icon:"⚡",color:"#0f1a1a",featured:false,dateAdded:Date.now()-86400000*22},
-  {id:36,name:"Amazon CodeWhisperer",category:"code",tagline:"AI coding companion from AWS.",desc:"Free code suggestions trained on billions of lines of code. Built-in security scanning.",url:"https://aws.amazon.com/codewhisperer",affiliate:"https://aws.amazon.com/codewhisperer",commission:"",pricing:"free",icon:"☁️",color:"#1a1a0f",featured:false,dateAdded:Date.now()-86400000*20},
-  {id:37,name:"Sourcegraph Cody",category:"code",tagline:"AI coding assistant that knows your codebase.",desc:"Chat with your code, generate functions, explain complex logic. Context-aware AI.",url:"https://sourcegraph.com/cody",affiliate:"https://sourcegraph.com/cody",commission:"",pricing:"freemium",icon:"🔍",color:"#1a1a20",featured:false,dateAdded:Date.now()-86400000*18},
-  {id:38,name:"Mintlify",category:"code",tagline:"AI-powered documentation writer for code.",desc:"Auto-generate documentation from your code. Keep docs in sync with one click.",url:"https://mintlify.com",affiliate:"https://mintlify.com",commission:"20% recurring",pricing:"freemium",icon:"📚",color:"#0f1a15",featured:false,dateAdded:Date.now()-86400000*16},
-  {id:39,name:"Phind",category:"code",tagline:"AI search engine for developers.",desc:"Get instant answers to technical questions. Powered by GPT-4 and trained on developer docs.",url:"https://phind.com",affiliate:"https://phind.com",commission:"",pricing:"free",icon:"🔎",color:"#1a1a1a",featured:false,dateAdded:Date.now()-86400000*14},
-  {id:40,name:"v0 by Vercel",category:"code",tagline:"Generate UI components from text prompts.",desc:"AI-powered UI generation. Describe what you want, get production-ready React code.",url:"https://v0.dev",affiliate:"https://v0.dev",commission:"",pricing:"freemium",icon:"✨",color:"#0a0a1a",featured:false,dateAdded:Date.now()-86400000*12},
-  {id:41,name:"Builder.io",category:"code",tagline:"Visual development platform with AI code generation.",desc:"Design to code, AI-powered component generation, and visual editing for React, Vue, and more.",url:"https://builder.io",affiliate:"https://builder.io",commission:"30% recurring",pricing:"freemium",icon:"🏗️",color:"#1a1015",featured:false,dateAdded:Date.now()-86400000*10},
-  {id:42,name:"Pieces for Developers",category:"code",tagline:"AI-powered code snippet manager and workflow tool.",desc:"Save, search, and reuse code snippets with AI-powered search and context.",url:"https://pieces.app",affiliate:"https://pieces.app",commission:"",pricing:"free",icon:"🧩",color:"#1a1a1f",featured:false,dateAdded:Date.now()-86400000*8},
-
-  // VIDEO & AUDIO (12 tools)
-  {id:43,name:"Runway ML",category:"video",tagline:"AI video generation and editing for creators and studios.",desc:"Generate video from text, remove backgrounds, inpaint, and create cinematic content with state-of-the-art AI video models.",url:"https://runwayml.com",affiliate:"https://runwayml.com",commission:"",pricing:"freemium",icon:"🎬",color:"#1a1010",featured:true,dateAdded:Date.now()-86400000*6},
-  {id:44,name:"ElevenLabs",category:"video",tagline:"Ultra-realistic AI voice cloning and text-to-speech.",desc:"Clone any voice or choose from hundreds of AI voices. Used for podcasts, audiobooks, video narration, and accessibility.",url:"https://elevenlabs.io",affiliate:"https://elevenlabs.io?via=cloudhero",commission:"30% recurring",pricing:"freemium",icon:"🔊",color:"#1a1510",featured:true,dateAdded:Date.now()-86400000*4},
-  {id:45,name:"Descript",category:"video",tagline:"AI-powered video and podcast editing.",desc:"Edit video by editing text. Remove filler words, clone your voice, and create studio-quality content.",url:"https://descript.com",affiliate:"https://descript.com?lmref=cloudhero",commission:"25% recurring",pricing:"freemium",icon:"🎙️",color:"#1a1a15",featured:false,dateAdded:Date.now()-86400000*2},
-  {id:46,name:"Synthesia",category:"video",tagline:"Create AI videos with digital avatars in minutes.",desc:"Generate professional videos with AI avatars. No camera, no crew. 120+ languages supported.",url:"https://synthesia.io",affiliate:"https://synthesia.io?via=cloudhero",commission:"20% recurring",pricing:"paid",icon:"👤",color:"#1a0f1a",featured:false,dateAdded:Date.now()},
-  {id:47,name:"Pictory",category:"video",tagline:"AI video creation from scripts and articles.",desc:"Turn long-form content into short videos. Automatically add captions, visuals, and music.",url:"https://pictory.ai",affiliate:"https://pictory.ai?ref=cloudhero",commission:"30% recurring",pricing:"paid",icon:"📹",color:"#1a1a1f",featured:false,dateAdded:Date.now()-86400000*1},
-  {id:48,name:"HeyGen",category:"video",tagline:"AI video generator with customizable avatars.",desc:"Create professional videos with AI avatars. Perfect for marketing, training, and sales.",url:"https://heygen.com",affiliate:"https://heygen.com",commission:"20% recurring",pricing:"paid",icon:"🎥",color:"#0f1a1a",featured:false,dateAdded:Date.now()-86400000*3},
-  {id:49,name:"Kapwing",category:"video",tagline:"Collaborative video editing with AI tools.",desc:"Auto-subtitles, background removal, smart cut, and more. Built for teams.",url:"https://kapwing.com",affiliate:"https://kapwing.com",commission:"25% recurring",pricing:"freemium",icon:"✂️",color:"#1a1520",featured:false,dateAdded:Date.now()-86400000*5},
-  {id:50,name:"Murf AI",category:"video",tagline:"AI voice generator for videos and presentations.",desc:"120+ voices in 20+ languages. Studio-quality AI voiceovers in minutes.",url:"https://murf.ai",affiliate:"https://murf.ai?via=cloudhero",commission:"30% lifetime",pricing:"paid",icon:"🎤",color:"#1a1a0f",featured:false,dateAdded:Date.now()-86400000*7},
-  {id:51,name:"Fliki",category:"video",tagline:"Turn text into videos with AI voices and visuals.",desc:"Create videos from blog posts, tweets, or scripts. Auto-generates visuals and voiceovers.",url:"https://fliki.ai",affiliate:"https://fliki.ai?via=cloudhero",commission:"30% recurring",pricing:"freemium",icon:"🎞️",color:"#1a0f1f",featured:false,dateAdded:Date.now()-86400000*9},
-  {id:52,name:"VEED.io",category:"video",tagline:"Online video editor with AI tools.",desc:"Auto-subtitles, avatars, voice cloning, and professional editing tools in your browser.",url:"https://veed.io",affiliate:"https://veed.io",commission:"30% recurring",pricing:"freemium",icon:"📽️",color:"#0f1a0f",featured:false,dateAdded:Date.now()-86400000*11},
-  {id:53,name:"Wondershare Filmora",category:"video",tagline:"Video editor with AI-powered creative tools.",desc:"AI motion tracking, auto reframe, silence removal, and more. Desktop and mobile.",url:"https://filmora.wondershare.com",affiliate:"https://filmora.wondershare.com",commission:"25% recurring",pricing:"paid",icon:"🎬",color:"#1a1a1a",featured:false,dateAdded:Date.now()-86400000*13},
-  {id:54,name:"Podcastle",category:"video",tagline:"AI-powered podcast and video recording studio.",desc:"Record, edit, and enhance podcasts with AI. Remove background noise, add intros, and more.",url:"https://podcastle.ai",affiliate:"https://podcastle.ai",commission:"20% recurring",pricing:"freemium",icon:"🎧",color:"#1a1015",featured:false,dateAdded:Date.now()-86400000*15},
-
-  // AUTOMATION (10 tools)
-  {id:55,name:"Zapier",category:"automation",tagline:"Connect 6,000+ apps and automate your work without code.",desc:"The most popular automation platform. Set up AI-powered Zaps that trigger actions across your entire tool stack.",url:"https://zapier.com",affiliate:"https://zapier.com/sign-up?ref=cloudhero",commission:"$50/signup",pricing:"freemium",icon:"⚡️",color:"#1a1208",featured:true,dateAdded:Date.now()-86400000*17},
-  {id:56,name:"Make (Integromat)",category:"automation",tagline:"Visually build and automate workflows between your apps.",desc:"Connect any app and automate complex workflows with no code. AI-enhanced triggers, transformations, and logic.",url:"https://make.com",affiliate:"https://make.com?pc=cloudhero",commission:"20% recurring",pricing:"freemium",icon:"⚙️",color:"#1a0f1a",featured:false,dateAdded:Date.now()-86400000*19},
-  {id:57,name:"n8n",category:"automation",tagline:"Open-source workflow automation for technical teams.",desc:"Self-hostable alternative to Zapier. 300+ integrations and full control over your data.",url:"https://n8n.io",affiliate:"https://n8n.io",commission:"",pricing:"free",icon:"🔗",color:"#1a1a1f",featured:false,dateAdded:Date.now()-86400000*21},
-  {id:58,name:"Bardeen",category:"automation",tagline:"AI-powered automation for repetitive tasks.",desc:"Automate workflows in your browser. Works with LinkedIn, Gmail, Notion, and more.",url:"https://bardeen.ai",affiliate:"https://bardeen.ai",commission:"30% recurring",pricing:"freemium",icon:"🎭",color:"#0f1a1a",featured:false,dateAdded:Date.now()-86400000*23},
-  {id:59,name:"Activepieces",category:"automation",tagline:"Open-source automation platform for businesses.",desc:"Self-host or use cloud. Connect your apps and build workflows with a visual builder.",url:"https://activepieces.com",affiliate:"https://activepieces.com",commission:"",pricing:"free",icon:"🧩",color:"#1a1520",featured:false,dateAdded:Date.now()-86400000*25},
-  {id:60,name:"Integrately",category:"automation",tagline:"One-click automation for 1000+ apps.",desc:"Simpler than Zapier. Pre-built automations you can activate in one click.",url:"https://integrately.com",affiliate:"https://integrately.com?ref=cloudhero",commission:"30% lifetime",pricing:"paid",icon:"🔌",color:"#1a1a0f",featured:false,dateAdded:Date.now()-86400000*27},
-  {id:61,name:"Relay.app",category:"automation",tagline:"Workflow automation with human-in-the-loop approvals.",desc:"Combine automation with human review. Perfect for processes that need oversight.",url:"https://relay.app",affiliate:"https://relay.app",commission:"25% recurring",pricing:"freemium",icon:"🔄",color:"#1a0f1f",featured:false,dateAdded:Date.now()-86400000*29},
-  {id:62,name:"Workato",category:"automation",tagline:"Enterprise automation and integration platform.",desc:"For large organizations. Connects apps, automates workflows, and integrates at scale.",url:"https://workato.com",affiliate:"https://workato.com",commission:"",pricing:"paid",icon:"🏢",color:"#0f1a0f",featured:false,dateAdded:Date.now()-86400000*31},
-  {id:63,name:"Albato",category:"automation",tagline:"No-code automation builder with AI-powered setup.",desc:"Connect 600+ apps with AI assistance. Simpler pricing than competitors.",url:"https://albato.com",affiliate:"https://albato.com",commission:"30% recurring",pricing:"paid",icon:"🤝",color:"#1a1a1a",featured:false,dateAdded:Date.now()-86400000*33},
-  {id:64,name:"Automate.io",category:"automation",tagline:"Simple automation for cloud apps.",desc:"Connect your business apps with simple, affordable automation. 200+ integrations.",url:"https://automate.io",affiliate:"https://automate.io",commission:"25% recurring",pricing:"paid",icon:"🔁",color:"#1a1015",featured:false,dateAdded:Date.now()-86400000*35},
-
-  // PRODUCTIVITY (10 tools)
-  {id:65,name:"Notion AI",category:"productivity",tagline:"AI built directly into your notes, docs, and wikis.",desc:"Summarize pages, generate content, translate, extract action items, and answer questions about your workspace.",url:"https://notion.so",affiliate:"https://notion.so?via=cloudhero",commission:"$10/referral",pricing:"freemium",icon:"📓",color:"#1a1a1a",featured:true,dateAdded:Date.now()-86400000*37},
-  {id:66,name:"Otter.ai",category:"productivity",tagline:"AI meeting notes, transcription, and summaries in real time.",desc:"Record, transcribe, and summarize meetings automatically. Integrates with Zoom, Teams, and Google Meet.",url:"https://otter.ai",affiliate:"https://otter.ai?ref=cloudhero",commission:"25% first payment",pricing:"freemium",icon:"🎙",color:"#0f1a15",featured:false,dateAdded:Date.now()-86400000*39},
-  {id:67,name:"Mem",category:"productivity",tagline:"AI-powered note-taking that organizes itself.",desc:"Self-organizing workspace powered by AI. Never manually organize notes again.",url:"https://mem.ai",affiliate:"https://mem.ai",commission:"",pricing:"paid",icon:"🧠",color:"#1a1a1f",featured:false,dateAdded:Date.now()-86400000*41},
-  {id:68,name:"Taskade",category:"productivity",tagline:"AI-powered task lists, notes, and team collaboration.",desc:"Chat with AI, build workflows, manage projects, and collaborate with your team in real-time.",url:"https://taskade.com",affiliate:"https://taskade.com?ref=cloudhero",commission:"30% recurring",pricing:"freemium",icon:"✅",color:"#1a1520",featured:false,dateAdded:Date.now()-86400000*43},
-  {id:69,name:"Todoist",category:"productivity",tagline:"Smart to-do list and task manager with AI features.",desc:"Organize tasks with natural language input, smart scheduling, and AI-powered suggestions.",url:"https://todoist.com",affiliate:"https://todoist.com",commission:"20% first year",pricing:"freemium",icon:"📝",color:"#1a0f0f",featured:false,dateAdded:Date.now()-86400000*45},
-  {id:70,name:"Motion",category:"productivity",tagline:"AI calendar and project manager that schedules your day.",desc:"Automatically schedules your tasks based on priority and deadlines. AI-powered time management.",url:"https://usemotion.com",affiliate:"https://usemotion.com?ref=cloudhero",commission:"30% recurring",pricing:"paid",icon:"📅",color:"#0f1a1a",featured:false,dateAdded:Date.now()-86400000*47},
-  {id:71,name:"Reclaim AI",category:"productivity",tagline:"AI calendar assistant for smart scheduling.",desc:"Auto-schedule habits, tasks, breaks, and meetings. Defend your time with AI.",url:"https://reclaim.ai",affiliate:"https://reclaim.ai",commission:"25% recurring",pricing:"freemium",icon:"🕐",color:"#1a1a0f",featured:false,dateAdded:Date.now()-86400000*49},
-  {id:72,name:"Magical",category:"productivity",tagline:"AI text expander and task automation.",desc:"Automate repetitive typing and workflows across any website. No integrations needed.",url:"https://magical.so",affiliate:"https://magical.so",commission:"",pricing:"free",icon:"✨",color:"#1a0f1f",featured:false,dateAdded:Date.now()-86400000*51},
-  {id:73,name:"Superhuman",category:"productivity",tagline:"The fastest email experience ever made.",desc:"AI-powered email with keyboard shortcuts, scheduled sends, read receipts, and more.",url:"https://superhuman.com",affiliate:"https://superhuman.com",commission:"",pricing:"paid",icon:"⚡",color:"#0f1a0f",featured:false,dateAdded:Date.now()-86400000*53},
-  {id:74,name:"Clockwise",category:"productivity",tagline:"AI calendar optimization for teams.",desc:"Automatically move meetings to create uninterrupted focus time. Team scheduling made smart.",url:"https://clockwise.com",affiliate:"https://clockwise.com",commission:"25% recurring",pricing:"freemium",icon:"🕰️",color:"#1a1a1a",featured:false,dateAdded:Date.now()-86400000*55},
-
-  // MARKETING (10 tools)
-  {id:75,name:"Adcreative.ai",category:"marketing",tagline:"AI-powered ad creative generator for high conversions.",desc:"Generate conversion-focused ad creatives in seconds. Backed by data from millions of ads.",url:"https://adcreative.ai",affiliate:"https://adcreative.ai?via=cloudhero",commission:"30% lifetime",pricing:"paid",icon:"📢",color:"#1a1015",featured:false,dateAdded:Date.now()-86400000*57},
-  {id:76,name:"Pencil",category:"marketing",tagline:"AI ad generator for ecommerce and agencies.",desc:"Create unlimited ad variations. Predict performance before launch. Built for Facebook and TikTok ads.",url:"https://trypencil.com",affiliate:"https://trypencil.com",commission:"25% recurring",pricing:"paid",icon:"✏️",color:"#1a1a1f",featured:false,dateAdded:Date.now()-86400000*59},
-  {id:77,name:"Brand24",category:"marketing",tagline:"AI-powered social listening and brand monitoring.",desc:"Track mentions, analyze sentiment, and protect your brand reputation across the web.",url:"https://brand24.com",affiliate:"https://brand24.com?ref=cloudhero",commission:"30% recurring",pricing:"paid",icon:"📡",color:"#1a1520",featured:false,dateAdded:Date.now()-86400000*61},
-  {id:78,name:"Smartly.io",category:"marketing",tagline:"AI-powered advertising automation for performance marketing.",desc:"Automate creative production, campaign management, and optimization across social platforms.",url:"https://smartly.io",affiliate:"https://smartly.io",commission:"",pricing:"paid",icon:"🎯",color:"#0f1a1a",featured:false,dateAdded:Date.now()-86400000*63},
-  {id:79,name:"Scalenut",category:"marketing",tagline:"AI-powered SEO and content marketing platform.",desc:"Research, create, and optimize SEO content. All-in-one content marketing automation.",url:"https://scalenut.com",affiliate:"https://scalenut.com?via=cloudhero",commission:"30% recurring",pricing:"paid",icon:"📈",color:"#1a1a0f",featured:false,dateAdded:Date.now()-86400000*65},
-  {id:80,name:"Persado",category:"marketing",tagline:"AI-generated marketing language that outperforms human copy.",desc:"Enterprise-grade AI copywriting backed by billions of data points. Used by major brands.",url:"https://persado.com",affiliate:"https://persado.com",commission:"",pricing:"paid",icon:"💬",color:"#1a0f1f",featured:false,dateAdded:Date.now()-86400000*67},
-  {id:81,name:"PhraseeAI",category:"marketing",tagline:"AI-powered brand language optimization.",desc:"Generate on-brand marketing copy that's proven to perform. Real-time optimization.",url:"https://phrasee.co",affiliate:"https://phrasee.co",commission:"",pricing:"paid",icon:"🗣️",color:"#0f1a0f",featured:false,dateAdded:Date.now()-86400000*69},
-  {id:82,name:"Hubspot AI",category:"marketing",tagline:"AI-powered CRM and marketing automation.",desc:"Smart CRM with AI-powered email writing, content generation, and sales insights.",url:"https://hubspot.com",affiliate:"https://hubspot.com",commission:"",pricing:"freemium",icon:"🔶",color:"#1a1a1a",featured:true,dateAdded:Date.now()-86400000*71},
-  {id:83,name:"Lately",category:"marketing",tagline:"AI transforms long-form content into social posts.",desc:"Turn blogs, videos, and podcasts into dozens of social media posts automatically.",url:"https://lately.ai",affiliate:"https://lately.ai?via=cloudhero",commission:"30% recurring",pricing:"paid",icon:"📱",color:"#1a1015",featured:false,dateAdded:Date.now()-86400000*73},
-  {id:84,name:"Seventh Sense",category:"marketing",tagline:"AI email delivery time optimization.",desc:"Send emails at the perfect time for each recipient. Integrates with HubSpot and Marketo.",url:"https://theseventhsense.com",affiliate:"https://theseventhsense.com",commission:"25% recurring",pricing:"paid",icon:"📧",color:"#1a1a1f",featured:false,dateAdded:Date.now()-86400000*75},
-
-  // ANALYTICS & DATA (8 tools)
-  {id:85,name:"Surfer SEO",category:"analytics",tagline:"AI-powered SEO optimization for content that ranks.",desc:"Analyze SERPs, optimize content in real-time, and build topical authority with data-driven AI recommendations.",url:"https://surferseo.com",affiliate:"https://surferseo.com?fpr=cloudhero",commission:"25% recurring",pricing:"paid",icon:"📊",color:"#0f151a",featured:false,dateAdded:Date.now()-86400000*77},
-  {id:86,name:"Semrush",category:"analytics",tagline:"All-in-one SEO and competitive research platform.",desc:"SEO, PPC, content, and competitive research powered by AI insights. Industry-leading analytics.",url:"https://semrush.com",affiliate:"https://semrush.com",commission:"40% recurring",pricing:"paid",icon:"🔍",color:"#1a1520",featured:true,dateAdded:Date.now()-86400000*79},
-  {id:87,name:"Ahrefs",category:"analytics",tagline:"SEO toolset for backlinks, keywords, and competitor analysis.",desc:"Crawl the web, analyze backlinks, research keywords, and track rankings. Trusted by marketers worldwide.",url:"https://ahrefs.com",affiliate:"https://ahrefs.com",commission:"",pricing:"paid",icon:"🔗",color:"#1a1a0f",featured:false,dateAdded:Date.now()-86400000*81},
-  {id:88,name:"Clearscope",category:"analytics",tagline:"AI-powered content optimization for SEO.",desc:"Research, write, and optimize content with data-driven recommendations. Integrates with Google Docs and WordPress.",url:"https://clearscope.io",affiliate:"https://clearscope.io",commission:"20% recurring",pricing:"paid",icon:"🎯",color:"#1a0f1f",featured:false,dateAdded:Date.now()-86400000*83},
-  {id:89,name:"MarketMuse",category:"analytics",tagline:"AI content planning and optimization platform.",desc:"Build topical authority with AI-powered content briefs, optimization, and inventory analysis.",url:"https://marketmuse.com",affiliate:"https://marketmuse.com",commission:"25% recurring",pricing:"paid",icon:"📚",color:"#0f1a0f",featured:false,dateAdded:Date.now()-86400000*85},
-  {id:90,name:"MonkeyLearn",category:"analytics",tagline:"No-code text analytics with AI.",desc:"Analyze customer feedback, support tickets, and survey responses with custom AI models.",url:"https://monkeylearn.com",affiliate:"https://monkeylearn.com",commission:"30% recurring",pricing:"freemium",icon:"🐵",color:"#1a1a1a",featured:false,dateAdded:Date.now()-86400000*87},
-  {id:91,name:"Tableau",category:"analytics",tagline:"AI-powered business intelligence and analytics platform.",desc:"Visualize and analyze data with AI-powered insights. Enterprise-grade analytics from Salesforce.",url:"https://tableau.com",affiliate:"https://tableau.com",commission:"",pricing:"paid",icon:"📈",color:"#1a1015",featured:false,dateAdded:Date.now()-86400000*89},
-  {id:92,name:"Amplitude",category:"analytics",tagline:"Product analytics powered by AI insights.",desc:"Understand user behavior, predict churn, and optimize product experiences with AI.",url:"https://amplitude.com",affiliate:"https://amplitude.com",commission:"",pricing:"freemium",icon:"📉",color:"#1a1a1f",featured:false,dateAdded:Date.now()-86400000*91},
-
-  // CUSTOMER SERVICE (7 tools)
-  {id:93,name:"Intercom",category:"customer-service",tagline:"AI-first customer service platform.",desc:"AI chatbot, help desk, and customer messaging in one platform. Resolve issues faster with AI.",url:"https://intercom.com",affiliate:"https://intercom.com",commission:"",pricing:"paid",icon:"💬",color:"#1a1520",featured:true,dateAdded:Date.now()-86400000*93},
-  {id:94,name:"Zendesk AI",category:"customer-service",tagline:"AI-powered customer support and help desk.",desc:"Automate responses, route tickets intelligently, and provide instant answers with AI.",url:"https://zendesk.com",affiliate:"https://zendesk.com",commission:"",pricing:"paid",icon:"🎫",color:"#1a1a0f",featured:false,dateAdded:Date.now()-86400000*95},
-  {id:95,name:"Ada",category:"customer-service",tagline:"AI chatbot platform for customer service automation.",desc:"Build AI chatbots that resolve customer issues without human intervention. No coding required.",url:"https://ada.cx",affiliate:"https://ada.cx",commission:"20% recurring",pricing:"paid",icon:"🤖",color:"#1a0f1f",featured:false,dateAdded:Date.now()-86400000*97},
-  {id:96,name:"Drift",category:"customer-service",tagline:"Conversational AI for sales and support.",desc:"AI chatbots that qualify leads, book meetings, and answer questions. Revenue acceleration platform.",url:"https://drift.com",affiliate:"https://drift.com",commission:"",pricing:"paid",icon:"💼",color:"#0f1a0f",featured:false,dateAdded:Date.now()-86400000*99},
-  {id:97,name:"Freshdesk",category:"customer-service",tagline:"AI-powered help desk and ticketing system.",desc:"Automate ticket routing, suggest responses, and detect customer sentiment with AI.",url:"https://freshdesk.com",affiliate:"https://freshdesk.com",commission:"25% recurring",pricing:"freemium",icon:"🎧",color:"#1a1a1a",featured:false,dateAdded:Date.now()-86400000*101},
-  {id:98,name:"Tidio",category:"customer-service",tagline:"AI chatbot and live chat for customer service.",desc:"Automate customer support with AI chatbots. Free plan available for small businesses.",url:"https://tidio.com",affiliate:"https://tidio.com?ref=cloudhero",commission:"30% recurring",pricing:"freemium",icon:"💡",color:"#1a1015",featured:false,dateAdded:Date.now()-86400000*103},
-  {id:99,name:"Crisp",category:"customer-service",tagline:"Customer messaging platform with AI chatbot.",desc:"Live chat, chatbot, email, and social media in one inbox. MagicReply AI for instant responses.",url:"https://crisp.chat",affiliate:"https://crisp.chat",commission:"25% recurring",pricing:"freemium",icon:"✉️",color:"#1a1a1f",featured:false,dateAdded:Date.now()-86400000*105},
-
-  // RESEARCH (5 tools)
-  {id:100,name:"Perplexity AI",category:"research",tagline:"AI-powered answer engine with real-time web search.",desc:"Get instant, sourced answers to any question. Combines GPT-4 with live web search.",url:"https://perplexity.ai",affiliate:"https://perplexity.ai",commission:"",pricing:"freemium",icon:"🔍",color:"#1a1a1f",featured:true,dateAdded:Date.now()-86400000*107},
-  {id:101,name:"Consensus",category:"research",tagline:"AI search engine for research papers.",desc:"Get instant answers from 200M+ scientific papers. AI-powered academic research tool.",url:"https://consensus.app",affiliate:"https://consensus.app",commission:"",pricing:"freemium",icon:"📄",color:"#1a1520",featured:false,dateAdded:Date.now()-86400000*109},
-  {id:102,name:"Elicit",category:"research",tagline:"AI research assistant for literature reviews.",desc:"Automate research workflows. Find papers, extract data, and synthesize findings with AI.",url:"https://elicit.org",affiliate:"https://elicit.org",commission:"",pricing:"freemium",icon:"🔬",color:"#1a1a0f",featured:false,dateAdded:Date.now()-86400000*111},
-  {id:103,name:"Scite",category:"research",tagline:"AI tool that shows how research papers have been cited.",desc:"See if papers have been supported, contradicted, or mentioned. Smart citations for researchers.",url:"https://scite.ai",affiliate:"https://scite.ai",commission:"20% recurring",pricing:"freemium",icon:"📚",color:"#1a0f1f",featured:false,dateAdded:Date.now()-86400000*113},
-  {id:104,name:"Scholarcy",category:"research",tagline:"AI-powered research paper summarizer.",desc:"Extract key findings, references, and figures from research papers in seconds.",url:"https://scholarcy.com",affiliate:"https://scholarcy.com",commission:"25% recurring",pricing:"freemium",icon:"📖",color:"#0f1a0f",featured:false,dateAdded:Date.now()-86400000*115}
+const tools = [
+  {id:1,name:"ChatGPT",category:"writing",tagline:"The world's most used AI assistant for writing, research, and problem-solving.",url:"https://chat.openai.com",commission:"",pricing:"freemium",icon:"🧠",color:"#1a1f2e",featured:true},
+  {id:2,name:"Jasper AI",category:"writing",tagline:"AI writing platform built for marketing teams and content creators.",url:"https://jasper.ai",commission:"30% recurring",pricing:"paid",icon:"✍️",color:"#1a1520",featured:true},
+  {id:3,name:"Copy.ai",category:"writing",tagline:"Go from prompt to polished marketing copy in seconds.",url:"https://copy.ai",commission:"45% first year",pricing:"freemium",icon:"📝",color:"#0f1a1a",featured:false},
+  {id:4,name:"Writesonic",category:"writing",tagline:"AI writer for articles, blogs, ads, and marketing copy.",url:"https://writesonic.com",commission:"30% lifetime",pricing:"freemium",icon:"✨",color:"#1a1a25",featured:false},
+  {id:5,name:"Rytr",category:"writing",tagline:"AI writing assistant for fast, affordable content.",url:"https://rytr.me",commission:"25% recurring",pricing:"freemium",icon:"🖊️",color:"#1a1520",featured:false},
+  {id:6,name:"Wordtune",category:"writing",tagline:"AI-powered writing companion that understands context.",url:"https://wordtune.com",commission:"20% recurring",pricing:"freemium",icon:"📖",color:"#0f1a1f",featured:false},
+  {id:7,name:"QuillBot",category:"writing",tagline:"AI paraphrasing and grammar checking tool.",url:"https://quillbot.com",commission:"30% first payment",pricing:"freemium",icon:"🪶",color:"#1a1a1a",featured:false},
+  {id:8,name:"Grammarly",category:"writing",tagline:"AI writing assistant for clear, mistake-free writing.",url:"https://grammarly.com",commission:"$20/sale",pricing:"freemium",icon:"✅",color:"#0f1a0f",featured:true},
+  {id:16,name:"Midjourney",category:"image",tagline:"Create stunning, photorealistic images from text prompts.",url:"https://midjourney.com",commission:"",pricing:"paid",icon:"🎨",color:"#1a1a20",featured:true},
+  {id:17,name:"DALL-E 3",category:"image",tagline:"OpenAI's most advanced AI image generator.",url:"https://openai.com/dall-e-3",commission:"",pricing:"paid",icon:"🖼️",color:"#1a1f1a",featured:true},
+  {id:18,name:"Canva AI",category:"image",tagline:"AI-powered design platform for everyone.",url:"https://canva.com",commission:"$36/sale",pricing:"freemium",icon:"🎨",color:"#0f1a1a",featured:false},
+  {id:19,name:"Adobe Firefly",category:"image",tagline:"Adobe's AI image generator built into Creative Cloud.",url:"https://firefly.adobe.com",commission:"",pricing:"freemium",icon:"🔥",color:"#1a0a0a",featured:false},
+  {id:20,name:"Stable Diffusion",category:"image",tagline:"Open-source AI image generation.",url:"https://stability.ai",commission:"",pricing:"free",icon:"🌊",color:"#0f0f1a",featured:false},
+  {id:21,name:"Leonardo.ai",category:"image",tagline:"AI art generator for game assets and creative projects.",url:"https://leonardo.ai",commission:"30% recurring",pricing:"freemium",icon:"🎮",color:"#1a1a1a",featured:false},
+  {id:31,name:"GitHub Copilot",category:"code",tagline:"AI pair programmer that autocompletes code in real time.",url:"https://github.com/features/copilot",commission:"",pricing:"paid",icon:"💻",color:"#0f1a0f",featured:true},
+  {id:32,name:"Cursor",category:"code",tagline:"AI-first code editor built on VS Code.",url:"https://cursor.sh",commission:"",pricing:"freemium",icon:"⌨️",color:"#1a1a1f",featured:false},
+  {id:33,name:"Tabnine",category:"code",tagline:"AI code completion for your entire team.",url:"https://tabnine.com",commission:"25% recurring",pricing:"freemium",icon:"🔮",color:"#1a0f1a",featured:false},
+  {id:35,name:"Codeium",category:"code",tagline:"Free AI code completion alternative to Copilot.",url:"https://codeium.com",commission:"",pricing:"free",icon:"⚡",color:"#0f1a1a",featured:false},
+  {id:43,name:"Runway ML",category:"video",tagline:"AI video generation and editing for creators and studios.",url:"https://runwayml.com",commission:"",pricing:"freemium",icon:"🎬",color:"#1a1010",featured:true},
+  {id:44,name:"ElevenLabs",category:"video",tagline:"Ultra-realistic AI voice cloning and text-to-speech.",url:"https://elevenlabs.io",commission:"30% recurring",pricing:"freemium",icon:"🔊",color:"#1a1510",featured:true},
+  {id:45,name:"Descript",category:"video",tagline:"AI-powered video and podcast editing.",url:"https://descript.com",commission:"25% recurring",pricing:"freemium",icon:"🎙️",color:"#1a1a15",featured:false},
+  {id:46,name:"Synthesia",category:"video",tagline:"Create AI videos with digital avatars in minutes.",url:"https://synthesia.io",commission:"20% recurring",pricing:"paid",icon:"👤",color:"#1a0f1a",featured:false},
+  {id:55,name:"Zapier",category:"automation",tagline:"Connect 6,000+ apps and automate your work without code.",url:"https://zapier.com",commission:"$50/signup",pricing:"freemium",icon:"⚡️",color:"#1a1208",featured:true},
+  {id:56,name:"Make",category:"automation",tagline:"Visually build and automate workflows between your apps.",url:"https://make.com",commission:"20% recurring",pricing:"freemium",icon:"⚙️",color:"#1a0f1a",featured:false},
+  {id:57,name:"n8n",category:"automation",tagline:"Open-source workflow automation for technical teams.",url:"https://n8n.io",commission:"",pricing:"free",icon:"🔗",color:"#1a1a1f",featured:false},
+  {id:65,name:"Notion AI",category:"productivity",tagline:"AI built directly into your notes, docs, and wikis.",url:"https://notion.so",commission:"$10/referral",pricing:"freemium",icon:"📓",color:"#1a1a1a",featured:true},
+  {id:66,name:"Otter.ai",category:"productivity",tagline:"AI meeting notes, transcription, and summaries in real time.",url:"https://otter.ai",commission:"25% first payment",pricing:"freemium",icon:"🎙",color:"#0f1a15",featured:false},
+  {id:68,name:"Taskade",category:"productivity",tagline:"AI-powered task lists, notes, and team collaboration.",url:"https://taskade.com",commission:"30% recurring",pricing:"freemium",icon:"✅",color:"#1a1520",featured:false},
+  {id:70,name:"Motion",category:"productivity",tagline:"AI calendar and project manager that schedules your day.",url:"https://usemotion.com",commission:"30% recurring",pricing:"paid",icon:"📅",color:"#0f1a1a",featured:false},
+  {id:75,name:"Adcreative.ai",category:"marketing",tagline:"AI-powered ad creative generator for high conversions.",url:"https://adcreative.ai",commission:"30% lifetime",pricing:"paid",icon:"📢",color:"#1a1015",featured:false},
+  {id:82,name:"Hubspot AI",category:"marketing",tagline:"AI-powered CRM and marketing automation.",url:"https://hubspot.com",commission:"",pricing:"freemium",icon:"🔶",color:"#1a1a1a",featured:true},
+  {id:85,name:"Surfer SEO",category:"analytics",tagline:"AI-powered SEO optimization for content that ranks.",url:"https://surferseo.com",commission:"25% recurring",pricing:"paid",icon:"📊",color:"#0f151a",featured:false},
+  {id:86,name:"Semrush",category:"analytics",tagline:"All-in-one SEO and competitive research platform.",url:"https://semrush.com",commission:"40% recurring",pricing:"paid",icon:"🔍",color:"#1a1520",featured:true},
+  {id:87,name:"Ahrefs",category:"analytics",tagline:"SEO toolset for backlinks, keywords, and competitor analysis.",url:"https://ahrefs.com",commission:"",pricing:"paid",icon:"🔗",color:"#1a1a0f",featured:false},
+  {id:93,name:"Intercom",category:"customer-service",tagline:"AI-first customer service platform.",url:"https://intercom.com",commission:"",pricing:"paid",icon:"💬",color:"#1a1520",featured:true},
+  {id:94,name:"Zendesk AI",category:"customer-service",tagline:"AI-powered customer support and help desk.",url:"https://zendesk.com",commission:"",pricing:"paid",icon:"🎫",color:"#1a1a0f",featured:false},
+  {id:100,name:"Perplexity AI",category:"research",tagline:"AI-powered answer engine with real-time web search.",url:"https://perplexity.ai",commission:"",pricing:"freemium",icon:"🔍",color:"#1a1a1f",featured:true},
+  {id:101,name:"Consensus",category:"research",tagline:"AI search engine for research papers.",url:"https://consensus.app",commission:"",pricing:"freemium",icon:"📄",color:"#1a1520",featured:false}
 ];
 
-let tools = JSON.parse(localStorage.getItem('ch_tools') || 'null') || defaultTools;
-let nextId = Math.max(...tools.map(t => t.id || 0)) + 1;
+let currentCat = 'all';
+let searchTerm = '';
 
-function saveTools() {
-  localStorage.setItem('ch_tools', JSON.stringify(tools));
-}
-
-let activeCategory = 'all';
-let activePricing = 'all';
-let activeSort = 'featured';
-let searchQuery = '';
-
-// ── RENDER ──
 function render() {
   const grid = document.getElementById('tools-grid');
-  if (!grid) {
-    console.error('Grid element not found!');
+  const filtered = tools.filter(t => {
+    const matchCat = currentCat === 'all' || t.category === currentCat;
+    const matchSearch = !searchTerm || t.name.toLowerCase().includes(searchTerm) || t.tagline.toLowerCase().includes(searchTerm);
+    return matchCat && matchSearch;
+  });
+
+  document.getElementById('count').textContent = filtered.length === tools.length ? 'all tools' : `${filtered.length} of ${tools.length} tools`;
+  
+  if (filtered.length === 0) {
+    grid.innerHTML = '<p style="text-align:center;padding:60px 20px;color:var(--dim);">No tools found. Try a different search or category.</p>';
     return;
   }
-  let filtered = [...tools];
-  
-  // Category filter
-  if(activeCategory !== 'all') filtered = filtered.filter(t => t.category === activeCategory);
-  
-  // Pricing filter
-  if(activePricing === 'featured') filtered = filtered.filter(t => t.featured);
-  else if(activePricing !== 'all') filtered = filtered.filter(t => t.pricing === activePricing);
-  
-  // Search filter
-  if(searchQuery) {
-    filtered = filtered.filter(t => 
-      t.name.toLowerCase().includes(searchQuery) || 
-      t.tagline.toLowerCase().includes(searchQuery) || 
-      t.category.toLowerCase().includes(searchQuery)
-    );
-  }
-  
-  // Sorting
-  if(activeSort === 'featured') filtered.sort((a,b) => (b.featured?1:0)-(a.featured?1:0));
-  else if(activeSort === 'name') filtered.sort((a,b) => a.name.localeCompare(b.name));
-  else if(activeSort === 'commission') filtered.sort((a,b) => (b.commission?1:0)-(a.commission?1:0));
-  else if(activeSort === 'newest') filtered.sort((a,b) => b.dateAdded - a.dateAdded);
-  
-  // Update counters
-  const count = document.getElementById('showing-count');
-  count.textContent = filtered.length === tools.length ? `all ${tools.length} tools` : `${filtered.length} of ${tools.length} tools`;
-  document.getElementById('searchCount').textContent = searchQuery ? `${filtered.length} results` : '';
-  
-  if(!filtered.length){
-    grid.innerHTML = `<div class="no-results"><h3>No tools found</h3><p>Try a different search or filter</p></div>`;
-    return;
-  }
-  
-  grid.innerHTML = filtered.map(t => {
-    const isFirst = t.featured && filtered.indexOf(t) === 0;
-    if(isFirst) return renderFeaturedCard(t);
-    return renderCard(t);
-  }).join('');
+
+  grid.innerHTML = filtered.map(t => `
+    <div class="tool-card">
+      <div class="tool-icon" style="background:${t.color}">${t.icon}</div>
+      <div class="tool-name">${t.name}</div>
+      <div class="tool-cat">${formatCat(t.category)}</div>
+      <div class="tool-tagline">${t.tagline}</div>
+      <div class="tool-footer">
+        <div>
+          ${t.featured ? '<span class="badge badge-featured">⭐ Featured</span> ' : ''}
+          <span class="badge badge-${t.pricing}">${t.pricing}</span>
+        </div>
+        <a href="${t.url}" target="_blank" class="visit-btn">Visit →</a>
+      </div>
+      ${t.commission ? `<div class="commission">💰 ${t.commission}</div>` : ''}
+    </div>
+  `).join('');
   
   updateStats();
 }
 
-function renderCard(t){
-  const affLink = t.affiliate || t.url;
-  return `<div class="tool-card reveal" data-id="${t.id}">
-    <div class="card-top">
-      <div class="tool-icon" style="background:${t.color}">${t.icon || '🤖'}</div>
-      <div class="card-badges">
-        ${t.featured ? '<span class="badge badge-featured">⭐️ Featured</span>' : ''}
-        <span class="badge badge-${t.pricing}">${t.pricing}</span>
-      </div>
-    </div>
-    <div>
-      <div class="tool-category">${formatCat(t.category)}</div>
-      <div class="tool-name">${t.name}</div>
-      <div class="tool-tagline">${t.tagline}</div>
-    </div>
-    <div class="card-bottom">
-      <div class="commission-badge">${t.commission ? `<span>💰</span>${t.commission}` : ''}</div>
-      <a href="${affLink}" target="_blank" class="visit-btn" onclick="trackClick(${t.id})">Visit →</a>
-    </div>
-  </div>`;
-}
-
-function renderFeaturedCard(t){
-  const affLink = t.affiliate || t.url;
-  return `<div class="tool-card featured-card reveal" data-id="${t.id}">
-    <div class="tool-icon" style="background:${t.color};width:64px;height:64px;font-size:1.8rem;flex-shrink:0;">${t.icon || '🤖'}</div>
-    <div class="card-main">
-      <span class="featured-spotlight">⭐️ Featured Tool</span>
-      <div class="tool-category">${formatCat(t.category)}</div>
-      <div class="tool-name">${t.name}</div>
-      <div class="tool-tagline" style="margin-top:6px;">${t.tagline}</div>
-      ${t.commission ? `<div class="commission-badge" style="margin-top:10px;"><span>💰</span>${t.commission}</div>` : ''}
-    </div>
-    <div class="card-cta">
-      <span class="badge badge-${t.pricing}" style="display:block;margin-bottom:12px;">${t.pricing}</span>
-      <a href="${affLink}" target="_blank" class="visit-btn" onclick="trackClick(${t.id})" style="display:block;text-align:center;padding:12px 28px;">Visit Site →</a>
-    </div>
-  </div>`;
-}
-
-function formatCat(c){
-  const map={writing:'Writing & Content',image:'Image & Design',automation:'Automation',analytics:'Analytics',code:'Code',video:'Video & Audio',productivity:'Productivity',marketing:'Marketing','customer-service':'Customer Service',research:'Research'};
+function formatCat(c) {
+  const map = {
+    'writing': 'Writing & Content',
+    'image': 'Image & Design',
+    'code': 'Code & Dev',
+    'video': 'Video & Audio',
+    'automation': 'Automation',
+    'productivity': 'Productivity',
+    'marketing': 'Marketing',
+    'analytics': 'Analytics & Data',
+    'customer-service': 'Customer Service',
+    'research': 'Research'
+  };
   return map[c] || c;
 }
 
-function trackClick(id){
-  console.log('Affiliate click tracked: tool', id);
-}
-
-// ── SCROLL REVEAL ──
-function revealCards(){
-  setTimeout(()=>{
-    const obs = new IntersectionObserver(entries=>{
-      entries.forEach((e,i)=>{
-        if(e.isIntersecting){
-          setTimeout(()=>e.target.classList.add('on'), i*40);
-          obs.unobserve(e.target);
-        }
-      });
-    },{threshold:.05});
-    document.querySelectorAll('.reveal:not(.on)').forEach(el=>obs.observe(el));
-  }, 50);
-}
-
-// Sort buttons
-document.querySelectorAll('.sort-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    // Sorting logic would go here
-  });
-});
-
-// Nav tabs (not used - using onclick handlers instead)
-// document.querySelectorAll('.nav-tab').forEach(btn => {
-//   btn.addEventListener('click', () => {
-//     activeCategory = btn.dataset.filter;
-//     render(activeCategory, searchQuery);
-//   });
-// });
-
-// Hero search
-const heroSearch = document.getElementById('heroSearch');
-if (heroSearch) {
-  heroSearch.addEventListener('input', e => {
-    searchQuery = e.target.value.toLowerCase().trim();
-    render();
-    revealCards();
-  });
-}
-
-// Hero chips
-document.querySelectorAll('.chip[data-cat]').forEach(chip => {
-  chip.addEventListener('click', () => {
-    document.querySelectorAll('.chip[data-cat]').forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    const cat = chip.dataset.cat;
-    activeCategory = cat;
-    
-    activeCategory = cat;
-    render();
-    revealCards();
-    document.getElementById('directory').scrollIntoView({ behavior: 'smooth' });
-  });
-});
-
-// Initial render
-render();
-
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  });
-});
-
-// Admin panel
-const adminBtn = document.querySelector('.admin-btn');
-const adminPanel = document.getElementById('admin-panel');
-const closeBtn = document.querySelector('.close-btn');
-
-if (adminBtn) {
-  adminBtn.addEventListener('click', () => {
-    adminPanel.classList.add('open');
-  });
-}
-
-if (closeBtn) {
-  closeBtn.addEventListener('click', () => {
-    adminPanel.classList.remove('open');
-  });
-}
-
-// Admin tabs
-document.querySelectorAll('.atab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.atab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    
-    const tabName = tab.dataset.tab;
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    document.getElementById(`tab-${tabName}`).classList.add('active');
-  });
-});
-
-function addTool(){
-  const name = document.getElementById('f-name').value.trim();
-  const category = document.getElementById('f-category').value;
-  const tagline = document.getElementById('f-tagline').value.trim();
-  const url = document.getElementById('f-url').value.trim();
-  const pricing = document.getElementById('f-pricing').value;
-  
-  if(!name || !category || !tagline || !url || !pricing){
-    showToast('⚠️ Please fill required fields','#ff4081');
-    return;
-  }
-  
-  const tool = {
-    id: Date.now(),
-    name,
-    category,
-    tagline,
-    desc: document.getElementById('f-desc').value.trim(),
-    url,
-    affiliate: document.getElementById('f-affiliate').value.trim(),
-    commission: document.getElementById('f-commission').value.trim(),
-    pricing,
-    icon: document.getElementById('f-icon').value.trim() || '🤖',
-    color: document.getElementById('f-color').value,
-    featured: document.getElementById('f-featured').checked,
-    dateAdded: Date.now()
-  };
-  
-  tools.unshift(tool);
-  saveTools();
+function filterCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
   render();
-  revealCards();
-  showToast('✓ Tool added to directory');
-  
-  // Reset form
-  ['f-name','f-category','f-tagline','f-desc','f-url','f-affiliate','f-commission','f-pricing','f-icon'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.value='';
-  });
-  document.getElementById('f-featured').checked = false;
-  document.getElementById('f-color').value = '#0d1117';
 }
 
-// ── TOAST ──
-function showToast(msg, color='var(--green)'){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = color;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 3000);
-}
-
-// Open submit modal
-// ── ADMIN ──
-function openAdmin(){
-  document.getElementById('admin-panel').classList.add('open');
-  renderManageList();
-}
-
-function closeAdmin(){
-  document.getElementById('admin-panel').classList.remove('open');
-}
-
-function openSubmit(){
-  document.getElementById('submit-modal').classList.add('open');
-}
-
-function closeSubmit(){
-  document.getElementById('submit-modal').classList.remove('open');
-}
-
-// Filter category
-function filterCategory(cat, btn){
-  activeCategory = cat;
-  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
+function handleSearch() {
+  searchTerm = document.getElementById('search').value.toLowerCase();
   render();
-  revealCards();
 }
 
-function submitTool(){
-  const name = document.getElementById('s-name').value.trim();
-  if(!name){
-    showToast('Please enter a tool name','#ff4081');
-    return;
-  }
-  showToast('✓ Submission received — thank you!');
-  closeSubmit();
-  ['s-name','s-url','s-reason','s-email'].forEach(id=>{
-    document.getElementById(id).value='';
-  });
+function updateStats() {
+  document.getElementById('stat-total').textContent = tools.length;
+  document.getElementById('stat-free').textContent = tools.filter(t => t.pricing === 'free' || t.pricing === 'freemium').length;
+  document.getElementById('stat-aff').textContent = tools.filter(t => t.commission).length;
 }
 
-// ── FILTERS ──
-function handleSearch(){
-  searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
-  render();
-  revealCards();
-}
-
-function filterPricing(p, btn){
-  activePricing = p;
-  document.querySelectorAll('.chip').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  render();
-  revealCards();
-}
-
-function sortTools(s, btn){
-  activeSort = s;
-  document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  render();
-  revealCards();
-}
-
-function switchAdminTab(tab, btn){
-  document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  document.getElementById('tab-add').style.display = tab==='add' ? 'block' : 'none';
-  document.getElementById('tab-manage').style.display = tab==='manage' ? 'block' : 'none';
-  if(tab==='manage') renderManageList();
-}
-
-function renderManageList(){
-  const list = document.getElementById('manage-list');
-  if(!tools.length){
-    list.innerHTML = '<p style="color:var(--dim);text-align:center;padding:32px;">No tools yet.</p>';
-    return;
-  }
-  list.innerHTML = tools.map(t => `
-    <div class="tool-list-item" id="tli-${t.id}">
-      <div>
-        <div class="tli-name">${t.icon} ${t.name}</div>
-        <div class="tli-cat">${formatCat(t.category)} · ${t.pricing}${t.featured?' · ⭐️ featured':''}</div>
-      </div>
-      <div class="tli-actions">
-        <button class="tli-btn feature" onclick="toggleFeatured(${t.id})">${t.featured?'Unfeature':'Feature'}</button>
-        <button class="tli-btn delete" onclick="deleteTool(${t.id})">Delete</button>
-      </div>
-    </div>`).join('');
-}
-
-function toggleFeatured(id){
-  const t = tools.find(t=>t.id===id);
-  if(t){
-    t.featured = !t.featured;
-    saveTools();
-    render();
-    revealCards();
-    renderManageList();
-    showToast(t.featured?'⭐️ Marked as featured':'Removed from featured');
-  }
-}
-
-function deleteTool(id){
-  tools = tools.filter(t=>t.id!==id);
-  saveTools();
-  render();
-  revealCards();
-  renderManageList();
-  showToast('Tool removed','#ff4081');
-}
-
-function closeAdmin() {
-  document.getElementById('admin-panel').classList.remove('open');
-}
-
-function updateSearchCount() {
-  const searchCount = document.getElementById('searchCount');
-  const showing = document.getElementById('showing-count');
-  const filtered = getFilteredTools();
-  
-  if (searchCount) {
-    searchCount.textContent = `${filtered.length} found`;
-  }
-  
-  if (showing) {
-    showing.textContent = filtered.length === tools.length ? 'all tools' : `${filtered.length} tools`;
-  }
-}
-
-function getFilteredTools() {
-  let filtered = [...tools];
-  
-  // Category filter
-  if(activeCategory !== 'all') filtered = filtered.filter(t => t.category === activeCategory);
-  
-  // Pricing filter
-  if(activePricing === 'featured') filtered = filtered.filter(t => t.featured);
-  else if(activePricing !== 'all') filtered = filtered.filter(t => t.pricing === activePricing);
-  
-  // Search filter
-  if(searchQuery) {
-    filtered = filtered.filter(t => 
-      t.name.toLowerCase().includes(searchQuery) || 
-      t.tagline.toLowerCase().includes(searchQuery) ||
-      (t.desc && t.desc.toLowerCase().includes(searchQuery)) ||
-      t.category.toLowerCase().includes(searchQuery)
-    );
-  }
-  
-  return filtered;
-}
-
-function updateStats(){
-  document.getElementById('statTotal').textContent = tools.length;
-  document.getElementById('statFree').textContent = tools.filter(t=>t.pricing==='free'||t.pricing==='freemium').length;
-  const cats = [...new Set(tools.map(t=>t.category))];
-  document.getElementById('statCategories').textContent = cats.length;
-  document.getElementById('statAffiliate').textContent = tools.filter(t=>t.affiliate&&t.commission).length;
-}
-
-// ── CURSOR ──
-});
-
-// ── STAT COUNTERS ──
-function animateStats(){
-  document.querySelectorAll('.stat-num').forEach(el=>{
-    const target = parseInt(el.textContent);
-    if(!target) return;
-    let cur2=0;
-    const step=Math.ceil(target/40);
-    const t=setInterval(()=>{
-      cur2=Math.min(cur2+step,target);
-      el.textContent=cur2;
-      if(cur2>=target)clearInterval(t);
-    },30);
-  });
-}
-
-// ── INIT ──
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
   render();
-  revealCards();
-  setTimeout(animateStats, 400);
-
-  // ── CUSTOM CURSOR ──
-  const cur = document.getElementById('cur'), trail = document.getElementById('cur-trail');
-  let mx=0,my=0,tx=0,ty=0;
-  document.addEventListener('mousemove', e=>{
-    mx=e.clientX;
-    my=e.clientY;
-    cur.style.left=mx+'px';
-    cur.style.top=my+'px';
-  });
-  (function loop(){
-    tx+=(mx-tx)*.12;
-    ty+=(my-ty)*.12;
-    trail.style.left=tx+'px';
-    trail.style.top=ty+'px';
-    requestAnimationFrame(loop);
-  })();
-  document.querySelectorAll('a,button,.tool-card').forEach(el=>{
-    el.addEventListener('mouseenter',()=>{
-      cur.style.width='16px';
-      cur.style.height='16px';
-      trail.style.width='52px';
-      trail.style.height='52px';
-    });
-    el.addEventListener('mouseleave',()=>{
-      cur.style.width='8px';
-      cur.style.height='8px';
-      trail.style.width='32px';
-      trail.style.height='32px';
-    });
-  });
-});
-
-// Close modals on backdrop click
-document.getElementById('admin-panel').addEventListener('click', e=>{
-  if(e.target===document.getElementById('admin-panel')) closeAdmin();
-});
-document.getElementById('submit-modal').addEventListener('click', e=>{
-  if(e.target===document.getElementById('submit-modal')) closeSubmit();
-});
-
-// Keyboard shortcut: Ctrl+Shift+A = admin
-document.addEventListener('keydown', e=>{
-  if(e.ctrlKey&&e.shiftKey&&e.key==='A'){
-    e.preventDefault();
-    openAdmin();
-  }
+  console.log('CloudHero AI loaded:', tools.length, 'tools');
 });
 </script>
-</body>
-</html>
-
-<!-- SUBMIT MODAL (public) -->
-<div id="submit-modal">
-  <div class="modal-inner">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">
-      <div>
-        <div class="modal-title">Submit a Tool</div>
-        <div class="modal-sub">Know an AI tool that belongs in the directory? Tell us about it and we'll review it.</div>
-      </div>
-      <button class="close-btn" onclick="closeSubmit()">✕</button>
-    </div>
-    
-    <div style="display:flex;flex-direction:column;gap:16px;">
-      <div class="form-group">
-        <label class="form-label">Tool Name</label>
-        <input type="text" class="form-input" id="s-name" placeholder="Tool name">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Website</label>
-        <input type="url" class="form-input" id="s-url" placeholder="https://">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Category</label>
-        <select class="form-select" id="s-cat">
-          <option>Writing & Content</option>
-          <option>Image & Design</option>
-          <option>Automation</option>
-          <option>Analytics</option>
-          <option>Code</option>
-          <option>Video</option>
-          <option>Other</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Why should it be listed?</label>
-        <textarea class="form-textarea" id="s-reason" placeholder="Tell us what makes it worth including..."></textarea>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Your Email (optional)</label>
-        <input type="email" class="form-input" id="s-email" placeholder="your@email.com">
-      </div>
-      
-      <button class="form-submit" onclick="submitTool()" style="width:100%;">Submit for Review →</button>
-    </div>
-  </div>
-</div>
-
-<!-- ADMIN PANEL -->
-<div id="admin-panel">
-  <div class="admin-inner">
-    <div class="admin-header">
-      <div class="admin-title">Admin <span>Panel</span></div>
-      <button class="close-btn" onclick="closeAdmin()">✕ Close</button>
-    </div>
-    
-    <div class="admin-tabs">
-      <button class="atab active" onclick="switchAdminTab('add',this)">+ Add Tool</button>
-      <button class="atab" onclick="switchAdminTab('manage',this)">Manage Tools</button>
-    </div>
-    
-    <!-- ADD TOOL FORM -->
-    <div id="tab-add" class="tab-content active">
-      <div class="form-grid">
-        <div class="form-group">
-          <label class="form-label">Tool Name *</label>
-          <input type="text" class="form-input" id="f-name" placeholder="e.g. Jasper AI">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Category *</label>
-          <select class="form-select" id="f-category">
-            <option value="">Select category</option>
-            <option value="writing">Writing & Content</option>
-            <option value="image">Image & Design</option>
-            <option value="automation">Automation</option>
-            <option value="analytics">Analytics & Data</option>
-            <option value="code">Code & Development</option>
-            <option value="video">Video & Audio</option>
-            <option value="productivity">Productivity</option>
-            <option value="marketing">Marketing</option>
-            <option value="customer-service">Customer Service</option>
-            <option value="research">Research</option>
-          </select>
-        </div>
-        
-        <div class="form-group full">
-          <label class="form-label">Tagline / Short Description *</label>
-          <input type="text" class="form-input" id="f-tagline" placeholder="One compelling sentence about what it does">
-        </div>
-        
-        <div class="form-group full">
-          <label class="form-label">Full Description</label>
-          <textarea class="form-textarea" id="f-desc" placeholder="Detailed description of features and benefits..."></textarea>
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Website URL *</label>
-          <input type="url" class="form-input" id="f-url" placeholder="https://example.com">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Affiliate Link URL</label>
-          <input type="url" class="form-input" id="f-affiliate" placeholder="https://example.com/?ref=cloudhero">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Commission Rate</label>
-          <input type="text" class="form-input" id="f-commission" placeholder="e.g. 30% recurring or $50/sale">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Pricing Model *</label>
-          <select class="form-select" id="f-pricing">
-            <option value="">Select pricing</option>
-            <option value="free">Free</option>
-            <option value="freemium">Freemium</option>
-            <option value="paid">Paid</option>
-          </select>
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Emoji Icon</label>
-          <input type="text" class="form-input" id="f-icon" placeholder="🤖" maxlength="4">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Icon Background Color</label>
-          <input type="color" class="form-input" id="f-color" value="#0d1117" style="height:46px;padding:4px;">
-        </div>
-        
-        <div class="form-group full" style="flex-direction:row;align-items:center;gap:12px;">
-          <input type="checkbox" id="f-featured" style="width:18px;height:18px;accent-color:var(--gold);">
-          <label class="form-label" for="f-featured" style="margin:0;">Mark as Featured (appears prominently)</label>
-        </div>
-      </div>
-      
-      <button class="form-submit" onclick="addTool()">+ Add Tool to Directory</button>
-    </div>
-    
-    <!-- MANAGE TOOLS -->
-    <div id="tab-manage" class="tab-content" style="display:none;">
-      <div class="tools-list" id="manage-list"></div>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>
