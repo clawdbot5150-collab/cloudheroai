@@ -353,63 +353,40 @@ function animate() {
 }
 animate();
 
-// ── DATA STORE ──
-const defaultTools = [
-  {id:1,name:"ChatGPT",category:"writing",tagline:"The world's most used AI assistant for writing, research, and problem-solving.",desc:"OpenAI's flagship conversational AI. Write, analyze, code, research, and brainstorm with one of the most capable language models available.",url:"https://chat.openai.com",affiliate:"https://chat.openai.com",commission:"",pricing:"freemium",icon:"🧠",color:"#1a1f2e",featured:true,dateAdded:Date.now()-86400000*10},
-  {id:2,name:"Jasper AI",category:"writing",tagline:"AI writing platform built for marketing teams and content creators.",desc:"Generate blog posts, ad copy, social content, and more with AI trained on top-performing marketing content.",url:"https://jasper.ai",affiliate:"https://jasper.ai",commission:"30% recurring",pricing:"paid",icon:"✍️",color:"#1a1520",featured:true,dateAdded:Date.now()-86400000*8},
-  {id:3,name:"Midjourney",category:"image",tagline:"Create stunning, photorealistic images from text prompts.",desc:"The industry-leading AI image generator. Used by designers, artists, and creators worldwide for everything from concept art to marketing assets.",url:"https://midjourney.com",affiliate:"",commission:"",pricing:"paid",icon:"🎨",color:"#1a1a20",featured:true,dateAdded:Date.now()-86400000*7},
-  {id:4,name:"Copy.ai",category:"writing",tagline:"Go from prompt to polished marketing copy in seconds.",desc:"AI-powered copywriting for emails, ads, product descriptions, and social posts. Includes 90+ templates.",url:"https://copy.ai",affiliate:"https://copy.ai",commission:"45% first year",pricing:"freemium",icon:"📝",color:"#0f1a1a",featured:false,dateAdded:Date.now()-86400000*6},
-  {id:5,name:"Make (Integromat)",category:"automation",tagline:"Visually build and automate workflows between your apps.",desc:"Connect any app and automate complex workflows with no code. AI-enhanced triggers, transformations, and logic.",url:"https://make.com",affiliate:"https://make.com",commission:"20% recurring",pricing:"freemium",icon:"⚙️",color:"#1a0f1a",featured:false,dateAdded:Date.now()-86400000*5},
-  {id:6,name:"Runway ML",category:"video",tagline:"AI video generation and editing for creators and studios.",desc:"Generate video from text, remove backgrounds, inpaint, and create cinematic content with state-of-the-art AI video models.",url:"https://runwayml.com",affiliate:"",commission:"",pricing:"freemium",icon:"🎬",color:"#1a1010",featured:true,dateAdded:Date.now()-86400000*4},
-  {id:7,name:"GitHub Copilot",category:"code",tagline:"AI pair programmer that autocompletes code in real time.",desc:"Trained on billions of lines of code, Copilot suggests whole lines and functions as you type — in any language.",url:"https://github.com/features/copilot",affiliate:"",commission:"",pricing:"paid",icon:"💻",color:"#0f1a0f",featured:false,dateAdded:Date.now()-86400000*3},
-  {id:8,name:"Notion AI",category:"productivity",tagline:"AI built directly into your notes, docs, and wikis.",desc:"Summarize pages, generate content, translate, extract action items, and answer questions about your workspace.",url:"https://notion.so",affiliate:"https://notion.so",commission:"$10/referral",pricing:"freemium",icon:"📓",color:"#1a1a1a",featured:false,dateAdded:Date.now()-86400000*2},
-  {id:9,name:"Otter.ai",category:"productivity",tagline:"AI meeting notes, transcription, and summaries in real time.",desc:"Record, transcribe, and summarize meetings automatically. Integrates with Zoom, Teams, and Google Meet.",url:"https://otter.ai",affiliate:"https://otter.ai",commission:"25% first payment",pricing:"freemium",icon:"🎙",color:"#0f1a15",featured:false,dateAdded:Date.now()-86400000*1},
-  {id:10,name:"Surfer SEO",category:"analytics",tagline:"AI-powered SEO optimization for content that ranks.",desc:"Analyze SERPs, optimize content in real-time, and build topical authority with data-driven AI recommendations.",url:"https://surferseo.com",affiliate:"https://surferseo.com",commission:"25% recurring",pricing:"paid",icon:"📊",color:"#0f151a",featured:false,dateAdded:Date.now()},
-  {id:11,name:"ElevenLabs",category:"video",tagline:"Ultra-realistic AI voice cloning and text-to-speech.",desc:"Clone any voice or choose from hundreds of AI voices. Used for podcasts, audiobooks, video narration, and accessibility.",url:"https://elevenlabs.io",affiliate:"",commission:"",pricing:"freemium",icon:"🔊",color:"#1a1510",featured:false,dateAdded:Date.now()},
-  {id:12,name:"Zapier",category:"automation",tagline:"Connect 6,000+ apps and automate your work without code.",desc:"The most popular automation platform. Set up AI-powered Zaps that trigger actions across your entire tool stack.",url:"https://zapier.com",affiliate:"https://zapier.com",commission:"$50/signup",pricing:"freemium",icon:"⚡️",color:"#1a1208",featured:false,dateAdded:Date.now()}
+// Sample AI tools data
+const tools = [
+  {name:'ChatGPT',category:'writing',tagline:'Advanced AI chatbot for conversations, writing, and coding assistance.',pricingType:'freemium',commission:30,icon:'🤖',featured:true},
+  {name:'Midjourney',category:'image',tagline:'AI image generation from text descriptions. Create stunning art instantly.',pricingType:'paid',commission:25,icon:'🎨',featured:true},
+  {name:'GitHub Copilot',category:'code',tagline:'AI pair programmer that suggests code completions in real-time.',pricingType:'paid',commission:20,icon:'💻',featured:false},
+  {name:'Jasper AI',category:'writing',tagline:'AI copywriter for marketing content, ads, and social media posts.',pricingType:'paid',commission:35,icon:'✍️',featured:true},
+  {name:'Notion AI',category:'writing',tagline:'AI writing assistant built into Notion for notes, docs, and wikis.',pricingType:'paid',commission:15,icon:'📝',featured:false},
+  {name:'Runway ML',category:'video',tagline:'AI video editing and generation tools for creators and filmmakers.',pricingType:'paid',commission:20,icon:'🎬',featured:false},
+  {name:'Copy.ai',category:'writing',tagline:'AI content generator for blogs, social media, and marketing copy.',pricingType:'freemium',commission:30,icon:'📄',featured:true},
+  {name:'Synthesia',category:'video',tagline:'Create AI videos with virtual avatars speaking your script.',pricingType:'paid',commission:25,icon:'🎥',featured:false},
+  {name:'Grammarly',category:'writing',tagline:'AI writing assistant for grammar, spelling, and style improvements.',pricingType:'freemium',commission:20,icon:'✅',featured:false},
+  {name:'Perplexity AI',category:'analytics',tagline:'AI-powered search engine with cited sources and summaries.',pricingType:'freemium',commission:15,icon:'🔍',featured:true},
+  {name:'Claude',category:'writing',tagline:'AI assistant by Anthropic for analysis, coding, and conversation.',pricingType:'freemium',commission:25,icon:'🧠',featured:true},
+  {name:'Zapier AI',category:'automation',tagline:'Automate workflows between apps with AI-powered integrations.',pricingType:'paid',commission:30,icon:'⚡',featured:false}
 ];
 
-let tools = JSON.parse(localStorage.getItem('ch_tools') || 'null') || defaultTools;
-let nextId = Math.max(...tools.map(t => t.id || 0)) + 1;
-
-function saveTools() {
-  localStorage.setItem('ch_tools', JSON.stringify(tools));
-}
-
 const grid = document.getElementById('tools-grid');
-let activeCategory = 'all';
-let activePricing = 'all';
-let activeSort = 'featured';
-let searchQuery = '';
+let currentFilter = 'all';
 
-// ── RENDER ──
 function renderTools(filter = 'all', search = '') {
-  activeCategory = filter;
-  searchQuery = search;
+  currentFilter = filter;
+  let filtered = getFilteredTools();
   
-  let filtered = [...tools];
-  
-  // Category filter
-  if(activeCategory !== 'all') filtered = filtered.filter(t => t.category === activeCategory);
-  
-  // Pricing filter
-  if(activePricing === 'featured') filtered = filtered.filter(t => t.featured);
-  else if(activePricing !== 'all') filtered = filtered.filter(t => t.pricing === activePricing);
-  
-  // Search filter
-  if(searchQuery) {
-    filtered = filtered.filter(t => 
-      t.name.toLowerCase().includes(searchQuery) || 
-      t.tagline.toLowerCase().includes(searchQuery) || 
-      t.category.toLowerCase().includes(searchQuery)
-    );
+  // Apply sorting
+  if (currentSortMethod === 'featured') {
+    filtered.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+  } else if (currentSortMethod === 'name') {
+    filtered.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (currentSortMethod === 'commission') {
+    filtered.sort((a, b) => b.commission - a.commission);
+  } else if (currentSortMethod === 'newest') {
+    // Would need a date field - for now just reverse
+    filtered.reverse();
   }
-  
-  // Sorting
-  if(activeSort === 'featured') filtered.sort((a,b) => (b.featured?1:0)-(a.featured?1:0));
-  else if(activeSort === 'name') filtered.sort((a,b) => a.name.localeCompare(b.name));
-  else if(activeSort === 'commission') filtered.sort((a,b) => (b.commission?1:0)-(a.commission?1:0));
-  else if(activeSort === 'newest') filtered.sort((a,b) => b.dateAdded - a.dateAdded);
   
   updateSearchCount();
   updateStats();
@@ -442,8 +419,8 @@ function renderTools(filter = 'all', search = '') {
             </div>
             <p class="tool-tagline">${t.tagline}</p>
             <div style="margin-top:16px;display:flex;gap:12px;align-items:center;">
-              <span class="badge badge-${t.pricing}">${t.pricing === 'free' ? 'Free' : t.pricing === 'freemium' ? 'Freemium' : 'Paid'}</span>
-              ${t.commission ? `<div class="commission-badge"><span>💰</span>${t.commission}</div>` : ''}
+              <span class="badge badge-${t.pricingType}">${t.pricingType === 'free' ? 'Free' : t.pricingType === 'freemium' ? 'Freemium' : 'Paid'}</span>
+              <div class="commission-badge"><span>💰</span>${t.commission}% commission</div>
             </div>
           </div>
           <div class="card-cta">
@@ -459,7 +436,7 @@ function renderTools(filter = 'all', search = '') {
           <div class="tool-icon">${t.icon}</div>
           <div class="card-badges">
             ${t.featured ? '<span class="badge badge-featured">Featured</span>' : ''}
-            <span class="badge badge-${t.pricing}">${t.pricing === 'free' ? 'Free' : t.pricing === 'freemium' ? 'Freemium' : 'Paid'}</span>
+            <span class="badge badge-${t.pricingType}">${t.pricingType === 'free' ? 'Free' : t.pricingType === 'freemium' ? 'Freemium' : 'Paid'}</span>
           </div>
         </div>
         <div>
@@ -468,8 +445,8 @@ function renderTools(filter = 'all', search = '') {
           <p class="tool-tagline">${t.tagline}</p>
         </div>
         <div class="card-bottom">
-          ${t.commission ? `<div class="commission-badge"><span>💰</span>${t.commission}</div>` : '<div></div>'}
-          <a href="${t.affiliate || t.url}" class="visit-btn" target="_blank" rel="noopener">Visit</a>
+          <div class="commission-badge"><span>💰</span>${t.commission}% commission</div>
+          <a href="#" class="visit-btn">Visit</a>
         </div>
       </div>
     `;
@@ -485,36 +462,48 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
   });
 });
 
-// Nav tabs (not used - using onclick handlers instead)
-// document.querySelectorAll('.nav-tab').forEach(btn => {
-//   btn.addEventListener('click', () => {
-//     activeCategory = btn.dataset.filter;
-//     renderTools(activeCategory, searchQuery);
-//   });
-// });
+// Nav tabs
+document.querySelectorAll('.nav-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    currentFilter = filter;
+    
+    // Sync with chips
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    const matchingChip = document.querySelector(`.chip[data-cat="${filter}"]`);
+    if (matchingChip) matchingChip.classList.add('active');
+    
+    renderTools(filter, '');
+    
+    // Scroll to directory
+    document.getElementById('directory').scrollIntoView({ behavior: 'smooth' });
+  });
+});
 
 // Hero search
 const heroSearch = document.getElementById('heroSearch');
 if (heroSearch) {
   heroSearch.addEventListener('input', e => {
-    renderTools(activeCategory, e.target.value);
+    renderTools(currentFilter, e.target.value);
   });
 }
 
 // Hero chips
-document.querySelectorAll('.chip[data-cat]').forEach(chip => {
+document.querySelectorAll('.chip').forEach(chip => {
   chip.addEventListener('click', () => {
-    document.querySelectorAll('.chip[data-cat]').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
     chip.classList.add('active');
     const cat = chip.dataset.cat;
-    activeCategory = cat;
+    currentFilter = cat;
     
     // Sync with nav tabs
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
     const matchingTab = document.querySelector(`.nav-tab[data-filter="${cat}"]`);
     if (matchingTab) matchingTab.classList.add('active');
     
-    renderTools(cat, searchQuery);
+    renderTools(cat, heroSearch ? heroSearch.value : '');
     
     // Scroll to results
     document.getElementById('directory').scrollIntoView({ behavior: 'smooth' });
@@ -566,15 +555,15 @@ document.querySelectorAll('.atab').forEach(tab => {
 
 // Add tool function
 function addTool() {
-  const name = document.getElementById('f-name').value.trim();
+  const name = document.getElementById('f-name').value;
   const category = document.getElementById('f-category').value;
-  const tagline = document.getElementById('f-tagline').value.trim();
-  const desc = document.getElementById('f-desc').value.trim();
-  const url = document.getElementById('f-url').value.trim();
-  const affiliate = document.getElementById('f-affiliate').value.trim();
-  const commission = document.getElementById('f-commission').value.trim();
+  const tagline = document.getElementById('f-tagline').value;
+  const desc = document.getElementById('f-desc').value;
+  const url = document.getElementById('f-url').value;
+  const affiliate = document.getElementById('f-affiliate').value;
+  const commission = document.getElementById('f-commission').value;
   const pricing = document.getElementById('f-pricing').value;
-  const icon = document.getElementById('f-icon').value.trim();
+  const icon = document.getElementById('f-icon').value;
   const color = document.getElementById('f-color').value;
   const featured = document.getElementById('f-featured').checked;
   
@@ -586,28 +575,23 @@ function addTool() {
   
   // Create new tool object
   const newTool = {
-    id: nextId++,
     name,
     category,
     tagline,
-    desc: desc || tagline,
+    description: desc,
     url,
-    affiliate: affiliate || url,
-    commission: commission || '',
-    pricing,
+    affiliateUrl: affiliate || url,
+    commission,
+    pricingType: pricing,
     icon: icon || '🤖',
-    color: color || '#0d1117',
-    featured,
-    dateAdded: Date.now()
+    iconColor: color,
+    featured
   };
   
   // Add to tools array
   tools.push(newTool);
   
-  // Save to localStorage
-  saveTools();
-  
-  // Re-render
+  // Re-render and reset
   renderTools();
   
   // Reset form
@@ -655,64 +639,47 @@ function openAdmin() {
 function filterCategory(cat, btn) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
-  activeCategory = cat;
+  currentFilter = cat;
   
   // Sync with chips
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
   const matchingChip = document.querySelector(`.chip[data-cat="${cat}"]`);
   if (matchingChip) matchingChip.classList.add('active');
   
-  renderTools(cat, searchQuery);
+  renderTools(cat, '');
   document.getElementById('directory').scrollIntoView({ behavior: 'smooth' });
 }
 
-// Public submit tool function
-function submitTool() {
-  const name = document.getElementById('s-name').value.trim();
-  const url = document.getElementById('s-url').value.trim();
-  const cat = document.getElementById('s-cat').value;
-  const reason = document.getElementById('s-reason').value.trim();
-  const email = document.getElementById('s-email').value.trim();
-  
-  if (!name || !url) {
-    showToast('⚠️ Please enter tool name and website');
-    return;
-  }
-  
-  // In production, this would send to backend API
-  console.log('Tool submission:', {name, url, cat, reason, email});
-  
+// Submit tool form
+document.getElementById('submitToolForm')?.addEventListener('submit', (e) => {
+  e.preventDefault();
   showToast('✓ Submission received! We\'ll review it soon.');
-  
-  // Reset form
-  document.getElementById('s-name').value = '';
-  document.getElementById('s-url').value = '';
-  document.getElementById('s-cat').selectedIndex = 0;
-  document.getElementById('s-reason').value = '';
-  document.getElementById('s-email').value = '';
-  
   closeSubmit();
-}
+  e.target.reset();
+});
 
 // Search functionality
+let currentPricingFilter = 'all';
+let currentSortMethod = 'featured';
+
 function handleSearch() {
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  renderTools(activeCategory, searchTerm);
+  const searchTerm = document.getElementById('searchInput').value;
+  renderTools(currentFilter, searchTerm);
   updateSearchCount();
 }
 
 function filterPricing(pricing, btn) {
   document.querySelectorAll('.filters .chip').forEach(c => c.classList.remove('active'));
   btn.classList.add('active');
-  activePricing = pricing;
-  renderTools(activeCategory, searchQuery);
+  currentPricingFilter = pricing;
+  renderTools(currentFilter, document.getElementById('searchInput')?.value || '');
 }
 
 function sortTools(method, btn) {
   document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  activeSort = method;
-  renderTools(activeCategory, searchQuery);
+  currentSortMethod = method;
+  renderTools(currentFilter, document.getElementById('searchInput')?.value || '');
 }
 
 function switchAdminTab(tab, btn) {
@@ -768,7 +735,6 @@ function editTool(index) {
 function deleteTool(index) {
   if (confirm('Are you sure you want to delete this tool?')) {
     tools.splice(index, 1);
-    saveTools();
     updateManageList();
     renderTools();
     showToast('✓ Tool deleted');
@@ -794,32 +760,34 @@ function updateSearchCount() {
 }
 
 function getFilteredTools() {
-  let filtered = [...tools];
+  const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
   
-  // Category filter
-  if(activeCategory !== 'all') filtered = filtered.filter(t => t.category === activeCategory);
-  
-  // Pricing filter
-  if(activePricing === 'featured') filtered = filtered.filter(t => t.featured);
-  else if(activePricing !== 'all') filtered = filtered.filter(t => t.pricing === activePricing);
-  
-  // Search filter
-  if(searchQuery) {
-    filtered = filtered.filter(t => 
-      t.name.toLowerCase().includes(searchQuery) || 
-      t.tagline.toLowerCase().includes(searchQuery) ||
-      (t.desc && t.desc.toLowerCase().includes(searchQuery)) ||
-      t.category.toLowerCase().includes(searchQuery)
-    );
-  }
-  
-  return filtered;
+  return tools.filter(t => {
+    // Category filter
+    const matchCat = currentFilter === 'all' || t.category === currentFilter;
+    
+    // Search filter
+    const matchSearch = !searchTerm || 
+      t.name.toLowerCase().includes(searchTerm) || 
+      t.tagline.toLowerCase().includes(searchTerm) ||
+      t.category.toLowerCase().includes(searchTerm);
+    
+    // Pricing filter
+    let matchPricing = true;
+    if (currentPricingFilter === 'featured') {
+      matchPricing = t.featured === true;
+    } else if (currentPricingFilter !== 'all') {
+      matchPricing = t.pricingType === currentPricingFilter;
+    }
+    
+    return matchCat && matchSearch && matchPricing;
+  });
 }
 
 function updateStats() {
   const categories = [...new Set(tools.map(t => t.category))];
-  const freeTools = tools.filter(t => t.pricing === 'free').length;
-  const affiliateTools = tools.filter(t => t.commission && t.commission.length > 0).length;
+  const freeTools = tools.filter(t => t.pricingType === 'free').length;
+  const affiliateTools = tools.filter(t => t.commission > 0).length;
   
   document.getElementById('statTotal').textContent = tools.length;
   document.getElementById('statFree').textContent = freeTools;
@@ -834,53 +802,65 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<!-- SUBMIT MODAL (public) -->
+<!-- Submit Tool Modal -->
 <div id="submit-modal">
   <div class="modal-inner">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;">
       <div>
-        <div class="modal-title">Submit a Tool</div>
-        <div class="modal-sub">Know an AI tool that belongs in the directory? Tell us about it and we'll review it.</div>
+        <h2 class="modal-title">Submit Your AI Tool</h2>
+        <p class="modal-sub">Get your tool featured in our directory and reach thousands of potential users.</p>
       </div>
-      <button class="close-btn" onclick="closeSubmit()">✕</button>
+      <button class="close-btn" onclick="closeSubmit()">Close</button>
     </div>
     
-    <div style="display:flex;flex-direction:column;gap:16px;">
-      <div class="form-group">
-        <label class="form-label">Tool Name</label>
-        <input type="text" class="form-input" id="s-name" placeholder="Tool name">
+    <form id="submitToolForm">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Tool Name</label>
+          <input type="text" name="toolName" class="form-input" placeholder="e.g. ChatGPT" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Your Email</label>
+          <input type="email" name="email" class="form-input" placeholder="you@example.com" required>
+        </div>
+        
+        <div class="form-group full">
+          <label class="form-label">Tool URL</label>
+          <input type="url" name="url" class="form-input" placeholder="https://..." required>
+        </div>
+        
+        <div class="form-group full">
+          <label class="form-label">Description</label>
+          <textarea name="description" class="form-textarea" placeholder="Tell us what makes your tool special..." required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select name="category" class="form-select" required>
+            <option value="">Select category</option>
+            <option value="writing">Writing</option>
+            <option value="image">Image</option>
+            <option value="automation">Automation</option>
+            <option value="analytics">Analytics</option>
+            <option value="code">Code</option>
+            <option value="video">Video</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Pricing</label>
+          <select name="pricing" class="form-select" required>
+            <option value="">Select pricing</option>
+            <option value="free">Free</option>
+            <option value="freemium">Freemium</option>
+            <option value="paid">Paid</option>
+          </select>
+        </div>
       </div>
       
-      <div class="form-group">
-        <label class="form-label">Website</label>
-        <input type="url" class="form-input" id="s-url" placeholder="https://">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Category</label>
-        <select class="form-select" id="s-cat">
-          <option>Writing & Content</option>
-          <option>Image & Design</option>
-          <option>Automation</option>
-          <option>Analytics</option>
-          <option>Code</option>
-          <option>Video</option>
-          <option>Other</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Why should it be listed?</label>
-        <textarea class="form-textarea" id="s-reason" placeholder="Tell us what makes it worth including..."></textarea>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Your Email (optional)</label>
-        <input type="email" class="form-input" id="s-email" placeholder="your@email.com">
-      </div>
-      
-      <button class="form-submit" onclick="submitTool()" style="width:100%;">Submit for Review →</button>
-    </div>
+      <button type="submit" class="form-submit">Submit Tool for Review</button>
+    </form>
   </div>
 </div>
 

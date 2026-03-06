@@ -360,13 +360,13 @@ const defaultTools = [
   {id:3,name:"Midjourney",category:"image",tagline:"Create stunning, photorealistic images from text prompts.",desc:"The industry-leading AI image generator. Used by designers, artists, and creators worldwide for everything from concept art to marketing assets.",url:"https://midjourney.com",affiliate:"",commission:"",pricing:"paid",icon:"🎨",color:"#1a1a20",featured:true,dateAdded:Date.now()-86400000*7},
   {id:4,name:"Copy.ai",category:"writing",tagline:"Go from prompt to polished marketing copy in seconds.",desc:"AI-powered copywriting for emails, ads, product descriptions, and social posts. Includes 90+ templates.",url:"https://copy.ai",affiliate:"https://copy.ai",commission:"45% first year",pricing:"freemium",icon:"📝",color:"#0f1a1a",featured:false,dateAdded:Date.now()-86400000*6},
   {id:5,name:"Make (Integromat)",category:"automation",tagline:"Visually build and automate workflows between your apps.",desc:"Connect any app and automate complex workflows with no code. AI-enhanced triggers, transformations, and logic.",url:"https://make.com",affiliate:"https://make.com",commission:"20% recurring",pricing:"freemium",icon:"⚙️",color:"#1a0f1a",featured:false,dateAdded:Date.now()-86400000*5},
-  {id:6,name:"Runway ML",category:"video",tagline:"AI video generation and editing for creators and studios.",desc:"Generate video from text, remove backgrounds, inpaint, and create cinematic content with state-of-the-art AI video models.",url:"https://runwayml.com",affiliate:"",commission:"",pricing:"freemium",icon:"🎬",color:"#1a1010",featured:true,dateAdded:Date.now()-86400000*4},
-  {id:7,name:"GitHub Copilot",category:"code",tagline:"AI pair programmer that autocompletes code in real time.",desc:"Trained on billions of lines of code, Copilot suggests whole lines and functions as you type — in any language.",url:"https://github.com/features/copilot",affiliate:"",commission:"",pricing:"paid",icon:"💻",color:"#0f1a0f",featured:false,dateAdded:Date.now()-86400000*3},
-  {id:8,name:"Notion AI",category:"productivity",tagline:"AI built directly into your notes, docs, and wikis.",desc:"Summarize pages, generate content, translate, extract action items, and answer questions about your workspace.",url:"https://notion.so",affiliate:"https://notion.so",commission:"$10/referral",pricing:"freemium",icon:"📓",color:"#1a1a1a",featured:false,dateAdded:Date.now()-86400000*2},
-  {id:9,name:"Otter.ai",category:"productivity",tagline:"AI meeting notes, transcription, and summaries in real time.",desc:"Record, transcribe, and summarize meetings automatically. Integrates with Zoom, Teams, and Google Meet.",url:"https://otter.ai",affiliate:"https://otter.ai",commission:"25% first payment",pricing:"freemium",icon:"🎙",color:"#0f1a15",featured:false,dateAdded:Date.now()-86400000*1},
-  {id:10,name:"Surfer SEO",category:"analytics",tagline:"AI-powered SEO optimization for content that ranks.",desc:"Analyze SERPs, optimize content in real-time, and build topical authority with data-driven AI recommendations.",url:"https://surferseo.com",affiliate:"https://surferseo.com",commission:"25% recurring",pricing:"paid",icon:"📊",color:"#0f151a",featured:false,dateAdded:Date.now()},
-  {id:11,name:"ElevenLabs",category:"video",tagline:"Ultra-realistic AI voice cloning and text-to-speech.",desc:"Clone any voice or choose from hundreds of AI voices. Used for podcasts, audiobooks, video narration, and accessibility.",url:"https://elevenlabs.io",affiliate:"",commission:"",pricing:"freemium",icon:"🔊",color:"#1a1510",featured:false,dateAdded:Date.now()},
-  {id:12,name:"Zapier",category:"automation",tagline:"Connect 6,000+ apps and automate your work without code.",desc:"The most popular automation platform. Set up AI-powered Zaps that trigger actions across your entire tool stack.",url:"https://zapier.com",affiliate:"https://zapier.com",commission:"$50/signup",pricing:"freemium",icon:"⚡️",color:"#1a1208",featured:false,dateAdded:Date.now()}
+  {id:6,name:"GitHub Copilot",category:"code",tagline:"AI pair programmer that suggests code completions in real-time.",desc:"Code faster with AI-powered autocomplete. Trained on billions of lines of code to suggest functions, tests, and entire algorithms.",url:"https://github.com/features/copilot",affiliate:"",commission:"",pricing:"paid",icon:"💻",color:"#0d1117",featured:false,dateAdded:Date.now()-86400000*4},
+  {id:7,name:"Notion AI",category:"productivity",tagline:"AI writing assistant built into Notion for notes, docs, and wikis.",desc:"Brainstorm ideas, write faster, and organize better with AI embedded in your workspace.",url:"https://notion.so/product/ai",affiliate:"",commission:"",pricing:"paid",icon:"📝",color:"#1a1a1a",featured:false,dateAdded:Date.now()-86400000*3},
+  {id:8,name:"Perplexity AI",category:"research",tagline:"AI-powered search engine with cited sources and summaries.",desc:"Get answers with sources. Research assistant that cites every claim and lets you dive deeper with follow-up questions.",url:"https://perplexity.ai",affiliate:"",commission:"",pricing:"freemium",icon:"🔍",color:"#1a1f2e",featured:true,dateAdded:Date.now()-86400000*2},
+  {id:9,name:"Claude",category:"writing",tagline:"AI assistant by Anthropic for analysis, coding, and conversation.",desc:"Long context conversations, deep analysis, and coding help. Known for nuanced understanding and safety-focused design.",url:"https://claude.ai",affiliate:"",commission:"",pricing:"freemium",icon:"🧠",color:"#1a1520",featured:true,dateAdded:Date.now()-86400000*1},
+  {id:10,name:"Zapier AI",category:"automation",tagline:"Automate workflows between apps with AI-powered integrations.",desc:"Connect 5,000+ apps and build automations in plain English. AI helps you build, troubleshoot, and optimize workflows.",url:"https://zapier.com",affiliate:"https://zapier.com",commission:"25% recurring",pricing:"freemium",icon:"⚡",color:"#1a0f1a",featured:false,dateAdded:Date.now()},
+  {id:11,name:"Grammarly",category:"writing",tagline:"AI writing assistant for grammar, spelling, and style improvements.",desc:"Write confidently with AI that checks grammar, tone, clarity, and plagiarism across all your apps.",url:"https://grammarly.com",affiliate:"https://grammarly.com",commission:"$20/sale",pricing:"freemium",icon:"✅",color:"#0d1117",featured:false,dateAdded:Date.now()},
+  {id:12,name:"Runway ML",category:"video",tagline:"AI video editing and generation tools for creators and filmmakers.",desc:"Generate videos from text, extend scenes, remove backgrounds, and edit with AI. Hollywood-grade tools for everyone.",url:"https://runwayml.com",affiliate:"",commission:"",pricing:"paid",icon:"🎬",color:"#1a1a20",featured:false,dateAdded:Date.now()}
 ];
 
 let tools = JSON.parse(localStorage.getItem('ch_tools') || 'null') || defaultTools;
@@ -377,39 +377,27 @@ function saveTools() {
 }
 
 const grid = document.getElementById('tools-grid');
-let activeCategory = 'all';
-let activePricing = 'all';
-let activeSort = 'featured';
-let searchQuery = '';
+let currentFilter = 'all';
 
-// ── RENDER ──
 function renderTools(filter = 'all', search = '') {
-  activeCategory = filter;
-  searchQuery = search;
+  currentFilter = filter;
+  let filtered = getFilteredTools();
   
-  let filtered = [...tools];
-  
-  // Category filter
-  if(activeCategory !== 'all') filtered = filtered.filter(t => t.category === activeCategory);
-  
-  // Pricing filter
-  if(activePricing === 'featured') filtered = filtered.filter(t => t.featured);
-  else if(activePricing !== 'all') filtered = filtered.filter(t => t.pricing === activePricing);
-  
-  // Search filter
-  if(searchQuery) {
-    filtered = filtered.filter(t => 
-      t.name.toLowerCase().includes(searchQuery) || 
-      t.tagline.toLowerCase().includes(searchQuery) || 
-      t.category.toLowerCase().includes(searchQuery)
-    );
+  // Apply sorting
+  if (currentSortMethod === 'featured') {
+    filtered.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+  } else if (currentSortMethod === 'name') {
+    filtered.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (currentSortMethod === 'commission') {
+    // Sort by commission (extract numeric value from string like "30% recurring")
+    filtered.sort((a, b) => {
+      const aVal = parseInt(a.commission) || 0;
+      const bVal = parseInt(b.commission) || 0;
+      return bVal - aVal;
+    });
+  } else if (currentSortMethod === 'newest') {
+    filtered.sort((a, b) => (b.dateAdded || 0) - (a.dateAdded || 0));
   }
-  
-  // Sorting
-  if(activeSort === 'featured') filtered.sort((a,b) => (b.featured?1:0)-(a.featured?1:0));
-  else if(activeSort === 'name') filtered.sort((a,b) => a.name.localeCompare(b.name));
-  else if(activeSort === 'commission') filtered.sort((a,b) => (b.commission?1:0)-(a.commission?1:0));
-  else if(activeSort === 'newest') filtered.sort((a,b) => b.dateAdded - a.dateAdded);
   
   updateSearchCount();
   updateStats();
@@ -485,36 +473,48 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
   });
 });
 
-// Nav tabs (not used - using onclick handlers instead)
-// document.querySelectorAll('.nav-tab').forEach(btn => {
-//   btn.addEventListener('click', () => {
-//     activeCategory = btn.dataset.filter;
-//     renderTools(activeCategory, searchQuery);
-//   });
-// });
+// Nav tabs
+document.querySelectorAll('.nav-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    currentFilter = filter;
+    
+    // Sync with chips
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    const matchingChip = document.querySelector(`.chip[data-cat="${filter}"]`);
+    if (matchingChip) matchingChip.classList.add('active');
+    
+    renderTools(filter, '');
+    
+    // Scroll to directory
+    document.getElementById('directory').scrollIntoView({ behavior: 'smooth' });
+  });
+});
 
 // Hero search
 const heroSearch = document.getElementById('heroSearch');
 if (heroSearch) {
   heroSearch.addEventListener('input', e => {
-    renderTools(activeCategory, e.target.value);
+    renderTools(currentFilter, e.target.value);
   });
 }
 
 // Hero chips
-document.querySelectorAll('.chip[data-cat]').forEach(chip => {
+document.querySelectorAll('.chip').forEach(chip => {
   chip.addEventListener('click', () => {
-    document.querySelectorAll('.chip[data-cat]').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
     chip.classList.add('active');
     const cat = chip.dataset.cat;
-    activeCategory = cat;
+    currentFilter = cat;
     
     // Sync with nav tabs
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
     const matchingTab = document.querySelector(`.nav-tab[data-filter="${cat}"]`);
     if (matchingTab) matchingTab.classList.add('active');
     
-    renderTools(cat, searchQuery);
+    renderTools(cat, heroSearch ? heroSearch.value : '');
     
     // Scroll to results
     document.getElementById('directory').scrollIntoView({ behavior: 'smooth' });
@@ -655,14 +655,14 @@ function openAdmin() {
 function filterCategory(cat, btn) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
-  activeCategory = cat;
+  currentFilter = cat;
   
   // Sync with chips
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
   const matchingChip = document.querySelector(`.chip[data-cat="${cat}"]`);
   if (matchingChip) matchingChip.classList.add('active');
   
-  renderTools(cat, searchQuery);
+  renderTools(cat, '');
   document.getElementById('directory').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -695,24 +695,27 @@ function submitTool() {
 }
 
 // Search functionality
+let currentPricingFilter = 'all';
+let currentSortMethod = 'featured';
+
 function handleSearch() {
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  renderTools(activeCategory, searchTerm);
+  const searchTerm = document.getElementById('searchInput').value;
+  renderTools(currentFilter, searchTerm);
   updateSearchCount();
 }
 
 function filterPricing(pricing, btn) {
   document.querySelectorAll('.filters .chip').forEach(c => c.classList.remove('active'));
   btn.classList.add('active');
-  activePricing = pricing;
-  renderTools(activeCategory, searchQuery);
+  currentPricingFilter = pricing;
+  renderTools(currentFilter, document.getElementById('searchInput')?.value || '');
 }
 
 function sortTools(method, btn) {
   document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  activeSort = method;
-  renderTools(activeCategory, searchQuery);
+  currentSortMethod = method;
+  renderTools(currentFilter, document.getElementById('searchInput')?.value || '');
 }
 
 function switchAdminTab(tab, btn) {
@@ -794,26 +797,29 @@ function updateSearchCount() {
 }
 
 function getFilteredTools() {
-  let filtered = [...tools];
+  const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
   
-  // Category filter
-  if(activeCategory !== 'all') filtered = filtered.filter(t => t.category === activeCategory);
-  
-  // Pricing filter
-  if(activePricing === 'featured') filtered = filtered.filter(t => t.featured);
-  else if(activePricing !== 'all') filtered = filtered.filter(t => t.pricing === activePricing);
-  
-  // Search filter
-  if(searchQuery) {
-    filtered = filtered.filter(t => 
-      t.name.toLowerCase().includes(searchQuery) || 
-      t.tagline.toLowerCase().includes(searchQuery) ||
-      (t.desc && t.desc.toLowerCase().includes(searchQuery)) ||
-      t.category.toLowerCase().includes(searchQuery)
-    );
-  }
-  
-  return filtered;
+  return tools.filter(t => {
+    // Category filter
+    const matchCat = currentFilter === 'all' || t.category === currentFilter;
+    
+    // Search filter
+    const matchSearch = !searchTerm || 
+      t.name.toLowerCase().includes(searchTerm) || 
+      t.tagline.toLowerCase().includes(searchTerm) ||
+      (t.desc && t.desc.toLowerCase().includes(searchTerm)) ||
+      t.category.toLowerCase().includes(searchTerm);
+    
+    // Pricing filter
+    let matchPricing = true;
+    if (currentPricingFilter === 'featured') {
+      matchPricing = t.featured === true;
+    } else if (currentPricingFilter !== 'all') {
+      matchPricing = t.pricing === currentPricingFilter;
+    }
+    
+    return matchCat && matchSearch && matchPricing;
+  });
 }
 
 function updateStats() {
