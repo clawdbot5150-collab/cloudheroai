@@ -498,7 +498,6 @@ function saveTools() {
   localStorage.setItem('ch_tools', JSON.stringify(tools));
 }
 
-const grid = document.getElementById('tools-grid');
 let activeCategory = 'all';
 let activePricing = 'all';
 let activeSort = 'featured';
@@ -506,6 +505,7 @@ let searchQuery = '';
 
 // ── RENDER ──
 function render() {
+  const grid = document.getElementById('tools-grid');
   if (!grid) {
     console.error('Grid element not found!');
     return;
