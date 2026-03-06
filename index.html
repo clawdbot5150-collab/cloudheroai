@@ -916,34 +916,6 @@ function updateStats(){
 }
 
 // ── CURSOR ──
-const cur = document.getElementById('cur'), trail = document.getElementById('cur-trail');
-let mx=0,my=0,tx=0,ty=0;
-document.addEventListener('mousemove', e=>{
-  mx=e.clientX;
-  my=e.clientY;
-  cur.style.left=mx+'px';
-  cur.style.top=my+'px';
-});
-(function loop(){
-  tx+=(mx-tx)*.12;
-  ty+=(my-ty)*.12;
-  trail.style.left=tx+'px';
-  trail.style.top=ty+'px';
-  requestAnimationFrame(loop);
-})();
-document.querySelectorAll('a,button,.tool-card').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{
-    cur.style.width='16px';
-    cur.style.height='16px';
-    trail.style.width='52px';
-    trail.style.height='52px';
-  });
-  el.addEventListener('mouseleave',()=>{
-    cur.style.width='8px';
-    cur.style.height='8px';
-    trail.style.width='32px';
-    trail.style.height='32px';
-  });
 });
 
 // ── STAT COUNTERS ──
@@ -966,6 +938,37 @@ document.addEventListener('DOMContentLoaded', () => {
   render();
   revealCards();
   setTimeout(animateStats, 400);
+
+  // ── CUSTOM CURSOR ──
+  const cur = document.getElementById('cur'), trail = document.getElementById('cur-trail');
+  let mx=0,my=0,tx=0,ty=0;
+  document.addEventListener('mousemove', e=>{
+    mx=e.clientX;
+    my=e.clientY;
+    cur.style.left=mx+'px';
+    cur.style.top=my+'px';
+  });
+  (function loop(){
+    tx+=(mx-tx)*.12;
+    ty+=(my-ty)*.12;
+    trail.style.left=tx+'px';
+    trail.style.top=ty+'px';
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a,button,.tool-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+      cur.style.width='16px';
+      cur.style.height='16px';
+      trail.style.width='52px';
+      trail.style.height='52px';
+    });
+    el.addEventListener('mouseleave',()=>{
+      cur.style.width='8px';
+      cur.style.height='8px';
+      trail.style.width='32px';
+      trail.style.height='32px';
+    });
+  });
 });
 
 // Close modals on backdrop click
