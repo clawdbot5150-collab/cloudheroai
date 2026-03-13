@@ -516,15 +516,15 @@
         <a href="https://console.aws.amazon.com/iam/home#/users" target="_blank" rel="noopener">Open AWS IAM Console →</a>
       </div>
 
-      <form id="connect-form" onsubmit="handleConnect(event)">
+      <form id="connect-form" onsubmit="handleConnect(event)" autocomplete="off">
         <div class="form-group">
           <label for="access-key-id">AWS Access Key ID</label>
-          <input type="text" id="access-key-id" class="mono-input" placeholder="AKIAIOSFODNN7EXAMPLE" autocomplete="off" required>
+          <input type="text" id="access-key-id" class="mono-input" placeholder="AKIAIOSFODNN7EXAMPLE" autocomplete="new-password" required>
         </div>
         <div class="form-group">
           <label for="secret-key">AWS Secret Access Key</label>
           <div class="password-wrap">
-            <input type="password" id="secret-key" class="mono-input" placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" autocomplete="off" required>
+            <input type="password" id="secret-key" class="mono-input" placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" autocomplete="new-password" required>
             <button type="button" class="toggle-secret" onclick="toggleSecret()" id="toggle-btn" aria-label="Toggle visibility">
               <svg id="eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
@@ -620,7 +620,7 @@
         ❄️ Connect with an ACCOUNTADMIN or SYSADMIN role for full cost visibility. We only run read-only queries. &nbsp;
         <a href="https://app.snowflake.com/" target="_blank" rel="noopener">Open Snowflake →</a>
       </div>
-      <form id="snowflake-connect-form" onsubmit="handleSnowflakeConnect(event)">
+      <form id="snowflake-connect-form" onsubmit="handleSnowflakeConnect(event)" autocomplete="off">
         <div class="form-group">
           <label for="sf-account">Account Identifier</label>
           <input type="text" id="sf-account" class="mono-input" placeholder="xy12345.us-east-1" autocomplete="off" required>
@@ -628,11 +628,11 @@
         </div>
         <div class="form-group">
           <label for="sf-username">Username</label>
-          <input type="text" id="sf-username" class="mono-input" placeholder="ADMIN_USER" autocomplete="off" required>
+          <input type="text" id="sf-username" class="mono-input" placeholder="ADMIN_USER" autocomplete="new-password" required>
         </div>
         <div class="form-group">
           <label for="sf-password">Password</label>
-          <input type="password" id="sf-password" class="mono-input" placeholder="Your Snowflake password" autocomplete="off" required>
+          <input type="password" id="sf-password" class="mono-input" placeholder="Your Snowflake password" autocomplete="new-password" required>
         </div>
         <div class="form-group">
           <label for="sf-role">Role (optional)</label>
