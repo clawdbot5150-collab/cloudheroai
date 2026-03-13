@@ -36,10 +36,7 @@
       height: 100%;
       background: var(--navy);
       color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      opacity: 0;
-      transition: opacity 0.35s ease;
-    }
+      font-family: 'DM Sans', sans-serif;}
     @media (prefers-reduced-motion: reduce) { html, body { transition: none; } }
 
     /* Sidebar */
@@ -446,8 +443,8 @@
 
   <script>
     // Always reveal body — must be top-level, never inside async
-    document.fonts.ready.then(() => { document.documentElement.style.opacity = '1'; document.body.style.opacity = '1'; });
-    setTimeout(() => { document.documentElement.style.opacity = '1'; document.body.style.opacity = '1'; }, 300);
+    
+    setTimeout(() => { }, 300);
 
     const API = '';
     const token = () => localStorage.getItem('ch_token');
