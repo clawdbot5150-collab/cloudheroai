@@ -312,6 +312,22 @@
             <input type="email" id="reg-email" name="email" placeholder="you@company.com" required>
           </div>
           <div class="form-group">
+            <label for="reg-company">Company <span style="font-weight:400;color:#4a5a78;font-size:12px;">(optional)</span></label>
+            <input type="text" id="reg-company" name="company" placeholder="Acme Corp">
+          </div>
+          <div class="form-group">
+            <label for="reg-role">Your Role <span style="font-weight:400;color:#4a5a78;font-size:12px;">(optional)</span></label>
+            <select id="reg-role" name="role" style="width:100%;padding:11px 14px;background:var(--navy-3);border:1px solid var(--border);border-radius:10px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;">
+              <option value="">Select your role</option>
+              <option>DevOps / Platform Engineer</option>
+              <option>Cloud Architect</option>
+              <option>FinOps / Finance Lead</option>
+              <option>Engineering Manager / CTO</option>
+              <option>Founder / Builder</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label for="reg-password">Password</label>
             <input type="password" id="reg-password" name="password" placeholder="Min 8 characters" minlength="8" required>
           </div>
@@ -419,6 +435,8 @@
       const name = document.getElementById('reg-name').value.trim();
       const email = document.getElementById('reg-email').value.trim();
       const password = document.getElementById('reg-password').value;
+      const company = document.getElementById('reg-company')?.value.trim() || '';
+      const role = document.getElementById('reg-role')?.value || '';
 
       if (password.length < 8) {
         showError('register-error', 'Password must be at least 8 characters.');
@@ -430,7 +448,7 @@
         const res = await fetch(API + '/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password, name })
+          body: JSON.stringify({ email, password, name, company, role, source: 'app-register' })
         });
         const data = await res.json();
         if (!res.ok) {
