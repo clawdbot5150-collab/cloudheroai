@@ -316,8 +316,8 @@
 
   <script>
     // Always reveal body — must be top-level, never inside async
-    document.fonts.ready.then(() => { document.body.style.opacity = '1'; });
-    setTimeout(() => { document.body.style.opacity = '1'; }, 300);
+    document.fonts.ready.then(() => { document.documentElement.style.opacity = '1'; document.body.style.opacity = '1'; });
+    setTimeout(() => { document.documentElement.style.opacity = '1'; document.body.style.opacity = '1'; }, 300);
 
     const API = '';
     const token = () => localStorage.getItem('ch_token');
