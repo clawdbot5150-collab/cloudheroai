@@ -250,7 +250,7 @@ footer{border-top:1px solid var(--border);padding:48px 5vw;display:grid;grid-tem
 <li class="dim">Platform bundle features</li>
 <li class="dim">Cross-product automations</li>
 </ul>
-<a href="/savings/app/login.html" class="price-btn price-btn-outline">Start free trial</a>
+<button onclick="startCheckout('starter')" class="price-btn price-btn-outline">Start free trial</button>
 </div>
 <div class="price-card featured">
 <div class="price-tier">Platform</div>
@@ -273,7 +273,7 @@ footer{border-top:1px solid var(--border);padding:48px 5vw;display:grid;grid-tem
 <li>Cross-product workflows</li>
 <li>Priority email support</li>
 </ul>
-<a href="/savings/app/login.html" class="price-btn price-btn-solid">Start free trial</a>
+<button onclick="startCheckout('bundle')" class="price-btn price-btn-solid">Start free trial</button>
 </div>
 <div class="price-card">
 <div class="price-tier">Platform Pro</div>
@@ -294,7 +294,7 @@ footer{border-top:1px solid var(--border);padding:48px 5vw;display:grid;grid-tem
 <li>Custom integrations</li>
 <li>Dedicated onboarding CSM</li>
 </ul>
-<a href="/savings/app/login.html" class="price-btn price-btn-outline">Start free trial</a>
+<button onclick="startCheckout('scale')" class="price-btn price-btn-outline">Start free trial</button>
 </div>
 <div class="price-card">
 <div class="price-tier">Enterprise</div>
@@ -536,6 +536,41 @@ function setTab(tab, btn){
   document.querySelectorAll('.plan-tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
   // Just visual — prices already shown. In a full build this would swap card content.
+}
+
+// STRIPE CHECKOUT
+async function startCheckout(plan) {
+  const token = localStorage.getItem('ch_token');
+  const interval = isAnnual ? 'annual' : 'monthly';
+
+  if (!token) {
+    // Not logged in — go to login then return to checkout
+    window.location.href = `/savings/app/login.html?redirect=/pricing/&plan=${plan}&interval=${interval}`;
+    return;
+  }
+
+  const btn = event?.target;
+  const originalText = btn?.textContent;
+  if (btn) { btn.textContent = 'Loading...'; btn.disabled = true; }
+
+  try {
+    const res = await fetch('/api/billing/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ plan, interval })
+    });
+    const data = await res.json();
+
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert(data.error || 'Could not start checkout. Please try again.');
+      if (btn) { btn.textContent = originalText; btn.disabled = false; }
+    }
+  } catch (e) {
+    alert('Network error. Please try again.');
+    if (btn) { btn.textContent = originalText; btn.disabled = false; }
+  }
 }
 
 // FAQ ACCORDION
