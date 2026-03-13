@@ -445,6 +445,10 @@
   </main>
 
   <script>
+    // Always reveal body — must be top-level, never inside async
+    document.fonts.ready.then(() => { document.body.style.opacity = '1'; });
+    setTimeout(() => { document.body.style.opacity = '1'; }, 300);
+
     const API = '';
     const token = () => localStorage.getItem('ch_token');
 
@@ -636,8 +640,6 @@
       if (!user) return;
       document.getElementById('user-email').textContent = user.email || 'Account';
       await Promise.all([loadDashboard(), loadAuditHistory()]);
-      document.fonts.ready.then(() => { document.body.style.opacity = '1'; });
-      setTimeout(() => { document.body.style.opacity = '1'; }, 500);
     })();
   </script>
 </body>
