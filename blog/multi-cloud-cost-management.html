@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Cloud Cost Management: AWS vs GCP vs Azure Side by Side — Cloud Hero AI Blog</title>
+<meta name="description" content="Compare multi-cloud cost management across AWS, GCP, and Azure. Native tools, pricing model differences, discount programs, common waste patterns, and how to manage costs across all three.">
+<link rel="canonical" href="https://cloudheroai.com/blog/multi-cloud-cost-management.html">
+<meta property="og:title" content="Multi-Cloud Cost Management: AWS vs GCP vs Azure Side by Side">
+<meta property="og:description" content="Compare multi-cloud cost management across AWS, GCP, and Azure. Native tools, pricing model differences, discount programs, common waste patterns, and how to manage costs across all three.">
+<meta property="og:image" content="https://cloudheroai.com/og-image.jpg">
+<meta property="og:url" content="https://cloudheroai.com/blog/multi-cloud-cost-management.html">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6FG0M0E54M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6FG0M0E54M");</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@1,9..144,300&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Multi-Cloud Cost Management: AWS vs GCP vs Azure Side by Side",
+  "description": "Compare multi-cloud cost management across AWS, GCP, and Azure. Native tools, pricing model differences, discount programs, common waste patterns, and how to manage costs across all three.",
+  "author": {"@type": "Organization", "name": "Cloud Hero AI"},
+  "publisher": {"@type": "Organization", "name": "Cloud Hero AI", "url": "https://cloudheroai.com"},
+  "datePublished": "2026-03-08",
+  "dateModified": "2026-03-08",
+  "mainEntityOfPage": "https://cloudheroai.com/blog/multi-cloud-cost-management.html"
+}
+</script>
+<style>
+:root{--navy:#070B14;--navy-2:#0D1424;--navy-3:#111827;--cyan:#00D9FF;--cyan-dim:rgba(0,217,255,0.12);--green:#00E5A0;--purple:#7B6FFF;--amber:#FFB547;--white:#F0F4FF;--muted:#7A8CAB;--faint:#3D4F6A;--border:rgba(255,255,255,0.07);--border-bright:rgba(0,217,255,0.2)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);font-size:16px;line-height:1.65;opacity:0;transition:opacity 0.3s}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5vw;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,11,20,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:30px;height:30px;border:1.5px solid var(--cyan);border-radius:7px;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.logo-mark::before{content:'';position:absolute;width:14px;height:14px;border:1.5px solid var(--cyan);border-radius:50%}
+.logo-mark::after{content:'';position:absolute;width:5px;height:5px;background:var(--cyan);border-radius:50%;box-shadow:0 0 6px var(--cyan)}
+.logo-text{font-family:'Space Mono',monospace;font-size:13px;color:var(--white)}
+.logo-text span{color:var(--cyan)}
+.nav-cta{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:7px 18px;border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;transition:background 0.2s}
+.nav-cta:hover{background:var(--cyan-dim)}
+.article-wrap{max-width:760px;margin:0 auto;padding:108px 5vw 80px}
+.article-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;display:block}
+.article-title{font-size:clamp(28px,4.5vw,48px);font-weight:300;line-height:1.1;letter-spacing:-0.025em;margin-bottom:20px}
+.article-title em{font-family:'Fraunces',serif;font-style:italic;color:var(--cyan)}
+.article-meta{display:flex;gap:20px;font-size:13px;color:var(--faint);font-family:'Space Mono',monospace;margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.article-body h2{font-size:24px;font-weight:500;letter-spacing:-0.02em;margin:40px 0 16px;color:var(--white)}
+.article-body h3{font-size:19px;font-weight:500;letter-spacing:-0.01em;margin:28px 0 12px;color:var(--white)}
+.article-body p{font-size:16px;color:var(--muted);line-height:1.8;margin-bottom:20px;font-weight:300}
+.article-body p strong{color:var(--white);font-weight:500}
+.article-body ul,.article-body ol{padding-left:22px;margin-bottom:20px}
+.article-body li{font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:8px;font-weight:300}
+.article-body li strong{color:var(--white)}
+.article-body a{color:var(--cyan);text-decoration:none}
+.article-body a:hover{text-decoration:underline}
+.callout{background:var(--navy-2);border-left:3px solid var(--cyan);border-radius:0 10px 10px 0;padding:20px 24px;margin:28px 0}
+.callout p{margin:0;font-size:15px}
+.callout.green{border-left-color:var(--green)}
+.callout.amber{border-left-color:var(--amber)}
+code{font-family:'Space Mono',monospace;font-size:13px;background:var(--navy-3);padding:2px 6px;border-radius:4px;color:var(--cyan)}
+pre{background:var(--navy-3);border:1px solid var(--border);border-radius:10px;padding:20px;overflow-x:auto;margin:24px 0}
+pre code{background:none;padding:0;font-size:13px;color:var(--green)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0}
+.stat-box{background:var(--navy-2);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--cyan);display:block}
+.stat-label{font-size:12px;color:var(--muted);margin-top:4px}
+.cta-box{background:linear-gradient(135deg,rgba(0,217,255,0.08),rgba(0,229,160,0.05));border:1px solid var(--border-bright);border-radius:16px;padding:36px;margin:48px 0;text-align:center}
+.cta-box h3{font-size:22px;font-weight:500;margin-bottom:12px}
+.cta-box p{font-size:15px;color:var(--muted);margin-bottom:24px;font-weight:300}
+.btn-primary{background:var(--cyan);color:var(--navy);border:none;padding:13px 28px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;font-family:'DM Sans',sans-serif}
+.btn-primary:hover{box-shadow:0 4px 20px rgba(0,217,255,0.3)}
+table{width:100%;border-collapse:collapse;margin:24px 0}
+th{background:var(--navy-2);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);padding:12px 16px;text-align:left;border-bottom:2px solid var(--border)}
+td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:14px;color:var(--muted);vertical-align:top}
+td strong{color:var(--white)}
+.faq-section{margin:48px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:20px 0}
+.faq-q{font-size:16px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq-q::after{content:'+';font-family:'Space Mono',monospace;color:var(--cyan);font-size:18px;flex-shrink:0}
+.faq-a{font-size:14px;color:var(--muted);line-height:1.7;margin-top:12px;font-weight:300;display:none}
+footer{border-top:1px solid var(--border);padding:32px 5vw;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--faint);flex-wrap:wrap;gap:12px}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--white)}
+@media(max-width:640px){.stat-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><div class="logo-mark"></div><span class="logo-text">Cloud<span>Hero</span> AI</span></a>
+  <a href="/savings/app/login.html" class="nav-cta">Free savings audit →</a>
+</nav>
+
+<article class="article-wrap">
+  <span class="article-label">FinOps &amp; Cloud Finance</span>
+  <h1 class="article-title"><em>Multi-Cloud Cost Management</em>: AWS vs GCP vs Azure Side by Side</h1>
+  <div class="article-meta">
+    <span>Cloud Hero AI</span>
+    <span>March 8, 2026</span>
+    <span>14 min read</span>
+  </div>
+  <div class="article-body">
+
+    <p>More than 87% of enterprises now use two or more cloud providers, according to Flexera's 2025 State of the Cloud Report. Multi-cloud is no longer a strategic choice for most companies — it's the natural outcome of acquisitions, team autonomy, best-of-breed service selection, and cloud provider negotiations. But multi-cloud creates a fundamental FinOps challenge: each cloud has completely different pricing models, cost management tools, discount programs, and optimization strategies.</p>
+
+    <p>Managing costs across AWS, GCP, and Azure requires understanding what's different about each provider and where the universal principles apply. This guide gives you a practical side-by-side comparison of all three cloud cost management approaches.</p>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <span class="stat-num">87%</span>
+        <div class="stat-label">Of enterprises use 2+ cloud providers</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">3.4</span>
+        <div class="stat-label">Average number of public clouds per enterprise</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">41%</span>
+        <div class="stat-label">Of multi-cloud orgs report higher costs than single-cloud</div>
+      </div>
+    </div>
+
+    <h2>Native Cost Management Tools: A Comparison</h2>
+
+    <h3>AWS: Cost Explorer + Cost and Usage Report</h3>
+
+    <p>AWS has the most mature native cost management tooling of the three providers, largely because it's been under the most pressure from enterprise customers who spend the most money on cloud. Cost Explorer provides interactive visualization, Savings Plan recommendations, rightsizing recommendations, anomaly detection, and 12 months of historical data. The Cost and Usage Report (CUR) provides the raw data for custom analysis via Athena or QuickSight.</p>
+
+    <p>The limitations are real but manageable: 24–48 hour data latency, no cross-account aggregation at scale, and no automated remediation. See our <a href="/blog/aws-cost-explorer-guide.html">complete Cost Explorer guide</a> for a deep dive on both capabilities and gaps.</p>
+
+    <h3>GCP: Cloud Billing + Cost Management</h3>
+
+    <p>Google Cloud's billing interface is cleaner than AWS's in some ways — the cost breakdown by project and service is intuitive, and the BigQuery export for detailed billing data is powerful once configured. GCP's native recommendation engine (Recommender API) covers underutilized VMs, idle resources, and right-sizing suggestions across Compute Engine, GKE, and Cloud SQL.</p>
+
+    <p>Where GCP falls short vs AWS: less mature anomaly detection, less sophisticated savings recommendations tooling, and the GKE cost allocation story (understanding per-workload costs within clusters) requires more configuration. GCP's native tooling is "good enough" for teams spending under $50K/month; beyond that, the lack of automation capabilities becomes limiting.</p>
+
+    <h3>Azure: Cost Management + Billing (formerly Cloudyn)</h3>
+
+    <p>Azure Cost Management has improved significantly since Microsoft acquired Cloudyn and rebuilt it natively. It now offers cost analysis, budgets, anomaly alerts, and advisor recommendations across Azure subscriptions and management groups. The integration with Azure Advisor for optimization recommendations is genuine value — Advisor flags underutilized VMs, reserved instance opportunities, and networking inefficiencies.</p>
+
+    <p>Azure's biggest cost management weakness is the complexity of its pricing model — Azure has hundreds of meter types, licensing nuances (particularly for Windows Server and SQL Server with Hybrid Benefit), and reservation coverage across dozens of service families that make comprehensive optimization more complex than AWS or GCP.</p>
+
+    <h2>Discount Programs: A Very Different Set of Rules</h2>
+
+    <p>The single biggest difference between the three cloud providers from a FinOps perspective is how they offer discounts for committed usage:</p>
+
+    <h3>AWS: Reserved Instances and Savings Plans</h3>
+    <p>Explicit commitments that you purchase — 1 or 3 year terms, discounts of 30–72% off on-demand. You actively decide when to buy, how much to commit, and what to buy. Maximum control, maximum active management required. See our <a href="/blog/aws-reserved-instances-vs-savings-plans.html">complete comparison of AWS commitment options</a>.</p>
+
+    <h3>GCP: Sustained Use Discounts (SUDs) — No Commitment Required</h3>
+    <p>GCP's most distinctive feature: <strong>Sustained Use Discounts (SUDs) apply automatically</strong> with no commitment required. If you run a Compute Engine VM for more than 25% of a month, GCP automatically discounts it. Run it for the full month, and you get up to 30% off the on-demand price — automatically, with no reservation or commitment needed.</p>
+
+    <p>This means GCP is inherently cheaper than AWS/Azure for stable, always-on workloads without any FinOps action. However, it also means teams sometimes assume they're getting maximum discounts when they're not — SUDs apply per-resource per-month, and fragmented or variable workloads may get less SUD than expected.</p>
+
+    <p>GCP also offers Committed Use Discounts (CUDs) for specific resource types (CPU/memory, or specific machine types) at 1 or 3 year commitments, delivering up to 57% off on-demand pricing.</p>
+
+    <h3>Azure: Reserved Instances + Azure Hybrid Benefit</h3>
+    <p>Azure's discount program mirrors AWS's Reserved Instances model — you commit to specific resource types for 1 or 3 years and receive discounts of 30–72%. Azure also has a significant additional discount lever that AWS doesn't: <strong>Azure Hybrid Benefit</strong>.</p>
+
+    <p>If your organization has existing Windows Server or SQL Server licenses with Software Assurance, Azure Hybrid Benefit lets you use those licenses on Azure VMs — reducing Windows VM costs by up to 40% and SQL Server costs by up to 55% compared to standard Azure pricing. For enterprises migrating Windows workloads to Azure, Hybrid Benefit is often the largest single cost lever.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Automatic Discounts</th>
+          <th>Commitment Required</th>
+          <th>Max Discount (1yr)</th>
+          <th>Max Discount (3yr)</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>AWS</strong></td>
+          <td>None (must buy SPs/RIs)</td>
+          <td>Yes</td>
+          <td>~40%</td>
+          <td>~72%</td>
+          <td>Flexible committed workloads</td>
+        </tr>
+        <tr>
+          <td><strong>GCP</strong></td>
+          <td>Up to 30% (SUDs)</td>
+          <td>Optional (CUDs for more)</td>
+          <td>30% SUD + 57% CUD</td>
+          <td>70%+ with CUD</td>
+          <td>Always-on workloads</td>
+        </tr>
+        <tr>
+          <td><strong>Azure</strong></td>
+          <td>Hybrid Benefit (if licensed)</td>
+          <td>Yes</td>
+          <td>~40%</td>
+          <td>~72%</td>
+          <td>Windows/.NET workloads</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Common Multi-Cloud Waste Patterns</h2>
+
+    <p>Beyond provider-specific optimization, there are waste patterns unique to multi-cloud environments:</p>
+
+    <h3>Duplicated Services Across Clouds</h3>
+    <p>Organizations sometimes run equivalent services on two clouds "just in case" — a Kafka cluster on AWS and a Pub/Sub equivalent on GCP, two separate database tiers for the same data, redundant monitoring stacks. This happens when teams choose services independently. The fix: designate primary clouds for specific use cases and enforce consistency.</p>
+
+    <h3>Cross-Cloud Data Transfer</h3>
+    <p>This is arguably the most insidious multi-cloud cost — data transfer between AWS and GCP (or AWS and Azure) goes through the public internet and is charged by both providers as egress. A typical rate: AWS charges $0.09/GB for internet egress, GCP charges $0.08/GB. Sending 10 TB/month between clouds costs roughly $1,700/month in data transfer alone. Multi-cloud architectures that require significant cross-cloud data flows often cost more in transfer than they save in compute arbitrage.</p>
+
+    <div class="callout amber">
+      <p><strong>The multi-cloud cost reality check:</strong> Before adopting a multi-cloud strategy, explicitly calculate the cross-cloud data transfer costs your architecture will generate. 10 TB/month of data flowing between AWS and GCP = ~$1,700/month just in egress fees. Many "multi-cloud" strategies fail the cost test when data transfer is properly accounted for.</p>
+    </div>
+
+    <h3>Duplicated Reserved Capacity</h3>
+    <p>Teams committed to Reserved Instances on AWS sometimes spin up equivalent workloads on GCP or Azure "to evaluate the platform" — effectively paying for duplicate compute capacity. Have a clear policy: evaluate multi-cloud before committing reserved capacity, or accept the waste of overlapping commitments during transition periods.</p>
+
+    <h3>Inconsistent Tagging Across Clouds</h3>
+    <p>AWS uses tags, GCP uses labels, Azure uses tags — the nomenclature is similar but the implementation differs. Tags that work in AWS Cost Explorer for chargeback don't automatically translate to GCP billing labels for the same view. Multi-cloud cost allocation requires a normalized tagging strategy that maps consistently across all three providers.</p>
+
+    <h2>Native vs. Third-Party Tools for Multi-Cloud</h2>
+
+    <p>Native tools from AWS, GCP, and Azure have a fundamental limitation for multi-cloud: each only sees its own cloud. You can't log into AWS Cost Explorer and see your GCP spend. This means multi-cloud FinOps requires either a dedicated cross-cloud tool or manual aggregation across three separate consoles.</p>
+
+    <p>Third-party tools that handle multi-cloud genuinely: CloudHealth, Apptio Cloudability, Harness CCM, and Spot.io all support AWS, GCP, and Azure in a single interface. The quality varies — most are better at AWS than GCP/Azure because AWS has more users and more API surface.</p>
+
+    <p><strong>Hero Savings</strong> currently provides deep AWS optimization with GCP and Azure support coming in 2026. For teams that are primarily AWS with secondary GCP or Azure usage, Hero Savings delivers the best results on the cloud that matters most while we expand multi-cloud coverage.</p>
+
+    <div class="callout green">
+      <p><strong>The practical multi-cloud FinOps approach:</strong> Pick one cloud as your primary FinOps focus — typically the one with 70%+ of your spend. Master optimization there first. Use native tools for secondary clouds until your spend on them justifies a dedicated tool. Resist the urge to boil the ocean across all three simultaneously.</p>
+    </div>
+
+    <div class="cta-box">
+      <h3>Optimize Your AWS Bill — The Cloud That Matters Most</h3>
+      <p>For most multi-cloud organizations, AWS represents the majority of cloud spend and the largest optimization opportunity. Hero Savings provides the deepest AWS optimization available, with GCP and Azure coming soon.</p>
+      <a href="https://cloudheroai.com/savings/" class="btn-primary">Start Free AWS Analysis →</a>
+    </div>
+
+    <div class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="faq-item">
+        <div class="faq-q">Is multi-cloud actually cheaper than single-cloud?</div>
+        <div class="faq-a">Often no, despite the perception. Multi-cloud multiplies operational complexity — you need expertise in multiple cloud providers, separate tooling, cross-cloud networking, and duplicate governance processes. The compute savings from arbitraging pricing differences between clouds are typically offset by operational overhead, cross-cloud data transfer costs, and the lack of volume discounts (which are better if your spend is concentrated on one provider). Multi-cloud makes sense for specific technical reasons (geographic coverage, specific service availability, regulatory requirements) — not primarily for cost savings.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">How does GCP's Sustained Use Discount compare to AWS Reserved Instances?</div>
+        <div class="faq-a">GCP's Sustained Use Discounts apply automatically (up to 30% off for full-month VMs, no action required). AWS Reserved Instances require explicit purchases but offer higher maximum discounts (up to 72% for 3-year commitments). For teams that want savings without active FinOps management, GCP's SUD model is simpler. For teams willing to actively manage commitments, AWS's RI/Savings Plan model offers higher potential savings. GCP also has Committed Use Discounts (CUDs) at 1 or 3 year terms that can deliver 57%+ savings on top of or instead of SUDs.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What is Azure Hybrid Benefit and who qualifies?</div>
+        <div class="faq-a">Azure Hybrid Benefit lets organizations with existing Windows Server and/or SQL Server licenses with Software Assurance (typically through Enterprise Agreements) use those licenses on Azure VMs, reducing VM costs by up to 40% for Windows Server and up to 55% for SQL Server compared to standard Azure pricing. If your organization has a Microsoft Enterprise Agreement and runs Windows or SQL Server workloads on Azure, you almost certainly qualify and should be using Hybrid Benefit. It's one of the most commonly missed Azure cost optimizations.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Which cloud provider is cheapest for general compute workloads?</div>
+        <div class="faq-a">Direct price comparison is complex because of different pricing models, discount structures, and instance type equivalencies. As a rough benchmark in 2026: for always-on Linux compute workloads with no commitments, GCP is often 10–15% cheaper than AWS due to Sustained Use Discounts. With maximum commitments (3-year), all three providers are roughly competitive (within 10–15% of each other). The more meaningful factor is usually where your existing expertise, data, and services are — moving workloads to a cheaper cloud typically costs more in migration and operational overhead than the price difference saves.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What's the best tool for managing multi-cloud costs in one place?</div>
+        <div class="faq-a">For true multi-cloud (significant spend on 2+ providers), CloudHealth, Apptio Cloudability, or Harness CCM offer the most comprehensive cross-cloud cost management. For primarily AWS-focused teams, <a href="/savings/">Hero Savings</a> provides superior AWS optimization depth with GCP and Azure support expanding in 2026. The key is to not sacrifice AWS optimization quality for the sake of a unified dashboard — if 75% of your spend is AWS, a tool that's mediocre at AWS but covers all three clouds may cost you more in missed AWS savings than it saves in unified reporting.</div>
+      </div>
+    </div>
+
+  </div>
+</article>
+
+<footer>
+  <span>© 2026 Cloud Hero AI</span>
+  <div style="display:flex;gap:20px"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/">Home</a></div>
+</footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const a=q.nextElementSibling;
+    a.style.display=a.style.display==='block'?'none':'block';
+    q.style.setProperty('--after-content', a.style.display==='block'?'"−"':'"+"');
+    q.classList.toggle('open');
+  });
+});
+document.fonts.ready.then(()=>{document.body.style.opacity='1';});
+</script>
+</body>
+</html>

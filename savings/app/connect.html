@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <title>Connect AWS — CloudHero AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Fraunces:ital,wght@1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #070B14;
+      --navy-2: #0D1424;
+      --navy-3: #111827;
+      --navy-4: #1a2235;
+      --cyan: #00D9FF;
+      --cyan-dim: rgba(0,217,255,0.12);
+      --cyan-glow: rgba(0,217,255,0.25);
+      --green: #00E5A0;
+      --purple: #7B6FFF;
+      --amber: #FFB547;
+      --red: #FF5F57;
+      --white: #F0F4FF;
+      --muted: #7A8CAB;
+      --faint: #3D4F6A;
+      --border: rgba(255,255,255,0.07);
+      --border-bright: rgba(0,217,255,0.2);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    @media (prefers-reduced-motion: reduce) { html, body { transition: none; } }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: 220px;
+      background: var(--navy-2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-logo {
+      padding: 24px 20px 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 12px;
+    }
+    .sidebar-logo span { color: var(--cyan); }
+
+    .nav-items { flex: 1; padding: 4px 0; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      margin: 2px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.15s ease;
+      border-left: 2px solid transparent;
+    }
+    .nav-item:hover { color: var(--white); background: rgba(255,255,255,0.04); }
+    .nav-item.active {
+      background: var(--cyan-dim);
+      color: var(--cyan);
+      border-left-color: var(--cyan);
+    }
+    .nav-item svg { flex-shrink: 0; opacity: 0.8; }
+    .nav-item.active svg { opacity: 1; }
+
+    .sidebar-bottom {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+    }
+    .user-email {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .signout-link {
+      font-size: 13px;
+      color: var(--faint);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+    .signout-link:hover { color: var(--red); }
+
+    /* ── Hamburger ── */
+    .hamburger {
+      display: none;
+      position: fixed;
+      top: 16px; left: 16px;
+      z-index: 200;
+      background: var(--navy-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 40px; height: 40px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+    }
+    .hamburger span {
+      display: block;
+      width: 18px; height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 90;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .hamburger { display: flex; }
+      .sidebar-overlay.open { display: block; }
+      .main-content { margin-left: 0 !important; }
+    }
+
+    /* ── Main Layout ── */
+    .main-content {
+      margin-left: 220px;
+      min-height: 100vh;
+      padding: 40px;
+    }
+
+    .page-header {
+      margin-bottom: 32px;
+    }
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+    .page-header p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    /* ── Connections list ── */
+    .connections-section { margin-bottom: 32px; }
+    .connections-section h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .connection-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--navy-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 10px;
+    }
+    .conn-info { display: flex; flex-direction: column; gap: 3px; }
+    .conn-account {
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      color: var(--white);
+      font-weight: 700;
+    }
+    .conn-region { font-size: 13px; color: var(--muted); }
+    .conn-actions { display: flex; align-items: center; gap: 12px; }
+    .badge-connected {
+      background: rgba(0,229,160,0.12);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(0,229,160,0.25);
+    }
+    .btn-remove {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-remove:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── Form Card ── */
+    .form-card {
+      max-width: 600px;
+      background: var(--navy-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .form-card h2 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .info-banner {
+      background: var(--cyan-dim);
+      border: 1px solid var(--border-bright);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: var(--white);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .info-banner a { color: var(--cyan); text-decoration: none; }
+    .info-banner a:hover { text-decoration: underline; }
+
+    .form-group { margin-bottom: 16px; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    select {
+      width: 100%;
+      padding: 11px 14px;
+      background: var(--navy-3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--white);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .mono-input {
+      font-family: 'Space Mono', monospace !important;
+      letter-spacing: 0.02em;
+    }
+
+    input:focus, select:focus { border-color: var(--border-bright); }
+    input::placeholder { color: var(--faint); }
+    input:disabled, select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    select option { background: var(--navy-3); }
+
+    .password-wrap { position: relative; }
+    .password-wrap input { padding-right: 44px; }
+    .toggle-secret {
+      position: absolute;
+      right: 12px; top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--faint);
+      padding: 4px;
+      line-height: 1;
+      transition: color 0.15s;
+    }
+    .toggle-secret:hover { color: var(--cyan); }
+
+    .btn-green {
+      width: 100%;
+      padding: 13px 20px;
+      background: var(--green);
+      border: none;
+      border-radius: 10px;
+      color: var(--navy);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .btn-green:hover { filter: brightness(1.08); }
+    .btn-green:disabled { opacity: 0.6; cursor: not-allowed; filter: none; }
+
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(7,11,20,0.3);
+      border-top-color: var(--navy);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+
+    .error-msg {
+      color: var(--red);
+      font-size: 13px;
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: rgba(255,95,87,0.1);
+      border: 1px solid rgba(255,95,87,0.2);
+      border-radius: 8px;
+      display: none;
+    }
+
+    .success-msg {
+      color: var(--green);
+      font-size: 13px;
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: rgba(0,229,160,0.1);
+      border: 1px solid rgba(0,229,160,0.2);
+      border-radius: 8px;
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      .main-content { padding: 24px 16px; }
+      .form-card { padding: 24px 20px; }
+    }
+  </style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6FG0M0E54M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6FG0M0E54M");</script>
+</head>
+<body>
+  <!-- Hamburger -->
+  <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <a href="/" class="sidebar-logo">Cloud<span>Hero</span> AI</a>
+    <nav class="nav-items">
+      <a href="/savings/app/dashboard.html" class="nav-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="/savings/app/connect.html" class="nav-item active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        Connect AWS
+      </a>
+      <a href="/savings/app/audit.html" class="nav-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Run Audit
+      </a>
+      <a href="/savings/app/report.html" class="nav-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Reports
+      </a>
+      <a href="/savings/app/billing.html" class="nav-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Billing
+      </a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-email" id="user-email">Loading...</div>
+      <a class="signout-link" onclick="signOut()">Sign out</a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <div class="page-header">
+      <h1>Connect Cloud Account</h1>
+      <p>Link AWS, Google Cloud, or Azure using read-only credentials to start finding savings.</p>
+    </div>
+
+    <!-- Cloud provider tabs -->
+    <div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;">
+      <button onclick="switchProvider('aws')" id="tab-aws"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #ff9900;background:#1f2937;color:#ff9900;font-size:14px;font-weight:600;cursor:pointer;">
+        🟠 Amazon AWS
+      </button>
+      <button onclick="switchProvider('gcp')" id="tab-gcp"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        🔵 Google Cloud
+      </button>
+      <button onclick="switchProvider('azure')" id="tab-azure"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        🔷 Microsoft Azure
+      </button>
+    </div>
+
+    <!-- Existing connections -->
+    <div class="connections-section" id="connections-section" style="display:none;">
+      <h2>Connected Accounts</h2>
+      <div id="connections-list"></div>
+    </div>
+
+    <!-- AWS form -->
+    <div class="form-card" id="form-aws">
+      <h2>Read-only IAM credentials</h2>
+
+      <div class="info-banner">
+        🔐 We only need <strong>read access</strong>. Create a read-only IAM user with <code>ReadOnlyAccess</code> policy. Takes 2 minutes. &nbsp;
+        <a href="https://console.aws.amazon.com/iam/home#/users" target="_blank" rel="noopener">Open AWS IAM Console →</a>
+      </div>
+
+      <form id="connect-form" onsubmit="handleConnect(event)">
+        <div class="form-group">
+          <label for="access-key-id">AWS Access Key ID</label>
+          <input type="text" id="access-key-id" class="mono-input" placeholder="AKIAIOSFODNN7EXAMPLE" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="secret-key">AWS Secret Access Key</label>
+          <div class="password-wrap">
+            <input type="password" id="secret-key" class="mono-input" placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" autocomplete="off" required>
+            <button type="button" class="toggle-secret" onclick="toggleSecret()" id="toggle-btn" aria-label="Toggle visibility">
+              <svg id="eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="region">Default Region</label>
+          <select id="region">
+            <option value="us-east-1">us-east-1 — US East (N. Virginia)</option>
+            <option value="us-west-2">us-west-2 — US West (Oregon)</option>
+            <option value="eu-west-1">eu-west-1 — Europe (Ireland)</option>
+            <option value="ap-southeast-1">ap-southeast-1 — Asia Pacific (Singapore)</option>
+            <option value="eu-central-1">eu-central-1 — Europe (Frankfurt)</option>
+            <option value="ap-northeast-1">ap-northeast-1 — Asia Pacific (Tokyo)</option>
+            <option value="sa-east-1">sa-east-1 — South America (São Paulo)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-green" id="connect-btn">
+          <div class="spinner" id="connect-spinner"></div>
+          <span id="connect-btn-text">Connect &amp; verify →</span>
+        </button>
+        <div class="error-msg" id="connect-error"></div>
+        <div class="success-msg" id="connect-success"></div>
+      </form>
+    </div><!-- /form-aws -->
+
+    <!-- GCP form -->
+    <div class="form-card" id="form-gcp" style="display:none;">
+      <h2>Google Cloud Service Account</h2>
+      <div class="info-banner">
+        🔐 Create a service account with <strong>Viewer</strong> role + <strong>Cloud Asset Viewer</strong>. Download the JSON key file. &nbsp;
+        <a href="https://console.cloud.google.com/iam-admin/serviceaccounts" target="_blank" rel="noopener">Open GCP Console →</a>
+      </div>
+      <form id="gcp-connect-form" onsubmit="handleGCPConnect(event)">
+        <div class="form-group">
+          <label for="gcp-project-id">GCP Project ID</label>
+          <input type="text" id="gcp-project-id" class="mono-input" placeholder="my-project-123456" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="gcp-credentials">Service Account JSON</label>
+          <textarea id="gcp-credentials" class="mono-input" rows="6"
+            style="width:100%;resize:vertical;font-size:12px;background:var(--navy-4,#1a2235);border:1px solid rgba(255,255,255,0.12);color:#e5e7eb;border-radius:8px;padding:12px;font-family:monospace;"
+            placeholder='{"type":"service_account","project_id":"..."}' required></textarea>
+          <small style="color:#4b5563;font-size:12px;">Paste the contents of your service account .json key file</small>
+        </div>
+        <button type="submit" class="btn-green" id="gcp-connect-btn">
+          <div class="spinner" id="gcp-spinner" style="display:none;"></div>
+          <span id="gcp-btn-text">Connect GCP Project →</span>
+        </button>
+        <div class="error-msg" id="gcp-error"></div>
+        <div class="success-msg" id="gcp-success"></div>
+      </form>
+    </div>
+
+    <!-- Azure form -->
+    <div class="form-card" id="form-azure" style="display:none;">
+      <h2>Azure Service Principal</h2>
+      <div class="info-banner">
+        🔐 Register an app in Azure AD, assign the <strong>Reader</strong> role at subscription scope, and create a client secret. &nbsp;
+        <a href="https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade" target="_blank" rel="noopener">Open Azure Portal →</a>
+      </div>
+      <form id="azure-connect-form" onsubmit="handleAzureConnect(event)">
+        <div class="form-group">
+          <label for="azure-tenant-id">Tenant (Directory) ID</label>
+          <input type="text" id="azure-tenant-id" class="mono-input" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="azure-client-id">Application (Client) ID</label>
+          <input type="text" id="azure-client-id" class="mono-input" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="azure-client-secret">Client Secret Value</label>
+          <input type="password" id="azure-client-secret" class="mono-input" placeholder="Client secret value (not the ID)" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="azure-subscription-id">Subscription ID</label>
+          <input type="text" id="azure-subscription-id" class="mono-input" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off" required>
+        </div>
+        <button type="submit" class="btn-green" id="azure-connect-btn">
+          <div class="spinner" id="azure-spinner" style="display:none;"></div>
+          <span id="azure-btn-text">Connect Azure Subscription →</span>
+        </button>
+        <div class="error-msg" id="azure-error"></div>
+        <div class="success-msg" id="azure-success"></div>
+      </form>
+    </div>
+
+  </main>
+
+  <script>
+    const API = '';
+    const token = () => localStorage.getItem('ch_token');
+
+    async function apiFetch(path, opts = {}) {
+      const res = await fetch(API + path, {
+        ...opts,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token()}`,
+          ...(opts.headers || {})
+        }
+      });
+      if (res.status === 401) {
+        localStorage.removeItem('ch_token');
+        window.location.href = '/savings/app/login.html';
+        return;
+      }
+      return res;
+    }
+
+    async function requireAuth() {
+      if (!token()) { window.location.href = '/savings/app/login.html'; return null; }
+      const res = await apiFetch('/api/auth/me');
+      if (!res || !res.ok) {
+        localStorage.removeItem('ch_token');
+        window.location.href = '/savings/app/login.html';
+        return null;
+      }
+      return await res.json();
+    }
+
+    function signOut() {
+      localStorage.removeItem('ch_token');
+      window.location.href = '/savings/app/login.html';
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebar-overlay').classList.toggle('open');
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebar-overlay').classList.remove('open');
+    }
+
+    function toggleSecret() {
+      const input = document.getElementById('secret-key');
+      const icon = document.getElementById('eye-icon');
+      const isHidden = input.type === 'password';
+      input.type = isHidden ? 'text' : 'password';
+      icon.innerHTML = isHidden
+        ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'
+        : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+    }
+
+    async function loadConnections() {
+      try {
+        const res = await apiFetch('/api/connect/aws');
+        if (!res || !res.ok) return;
+        const data = await res.json();
+        const connections = Array.isArray(data) ? data : (data.connections || []);
+        if (connections.length === 0) return;
+
+        const section = document.getElementById('connections-section');
+        const list = document.getElementById('connections-list');
+        section.style.display = 'block';
+
+        list.innerHTML = connections.map(conn => `
+          <div class="connection-card" id="conn-${conn.id}">
+            <div class="conn-info">
+              <div class="conn-account">${conn.account_id || conn.accountId || 'Unknown Account'}</div>
+              <div class="conn-region">${conn.region || 'N/A'}</div>
+            </div>
+            <div class="conn-actions">
+              <span class="badge-connected">✓ Connected</span>
+              <button class="btn-remove" onclick="removeConnection('${conn.id}')">Remove</button>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        // No connections or API error — ignore silently
+      }
+    }
+
+    async function removeConnection(id) {
+      if (!confirm('Remove this AWS connection?')) return;
+      try {
+        const res = await apiFetch(`/api/connect/aws/${id}`, { method: 'DELETE' });
+        if (res && res.ok) {
+          const card = document.getElementById(`conn-${id}`);
+          if (card) card.remove();
+          const list = document.getElementById('connections-list');
+          if (list.children.length === 0) {
+            document.getElementById('connections-section').style.display = 'none';
+          }
+        }
+      } catch (e) { /* ignore */ }
+    }
+
+    async function handleConnect(e) {
+      e.preventDefault();
+      const errorEl = document.getElementById('connect-error');
+      const successEl = document.getElementById('connect-success');
+      errorEl.style.display = 'none';
+      successEl.style.display = 'none';
+
+      const access_key_id = document.getElementById('access-key-id').value.trim();
+      const secret_access_key = document.getElementById('secret-key').value.trim();
+      const region = document.getElementById('region').value;
+
+      const btn = document.getElementById('connect-btn');
+      const spinner = document.getElementById('connect-spinner');
+      const btnText = document.getElementById('connect-btn-text');
+
+      btn.disabled = true;
+      spinner.style.display = 'block';
+      btnText.textContent = 'Verifying credentials...';
+      document.getElementById('connect-form').querySelectorAll('input,select').forEach(el => el.disabled = true);
+
+      try {
+        const res = await apiFetch('/api/connect/aws', {
+          method: 'POST',
+          body: JSON.stringify({ access_key_id, secret_access_key, region })
+        });
+
+        if (!res) return;
+        const data = await res.json();
+
+        if (!res.ok) {
+          errorEl.textContent = data.message || data.error || 'Failed to connect. Check your credentials.';
+          errorEl.style.display = 'block';
+          btn.disabled = false;
+          spinner.style.display = 'none';
+          btnText.textContent = 'Connect & verify →';
+          document.getElementById('connect-form').querySelectorAll('input,select').forEach(el => el.disabled = false);
+          return;
+        }
+
+        const accountId = data.account_id || data.accountId || 'your account';
+        successEl.textContent = `✓ Connected to AWS account ${accountId}`;
+        successEl.style.display = 'block';
+
+        setTimeout(() => {
+          window.location.href = '/savings/app/dashboard.html';
+        }, 1500);
+      } catch (err) {
+        errorEl.textContent = 'Network error. Please try again.';
+        errorEl.style.display = 'block';
+        btn.disabled = false;
+        spinner.style.display = 'none';
+        btnText.textContent = 'Connect & verify →';
+        document.getElementById('connect-form').querySelectorAll('input,select').forEach(el => el.disabled = false);
+      }
+    }
+
+    // ── Cloud Provider Tab Switching ──
+    const PROVIDER_COLORS = { aws: '#ff9900', gcp: '#4285f4', azure: '#0078d4' };
+    let currentProvider = 'aws';
+
+    function switchProvider(provider) {
+      currentProvider = provider;
+      ['aws', 'gcp', 'azure'].forEach(p => {
+        const tab = document.getElementById('tab-' + p);
+        const form = document.getElementById('form-' + p);
+        if (p === provider) {
+          tab.style.borderColor = PROVIDER_COLORS[p];
+          tab.style.color = PROVIDER_COLORS[p];
+          tab.style.background = '#1f2937';
+          form.style.display = 'block';
+        } else {
+          tab.style.borderColor = '#1f2937';
+          tab.style.color = '#9ca3af';
+          tab.style.background = '#1f2937';
+          form.style.display = 'none';
+        }
+      });
+    }
+
+    // ── GCP Connect ──
+    async function handleGCPConnect(e) {
+      e.preventDefault();
+      const errEl = document.getElementById('gcp-error');
+      const succEl = document.getElementById('gcp-success');
+      errEl.style.display = 'none'; succEl.style.display = 'none';
+
+      const project_id = document.getElementById('gcp-project-id').value.trim();
+      const credentials_json = document.getElementById('gcp-credentials').value.trim();
+
+      // Validate JSON
+      try { JSON.parse(credentials_json); } catch (e) {
+        errEl.textContent = 'Credentials must be valid JSON.';
+        errEl.style.display = 'block'; return;
+      }
+
+      const btn = document.getElementById('gcp-connect-btn');
+      const spinner = document.getElementById('gcp-spinner');
+      const btnText = document.getElementById('gcp-btn-text');
+      btn.disabled = true; spinner.style.display = 'block'; btnText.textContent = 'Connecting...';
+
+      try {
+        const res = await apiFetch('/api/gcp/connect', { method: 'POST', body: JSON.stringify({ project_id, credentials_json }) });
+        if (!res) return;
+        const data = await res.json();
+
+        if (!res.ok) {
+          errEl.textContent = data.error || 'Failed to connect GCP project.';
+          errEl.style.display = 'block';
+        } else {
+          succEl.textContent = `✓ GCP project ${project_id} connected successfully`;
+          succEl.style.display = 'block';
+          setTimeout(() => window.location.href = '/savings/app/dashboard.html', 1500);
+        }
+      } catch (err) {
+        errEl.textContent = 'Network error. Please try again.';
+        errEl.style.display = 'block';
+      }
+      btn.disabled = false; spinner.style.display = 'none'; btnText.textContent = 'Connect GCP Project →';
+    }
+
+    // ── Azure Connect ──
+    async function handleAzureConnect(e) {
+      e.preventDefault();
+      const errEl = document.getElementById('azure-error');
+      const succEl = document.getElementById('azure-success');
+      errEl.style.display = 'none'; succEl.style.display = 'none';
+
+      const tenant_id = document.getElementById('azure-tenant-id').value.trim();
+      const client_id = document.getElementById('azure-client-id').value.trim();
+      const client_secret = document.getElementById('azure-client-secret').value.trim();
+      const subscription_id = document.getElementById('azure-subscription-id').value.trim();
+
+      const btn = document.getElementById('azure-connect-btn');
+      const spinner = document.getElementById('azure-spinner');
+      const btnText = document.getElementById('azure-btn-text');
+      btn.disabled = true; spinner.style.display = 'block'; btnText.textContent = 'Connecting...';
+
+      try {
+        const res = await apiFetch('/api/azure/connect', { method: 'POST', body: JSON.stringify({ tenant_id, client_id, client_secret, subscription_id }) });
+        if (!res) return;
+        const data = await res.json();
+
+        if (!res.ok) {
+          errEl.textContent = data.error || 'Failed to connect Azure subscription.';
+          errEl.style.display = 'block';
+        } else {
+          succEl.textContent = `✓ Azure subscription ${subscription_id.slice(0,8)}... connected successfully`;
+          succEl.style.display = 'block';
+          setTimeout(() => window.location.href = '/savings/app/dashboard.html', 1500);
+        }
+      } catch (err) {
+        errEl.textContent = 'Network error. Please try again.';
+        errEl.style.display = 'block';
+      }
+      btn.disabled = false; spinner.style.display = 'none'; btnText.textContent = 'Connect Azure Subscription →';
+    }
+
+    // Init
+    (async () => {
+      const user = await requireAuth();
+      if (!user) return;
+      document.getElementById('user-email').textContent = user.email || 'Account';
+      await loadConnections();
+      document.fonts.ready.then(() => { document.body.style.opacity = '1'; });
+      setTimeout(() => { document.body.style.opacity = '1'; }, 500);
+    })();
+  </script>
+</body>
+</html>

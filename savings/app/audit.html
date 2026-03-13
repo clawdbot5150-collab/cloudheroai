@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <title>Run Audit — CloudHero AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Fraunces:ital,wght@1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #070B14;
+      --navy-2: #0D1424;
+      --navy-3: #111827;
+      --navy-4: #1a2235;
+      --cyan: #00D9FF;
+      --cyan-dim: rgba(0,217,255,0.12);
+      --cyan-glow: rgba(0,217,255,0.25);
+      --green: #00E5A0;
+      --purple: #7B6FFF;
+      --amber: #FFB547;
+      --red: #FF5F57;
+      --white: #F0F4FF;
+      --muted: #7A8CAB;
+      --faint: #3D4F6A;
+      --border: rgba(255,255,255,0.07);
+      --border-bright: rgba(0,217,255,0.2);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    @media (prefers-reduced-motion: reduce) { html, body { transition: none; } }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: 220px;
+      background: var(--navy-2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+    .sidebar-logo {
+      padding: 24px 20px 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+    .sidebar-logo span { color: var(--cyan); }
+    .nav-items { flex: 1; padding: 4px 0; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; margin: 2px 12px;
+      border-radius: 8px; text-decoration: none;
+      color: var(--muted); font-size: 14px; font-weight: 500;
+      transition: all 0.15s ease;
+      border-left: 2px solid transparent;
+    }
+    .nav-item:hover { color: var(--white); background: rgba(255,255,255,0.04); }
+    .nav-item.active { background: var(--cyan-dim); color: var(--cyan); border-left-color: var(--cyan); }
+    .nav-item svg { flex-shrink: 0; opacity: 0.8; }
+    .nav-item.active svg { opacity: 1; }
+    .sidebar-bottom { padding: 16px 20px; border-top: 1px solid var(--border); }
+    .user-email { font-size: 12px; color: var(--muted); margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .signout-link { font-size: 13px; color: var(--faint); text-decoration: none; cursor: pointer; transition: color 0.15s; }
+    .signout-link:hover { color: var(--red); }
+
+    .hamburger {
+      display: none; position: fixed; top: 16px; left: 16px; z-index: 200;
+      background: var(--navy-2); border: 1px solid var(--border); border-radius: 8px;
+      width: 40px; height: 40px; align-items: center; justify-content: center;
+      cursor: pointer; flex-direction: column; gap: 5px; padding: 8px;
+    }
+    .hamburger span { display: block; width: 18px; height: 2px; background: var(--white); border-radius: 2px; }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 90; }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .hamburger { display: flex; }
+      .sidebar-overlay.open { display: block; }
+      .main-content { margin-left: 0 !important; }
+    }
+
+    /* Main */
+    .main-content { margin-left: 220px; min-height: 100vh; padding: 40px; }
+    .page-header { margin-bottom: 32px; }
+    .page-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+    .page-header p { color: var(--muted); font-size: 15px; }
+
+    /* Account selector */
+    .launch-card {
+      max-width: 640px;
+      background: var(--navy-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .launch-card h2 { font-size: 17px; font-weight: 700; margin-bottom: 16px; }
+
+    .account-radios { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .account-radio {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--navy-3);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .account-radio:hover { border-color: var(--border-bright); }
+    .account-radio.selected { border-color: var(--cyan); background: var(--cyan-dim); }
+    .account-radio input[type="radio"] { accent-color: var(--cyan); width: 16px; height: 16px; cursor: pointer; }
+    .account-radio-label { flex: 1; }
+    .account-id { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: var(--white); }
+    .account-region { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .launch-desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .launch-desc strong { color: var(--white); }
+
+    .btn-start {
+      width: 100%;
+      padding: 16px 24px;
+      background: var(--green);
+      border: none;
+      border-radius: 12px;
+      color: var(--navy);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-start:hover { filter: brightness(1.08); }
+    .btn-start:disabled { opacity: 0.5; cursor: not-allowed; filter: none; }
+
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(7,11,20,0.3);
+      border-top-color: var(--navy);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+
+    .error-msg {
+      color: var(--red);
+      font-size: 13px;
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: rgba(255,95,87,0.1);
+      border: 1px solid rgba(255,95,87,0.2);
+      border-radius: 8px;
+      display: none;
+    }
+
+    /* No connections state */
+    .no-connections {
+      max-width: 640px;
+      background: var(--navy-2);
+      border: 1px solid var(--border-bright);
+      border-radius: 16px;
+      padding: 40px 32px;
+      text-align: center;
+    }
+    .no-connections h2 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .no-connections p { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+    .btn-cyan {
+      display: inline-block;
+      padding: 12px 24px;
+      background: var(--cyan);
+      border: none;
+      border-radius: 10px;
+      color: var(--navy);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: filter 0.2s;
+    }
+    .btn-cyan:hover { filter: brightness(1.1); }
+
+    /* Progress section */
+    #progress-section { display: none; max-width: 640px; }
+
+    .terminal {
+      background: #010409;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      color: #a8b3c2;
+      min-height: 220px;
+      max-height: 400px;
+      overflow-y: auto;
+      line-height: 1.8;
+      transition: border-color 0.4s;
+    }
+    .terminal.complete { border-color: var(--green); box-shadow: 0 0 20px rgba(0,229,160,0.12); }
+    .terminal-line { display: flex; gap: 8px; margin-bottom: 2px; }
+    .terminal-prompt { color: var(--green); flex-shrink: 0; }
+    .terminal-text { color: #c9d1d9; }
+    .terminal-text.cyan { color: var(--cyan); }
+    .terminal-text.green { color: var(--green); }
+    .terminal-text.amber { color: var(--amber); }
+    .terminal-text.muted { color: var(--muted); }
+
+    .progress-bar-wrap {
+      margin-top: 16px;
+      background: var(--navy-3);
+      border-radius: 8px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      border-radius: 8px;
+      transition: width 1s linear;
+      width: 0%;
+    }
+    @media (prefers-reduced-motion: reduce) { .progress-bar-fill { transition: none; } }
+
+    .progress-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .complete-banner {
+      display: none;
+      margin-top: 16px;
+      background: rgba(0,229,160,0.1);
+      border: 1px solid rgba(0,229,160,0.25);
+      border-radius: 10px;
+      padding: 16px 20px;
+      color: var(--green);
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .btn-report {
+      display: none;
+      margin-top: 16px;
+      width: 100%;
+      padding: 13px 20px;
+      background: var(--green);
+      border: none;
+      border-radius: 10px;
+      color: var(--navy);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      text-align: center;
+      cursor: pointer;
+      transition: filter 0.2s;
+    }
+    .btn-report:hover { filter: brightness(1.08); }
+
+    @media (max-width: 900px) {
+      .main-content { padding: 24px 16px; }
+    }
+  </style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6FG0M0E54M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6FG0M0E54M");</script>
+</head>
+<body>
+  <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <a href="/" class="sidebar-logo">Cloud<span>Hero</span> AI</a>
+    <nav class="nav-items">
+      <a href="/savings/app/dashboard.html" class="nav-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="/savings/app/connect.html" class="nav-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        Connect AWS
+      </a>
+      <a href="/savings/app/audit.html" class="nav-item active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Run Audit
+      </a>
+      <a href="/savings/app/report.html" class="nav-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Reports
+      </a>
+      <a href="/savings/app/billing.html" class="nav-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Billing
+      </a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-email" id="user-email">Loading...</div>
+      <a class="signout-link" onclick="signOut()">Sign out</a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h1>Run Savings Audit</h1>
+      <p>Scan your AWS account for unused resources and cost savings opportunities.</p>
+    </div>
+
+    <!-- Launch card shown while no audit running -->
+    <div id="launch-section">
+      <div class="launch-card" id="launch-card">
+        <h2>Select AWS Account</h2>
+        <div class="account-radios" id="account-radios">
+          <!-- Loaded dynamically -->
+        </div>
+
+        <div class="launch-desc">
+          <strong>What we'll scan:</strong> EC2 instances, EBS volumes, RDS databases, Elastic IPs, and S3 buckets — across 4 regions. 
+          Typical scan takes <strong>2–4 minutes</strong>.
+        </div>
+
+        <button class="btn-start" id="start-btn" onclick="startAudit()" disabled>
+          <div class="spinner" id="start-spinner"></div>
+          <span id="start-btn-text">🔍 Start Savings Audit</span>
+        </button>
+        <div class="error-msg" id="start-error"></div>
+      </div>
+    </div>
+
+    <!-- Progress section shown after audit starts -->
+    <div id="progress-section">
+      <div style="max-width: 640px;">
+        <h2 style="font-size:18px;font-weight:700;margin-bottom:16px;color:var(--white);">Audit in Progress</h2>
+        <div class="terminal" id="terminal"></div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-label">
+          <span id="progress-status">Initializing...</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="complete-banner" id="complete-banner"></div>
+        <a class="btn-report" id="btn-report">View full report →</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const API = '';
+    const token = () => localStorage.getItem('ch_token');
+
+    async function apiFetch(path, opts = {}) {
+      const res = await fetch(API + path, {
+        ...opts,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token()}`,
+          ...(opts.headers || {})
+        }
+      });
+      if (res.status === 401) {
+        localStorage.removeItem('ch_token');
+        window.location.href = '/savings/app/login.html';
+        return;
+      }
+      return res;
+    }
+
+    async function requireAuth() {
+      if (!token()) { window.location.href = '/savings/app/login.html'; return null; }
+      const res = await apiFetch('/api/auth/me');
+      if (!res || !res.ok) {
+        localStorage.removeItem('ch_token');
+        window.location.href = '/savings/app/login.html';
+        return null;
+      }
+      return await res.json();
+    }
+
+    function signOut() { localStorage.removeItem('ch_token'); window.location.href = '/savings/app/login.html'; }
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebar-overlay').classList.toggle('open'); }
+    function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-overlay').classList.remove('open'); }
+
+    let selectedConnectionId = null;
+    let auditId = null;
+    let pollInterval = null;
+    let progressInterval = null;
+    let currentProgress = 0;
+
+    async function loadConnections() {
+      try {
+        const res = await apiFetch('/api/connect/aws');
+        if (!res || !res.ok) { showNoConnections(); return; }
+        const data = await res.json();
+        const conns = Array.isArray(data) ? data : (data.connections || []);
+
+        if (conns.length === 0) { showNoConnections(); return; }
+
+        const radios = document.getElementById('account-radios');
+        if (conns.length === 1) {
+          // Auto-select if only one
+          selectedConnectionId = conns[0].id;
+          document.getElementById('start-btn').disabled = false;
+          radios.innerHTML = `
+            <div class="account-radio selected" id="radio-${conns[0].id}">
+              <input type="radio" name="connection" value="${conns[0].id}" checked>
+              <div class="account-radio-label">
+                <div class="account-id">${conns[0].account_id || conns[0].accountId || 'AWS Account'}</div>
+                <div class="account-region">${conns[0].region || 'N/A'}</div>
+              </div>
+            </div>
+          `;
+        } else {
+          radios.innerHTML = conns.map(c => `
+            <div class="account-radio" id="radio-${c.id}" onclick="selectConnection('${c.id}')">
+              <input type="radio" name="connection" value="${c.id}" onchange="selectConnection('${c.id}')">
+              <div class="account-radio-label">
+                <div class="account-id">${c.account_id || c.accountId || 'AWS Account'}</div>
+                <div class="account-region">${c.region || 'N/A'}</div>
+              </div>
+            </div>
+          `).join('');
+        }
+      } catch (e) {
+        showNoConnections();
+      }
+    }
+
+    function selectConnection(id) {
+      selectedConnectionId = id;
+      document.querySelectorAll('.account-radio').forEach(el => {
+        el.classList.toggle('selected', el.id === `radio-${id}`);
+        const radio = el.querySelector('input[type="radio"]');
+        if (radio) radio.checked = el.id === `radio-${id}`;
+      });
+      document.getElementById('start-btn').disabled = false;
+    }
+
+    function showNoConnections() {
+      const launchCard = document.getElementById('launch-card');
+      launchCard.innerHTML = `
+        <div class="no-connections">
+          <h2>No AWS accounts connected</h2>
+          <p>Connect your AWS account first to run a savings audit.</p>
+          <a href="/savings/app/connect.html" class="btn-cyan">Connect AWS Account →</a>
+        </div>
+      `;
+      launchCard.style.padding = '0';
+      launchCard.style.background = 'none';
+      launchCard.style.border = 'none';
+    }
+
+    function addTerminalLine(text, type = '') {
+      const terminal = document.getElementById('terminal');
+      const line = document.createElement('div');
+      line.className = 'terminal-line';
+      const now = new Date();
+      const time = now.toTimeString().slice(0, 8);
+      line.innerHTML = `<span class="terminal-prompt">[${time}]</span><span class="terminal-text ${type}">${text}</span>`;
+      terminal.appendChild(line);
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function setProgress(pct, label) {
+      const fill = document.getElementById('progress-fill');
+      const pctEl = document.getElementById('progress-pct');
+      const statusEl = document.getElementById('progress-status');
+      fill.style.width = pct + '%';
+      pctEl.textContent = Math.round(pct) + '%';
+      if (label) statusEl.textContent = label;
+    }
+
+    async function startAudit() {
+      if (!selectedConnectionId) return;
+
+      document.getElementById('start-error').style.display = 'none';
+      const btn = document.getElementById('start-btn');
+      const spinner = document.getElementById('start-spinner');
+      const btnText = document.getElementById('start-btn-text');
+
+      btn.disabled = true;
+      spinner.style.display = 'block';
+      btnText.textContent = 'Starting audit...';
+
+      try {
+        const res = await apiFetch('/api/audit/run', {
+          method: 'POST',
+          body: JSON.stringify({ connection_id: selectedConnectionId })
+        });
+        if (!res) return;
+        const data = await res.json();
+
+        if (!res.ok) {
+          const errEl = document.getElementById('start-error');
+          errEl.textContent = data.message || data.error || 'Failed to start audit.';
+          errEl.style.display = 'block';
+          btn.disabled = false;
+          spinner.style.display = 'none';
+          btnText.textContent = '🔍 Start Savings Audit';
+          return;
+        }
+
+        auditId = data.audit_id || data.id;
+
+        // Switch to progress view
+        document.getElementById('launch-section').style.display = 'none';
+        document.getElementById('progress-section').style.display = 'block';
+
+        // Start fake smooth progress (0→90% over 2 min)
+        currentProgress = 0;
+        startFakeProgress();
+
+        // Begin polling
+        addTerminalLine('🔍 Connecting to AWS account...', 'cyan');
+        pollInterval = setInterval(pollAudit, 3000);
+        setTimeout(() => addTerminalLine('📡 Scanning us-east-1...', ''), 5000);
+        setTimeout(() => addTerminalLine('📡 Scanning us-west-2...', ''), 18000);
+        setTimeout(() => addTerminalLine('📡 Scanning eu-west-1...', ''), 35000);
+        setTimeout(() => addTerminalLine('📡 Scanning ap-southeast-1...', ''), 52000);
+        setTimeout(() => addTerminalLine('🔎 Analyzing EC2 instances...', 'muted'), 65000);
+        setTimeout(() => addTerminalLine('🔎 Analyzing EBS volumes...', 'muted'), 80000);
+        setTimeout(() => addTerminalLine('🔎 Analyzing RDS databases...', 'muted'), 95000);
+        setTimeout(() => addTerminalLine('🔎 Analyzing Elastic IPs...', 'muted'), 108000);
+        setTimeout(() => addTerminalLine('🔎 Analyzing S3 buckets...', 'muted'), 118000);
+
+      } catch (err) {
+        const errEl = document.getElementById('start-error');
+        errEl.textContent = 'Network error. Please try again.';
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        spinner.style.display = 'none';
+        btnText.textContent = '🔍 Start Savings Audit';
+      }
+    }
+
+    function startFakeProgress() {
+      const totalMs = 120000; // 2 minutes to 90%
+      const steps = 90;
+      const stepMs = totalMs / steps;
+      let step = 0;
+      progressInterval = setInterval(() => {
+        step++;
+        currentProgress = Math.min(90, step);
+        setProgress(currentProgress, currentProgress < 30 ? 'Connecting...' : currentProgress < 60 ? 'Scanning regions...' : 'Analyzing resources...');
+        if (step >= steps) clearInterval(progressInterval);
+      }, stepMs);
+    }
+
+    async function pollAudit() {
+      if (!auditId) return;
+      try {
+        const res = await apiFetch(`/api/audit/${auditId}`);
+        if (!res || !res.ok) return;
+        const data = await res.json();
+        const status = (data.status || '').toLowerCase();
+
+        // Add new log lines from API if available
+        if (data.log_lines && Array.isArray(data.log_lines)) {
+          const terminal = document.getElementById('terminal');
+          // Only add lines we haven't seen yet
+          const existingCount = terminal.querySelectorAll('.terminal-line').length;
+          data.log_lines.slice(existingCount).forEach(line => addTerminalLine(line, ''));
+        }
+
+        if (status === 'complete' || status === 'completed') {
+          completeAudit(data);
+        } else if (status === 'failed') {
+          failAudit(data.error || data.message || 'Audit failed. Please try again.');
+        }
+      } catch (e) { /* keep polling */ }
+    }
+
+    function completeAudit(data) {
+      clearInterval(pollInterval);
+      clearInterval(progressInterval);
+
+      // Snap to 100%
+      setProgress(100, 'Scan complete!');
+      document.getElementById('terminal').classList.add('complete');
+
+      const monthlySavings = data.monthly_savings ?? data.monthlySavings ?? data.total_monthly_waste ?? null;
+      const savingsStr = monthlySavings !== null
+        ? `$${Number(monthlySavings).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
+        : 'significant savings';
+      addTerminalLine(`✓ Scan complete! ${savingsStr}/month in potential savings found.`, 'green');
+
+      const banner = document.getElementById('complete-banner');
+      banner.style.display = 'block';
+      banner.textContent = `✓ Scan complete! ${savingsStr}/month in potential savings found.`;
+
+      const btnReport = document.getElementById('btn-report');
+      btnReport.href = `/savings/app/report.html?audit_id=${auditId}`;
+      btnReport.style.display = 'block';
+    }
+
+    function failAudit(msg) {
+      clearInterval(pollInterval);
+      clearInterval(progressInterval);
+      addTerminalLine(`✗ Audit failed: ${msg}`, 'amber');
+      setProgress(currentProgress, 'Audit failed');
+    }
+
+    (async () => {
+      const user = await requireAuth();
+      if (!user) return;
+      document.getElementById('user-email').textContent = user.email || 'Account';
+      await loadConnections();
+      document.fonts.ready.then(() => { document.body.style.opacity = '1'; });
+      setTimeout(() => { document.body.style.opacity = '1'; }, 500);
+    })();
+  </script>
+</body>
+</html>

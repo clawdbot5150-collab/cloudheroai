@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Pricing — Cloud Hero AI | Simple, Transparent Plans</title>
+<meta name="description" content="Start with one tool or get the full platform. Transparent pricing that scales with you. 14-day free trial on all plans. No credit card required.">
+<link rel="canonical" href="https://cloudheroai.com/pricing/">
+<meta property="og:title" content="Pricing — Cloud Hero AI | Simple, Transparent Plans">
+<meta property="og:description" content="Start with one tool or get the full platform. Transparent pricing that scales with you.">
+<meta property="og:image" content="https://cloudheroai.com/og-image.jpg">
+<meta property="og:url" content="https://cloudheroai.com/pricing/">
+<meta property="og:type" content="website">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6FG0M0E54M"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag("js", new Date());
+gtag("config", "G-6FG0M0E54M");
+</script>
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#070B14;--navy-2:#0D1424;--navy-3:#111827;--navy-4:#1a2235;--cyan:#00D9FF;--cyan-dim:rgba(0,217,255,0.12);--cyan-glow:rgba(0,217,255,0.25);--green:#00E5A0;--purple:#7B6FFF;--amber:#FFB547;--white:#F0F4FF;--muted:#7A8CAB;--border:rgba(255,255,255,0.07);--border-bright:rgba(0,217,255,0.2)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;font-size:16px;line-height:1.6}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--navy)}::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px}
+#grid-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.35}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5vw;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,11,20,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:border-color 0.3s}
+nav.scrolled{border-bottom-color:var(--border-bright)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:34px;height:34px;border:1.5px solid var(--cyan);border-radius:8px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.logo-mark::before{content:'';position:absolute;width:18px;height:18px;border:2px solid var(--cyan);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%)}
+.logo-mark::after{content:'';position:absolute;width:6px;height:6px;background:var(--cyan);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 8px var(--cyan)}
+.logo-text{font-family:'Space Mono',monospace;font-size:14px;color:var(--white);letter-spacing:0.02em}
+.logo-text span{color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:400;transition:color 0.2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{background:transparent;border:1px solid var(--cyan);color:var(--cyan)!important;padding:8px 20px;border-radius:6px;font-size:13px!important;font-weight:500!important;transition:background 0.2s,box-shadow 0.2s!important}
+.nav-cta:hover{background:var(--cyan-dim)!important;box-shadow:0 0 20px var(--cyan-glow)!important}
+section{position:relative;z-index:1}
+.section-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px;display:block}
+.section-title{font-size:clamp(32px,4vw,52px);font-weight:300;line-height:1.1;letter-spacing:-0.025em;margin-bottom:16px}
+.section-title em{font-family:'Fraunces',serif;font-style:italic;font-weight:300;color:var(--cyan)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* PRICING HERO */
+.pricing-hero{padding:160px 5vw 80px;text-align:center}
+.pricing-hero h1{font-size:clamp(42px,6vw,80px);font-weight:300;line-height:1.06;letter-spacing:-0.03em;max-width:800px;margin:0 auto 24px;animation:fadeUp 0.6s ease both}
+.pricing-hero h1 em{font-family:'Fraunces',serif;font-style:italic;font-weight:300;color:var(--cyan)}
+.pricing-hero p{font-size:18px;color:var(--muted);max-width:480px;margin:0 auto 48px;font-weight:300;animation:fadeUp 0.6s 0.1s ease both}
+
+/* BILLING TOGGLE */
+.billing-toggle{display:inline-flex;align-items:center;gap:16px;background:var(--navy-2);border:1px solid var(--border);border-radius:100px;padding:6px 20px 6px 6px;animation:fadeUp 0.6s 0.2s ease both}
+.toggle-pill{background:var(--navy-4);border:1px solid var(--border);border-radius:100px;display:flex;cursor:pointer;position:relative}
+.toggle-option{padding:8px 18px;font-size:13px;font-weight:500;position:relative;z-index:1;transition:color 0.2s;cursor:pointer;user-select:none}
+.toggle-option.active{color:var(--navy)}
+.toggle-option:not(.active){color:var(--muted)}
+.toggle-slider{position:absolute;top:3px;left:3px;bottom:3px;border-radius:100px;background:var(--cyan);transition:transform 0.25s cubic-bezier(0.16,1,0.3,1),width 0.25s}
+.toggle-badge{font-family:'Space Mono',monospace;font-size:10px;color:var(--green);background:rgba(0,229,160,0.15);border:1px solid rgba(0,229,160,0.25);border-radius:100px;padding:4px 10px;letter-spacing:0.04em}
+
+/* TABS */
+.plan-tabs{padding:0 5vw;display:flex;gap:4px;justify-content:center;margin-bottom:48px;flex-wrap:wrap}
+.plan-tab{background:transparent;border:1px solid var(--border);color:var(--muted);padding:8px 20px;border-radius:8px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.plan-tab:hover{border-color:var(--border-bright);color:var(--white)}
+.plan-tab.active{background:var(--cyan-dim);border-color:var(--border-bright);color:var(--cyan)}
+
+/* PRICING GRID */
+.pricing-section{padding:0 5vw 100px}
+.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1100px;margin:0 auto}
+.price-card{background:var(--navy-2);border:1px solid var(--border);border-radius:16px;padding:32px 28px;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.3s}
+.price-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.15)}
+.price-card.featured{border-color:var(--cyan);background:linear-gradient(180deg,rgba(0,217,255,0.06) 0%,var(--navy-2) 50%)}
+.price-card.featured::before{content:'MOST POPULAR';position:absolute;top:16px;right:16px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;color:var(--navy);background:var(--cyan);padding:4px 8px;border-radius:4px}
+.price-tier{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+.price-name{font-size:22px;font-weight:500;margin-bottom:4px;letter-spacing:-0.02em}
+.price-amount{display:flex;align-items:baseline;gap:4px;margin:20px 0 8px}
+.price-dollar{font-family:'Space Mono',monospace;font-size:36px;font-weight:700;color:var(--white);line-height:1;transition:all 0.3s}
+.price-period{font-size:13px;color:var(--muted)}
+.price-save{font-size:12px;color:var(--green);font-family:'Space Mono',monospace;min-height:18px;transition:opacity 0.3s}
+.price-desc{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.5;font-weight:300;margin-top:8px}
+.price-divider{height:1px;background:var(--border);margin-bottom:20px}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:28px}
+.price-features li{font-size:13px;color:rgba(240,244,255,0.65);display:flex;align-items:flex-start;gap:9px;line-height:1.45}
+.price-features li::before{content:'✓';color:var(--cyan);font-size:11px;flex-shrink:0;margin-top:2px}
+.price-features li.dim{opacity:0.35}
+.price-features li.dim::before{content:'—';color:var(--muted)}
+.price-btn{width:100%;padding:12px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;text-align:center;display:block;text-decoration:none}
+.price-btn-outline{background:transparent;border:1px solid var(--border);color:var(--white)}
+.price-btn-outline:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.04)}
+.price-btn-solid{background:var(--cyan);border:none;color:var(--navy);font-weight:700}
+.price-btn-solid:hover{box-shadow:0 4px 20px rgba(0,217,255,0.35);transform:translateY(-1px)}
+
+/* COMPARISON TABLE */
+.comparison-section{padding:80px 5vw;background:var(--navy-2);border-top:1px solid var(--border)}
+.comp-inner{max-width:1100px;margin:0 auto}
+.comp-table-wrap{margin-top:48px;overflow-x:auto}
+.comp-table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.comp-table th{background:var(--navy-4);padding:16px 20px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;text-align:left;color:var(--muted);border-bottom:1px solid var(--border)}
+.comp-table th:first-child{color:var(--muted)}
+.comp-table th.featured-col{color:var(--cyan)}
+.comp-table td{padding:14px 20px;font-size:13px;border-bottom:1px solid var(--border);font-weight:300}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table tr:hover td{background:rgba(255,255,255,0.02)}
+.comp-table td:first-child{color:var(--muted)}
+.check{color:var(--green)}
+.cross{color:rgba(255,255,255,0.15)}
+.comp-category{background:var(--navy-3)}
+.comp-category td{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--cyan);padding:12px 20px;font-weight:400}
+
+/* FAQ */
+.faq-section{padding:80px 5vw}
+.faq-inner{max-width:760px;margin:0 auto}
+.faq-list{margin-top:48px;display:flex;flex-direction:column;gap:0}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-item:first-child{border-top:1px solid var(--border)}
+.faq-question{display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-size:16px;font-weight:500;letter-spacing:-0.01em;user-select:none;gap:16px;transition:color 0.2s}
+.faq-question:hover{color:var(--cyan)}
+.faq-chevron{width:20px;height:20px;flex-shrink:0;border:1.5px solid var(--border-bright);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform 0.3s,background 0.2s}
+.faq-chevron::after{content:'';border-right:1.5px solid var(--cyan);border-bottom:1.5px solid var(--cyan);width:5px;height:5px;transform:rotate(45deg);margin-top:-3px;transition:transform 0.3s}
+.faq-item.open .faq-chevron{background:var(--cyan-dim);transform:none}
+.faq-item.open .faq-chevron::after{transform:rotate(-135deg);margin-top:2px}
+.faq-answer{font-size:15px;color:var(--muted);line-height:1.7;font-weight:300;max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.16,1,0.3,1),padding 0.3s}
+.faq-item.open .faq-answer{max-height:300px;padding-bottom:20px}
+
+/* NEWSLETTER */
+.newsletter{padding:100px 5vw;background:var(--navy-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.newsletter-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.newsletter-form-wrap{background:var(--navy-3);border:1px solid var(--border);border-radius:16px;padding:36px}
+.form-label{font-size:13px;color:var(--muted);margin-bottom:8px;display:block}
+.form-input{width:100%;background:var(--navy);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:15px;color:var(--white);font-family:'DM Sans',sans-serif;margin-bottom:12px;transition:border-color 0.2s;outline:none}
+.form-input:focus{border-color:var(--cyan)}
+.form-input::placeholder{color:rgba(122,140,171,0.5)}
+.nl-btn{background:var(--cyan);color:var(--navy);border:none;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;text-align:center;display:block;transition:transform 0.2s,box-shadow 0.2s}
+.nl-btn:hover{transform:translateY(-1px);box-shadow:0 4px 20px var(--cyan-glow)}
+.perk{display:flex;gap:16px;align-items:flex-start;margin-bottom:20px}
+.perk-icon{width:36px;height:36px;border-radius:8px;background:var(--cyan-dim);border:1px solid var(--border-bright);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.perk-text h4{font-size:15px;font-weight:500;margin-bottom:3px}
+.perk-text p{font-size:13px;color:var(--muted);font-weight:300;line-height:1.5}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:48px 5vw;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;position:relative;z-index:1}
+.footer-brand p{font-size:13px;color:var(--muted);line-height:1.65;font-weight:300;max-width:220px;margin-top:12px}
+.footer-col h5{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:10px}
+.footer-col ul li a{font-size:14px;color:rgba(240,244,255,0.55);text-decoration:none;transition:color 0.2s;font-weight:300}
+.footer-col ul li a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid var(--border);padding:24px 5vw;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);position:relative;z-index:1}
+.footer-bottom a{color:var(--muted);text-decoration:none}
+.footer-bottom a:hover{color:var(--white)}
+
+@media(max-width:1024px){.pricing-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.newsletter-inner{grid-template-columns:1fr}footer{grid-template-columns:1fr 1fr}.nav-links{display:none}}
+@media(max-width:600px){.pricing-grid{grid-template-columns:1fr}footer{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
+</style>
+</head>
+<body>
+<canvas id="grid-canvas"></canvas>
+
+<nav id="main-nav">
+<a href="/" class="nav-logo"><div class="logo-mark"></div><span class="logo-text">Cloud<span>Hero</span> AI</span></a>
+<ul class="nav-links">
+<li><a href="/agents/">Agents</a></li>
+<li><a href="/savings/">Savings</a></li>
+<li><a href="/copilot/">Copilot</a></li>
+<li><a href="/weekly/">Weekly</a></li>
+<li><a href="/pricing/" style="color:var(--white)">Pricing</a></li>
+<li><a href="/savings/app/login.html" <a href="/savings/app/login.html" style="font-size:13px;color:var(--muted);text-decoration:none;margin-right:4px" class="nav-signin">Sign in</a>
+  <a href="/savings/app/login.html" class="nav-cta">Free audit</a></li>
+</ul>
+</nav>
+
+<section class="pricing-hero">
+<h1>Pricing that<br><em>scales with you.</em></h1>
+<p>Start with one tool or get the full platform. Every plan includes the shared dashboard, unified billing, and one login.</p>
+<div class="billing-toggle">
+<div class="toggle-pill" id="billing-toggle">
+<div class="toggle-slider" id="toggle-slider" style="width:calc(50% - 3px)"></div>
+<span class="toggle-option active" id="monthly-label" onclick="setBilling('monthly')">Monthly</span>
+<span class="toggle-option" id="annual-label" onclick="setBilling('annual')">Annual</span>
+</div>
+<span class="toggle-badge">Save 20%</span>
+</div>
+</section>
+
+<div class="plan-tabs reveal">
+<button class="plan-tab active" onclick="setTab('bundle', this)">Platform Bundle</button>
+<button class="plan-tab" onclick="setTab('agents', this)">Hero Agents</button>
+<button class="plan-tab" onclick="setTab('savings', this)">Hero Savings</button>
+<button class="plan-tab" onclick="setTab('copilot', this)">Hero Copilot</button>
+<button class="plan-tab" onclick="setTab('weekly', this)">Hero Weekly</button>
+</div>
+
+<section class="pricing-section">
+<div class="pricing-grid reveal" id="pricing-grid">
+<!-- Hero Savings — pay-as-you-save card -->
+<div class="price-card" id="hero-savings-card" style="border-color:rgba(0,229,160,0.45);background:linear-gradient(180deg,rgba(0,229,160,0.07) 0%,var(--navy-2) 60%)">
+<div style="position:absolute;top:16px;right:16px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;color:var(--navy);background:#00E5A0;padding:4px 8px;border-radius:4px;font-weight:700">HERO SAVINGS</div>
+<div class="price-tier" style="color:#00E5A0">HERO SAVINGS</div>
+<div class="price-name">Pay-as-you-save</div>
+<div class="price-amount" style="line-height:1.1">
+<span class="price-dollar" style="font-size:36px;color:#00E5A0">$0</span>
+<span class="price-period"> to start</span>
+</div>
+<div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin:-8px 0 16px 0;letter-spacing:0.04em">then 15% of monthly savings</div>
+<div id="savings-billing-note" style="display:none;font-size:12px;color:#00E5A0;background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.2);border-radius:6px;padding:8px 12px;margin-bottom:12px;text-align:center">Pricing is performance-based — not affected by billing period</div>
+<p class="price-desc">Connect your cloud account. We find the waste, fix it, and only charge you 15% of what we save you. Every month. Cancel anytime.</p>
+<div class="price-divider"></div>
+<ul class="price-features">
+<li>Free savings audit — results in 3 minutes</li>
+<li>Multi-cloud: AWS, GCP, Azure</li>
+<li>1-click waste remediation</li>
+<li>Monthly savings report with full audit trail</li>
+<li>Continuous monitoring — new waste caught every month</li>
+<li>15% of verified savings only — $0 if we find nothing</li>
+<li>Cancel anytime, no penalty</li>
+</ul>
+<a href="/savings/app/login.html" class="price-btn price-btn-solid" style="background:#00E5A0;border-color:#00E5A0;color:#070B14">Start free audit →</a>
+<p style="font-size:11px;color:var(--muted);margin-top:14px;line-height:1.5;text-align:center">Savings verified against your 90-day average baseline. Full audit log provided monthly. No disputes — ever.</p>
+</div>
+<!-- Bundle cards (default) -->
+<div class="price-card">
+<div class="price-tier">Starter</div>
+<div class="price-name">Single Tool</div>
+<div class="price-amount">
+<span class="price-dollar" data-monthly="99" data-annual="79">$99</span>
+<span class="price-period">/mo</span>
+</div>
+<div class="price-save" id="save-0"></div>
+<p class="price-desc">Pick any one product. Perfect for teams just getting started with cloud AI.</p>
+<div class="price-divider"></div>
+<ul class="price-features">
+<li>One product of your choice</li>
+<li>Up to 3 seats</li>
+<li>500 agent runs/month</li>
+<li>Core integrations (Slack, Email)</li>
+<li>14-day free trial</li>
+<li>Community support</li>
+<li class="dim">Platform bundle features</li>
+<li class="dim">Cross-product automations</li>
+</ul>
+<a href="/savings/app/login.html" class="price-btn price-btn-outline">Start free trial</a>
+</div>
+<div class="price-card featured">
+<div class="price-tier">Platform</div>
+<div class="price-name">Bundle</div>
+<div class="price-amount">
+<span class="price-dollar" data-monthly="199" data-annual="159">$199</span>
+<span class="price-period">/mo</span>
+</div>
+<div class="price-save" id="save-1"></div>
+<p class="price-desc">All three SaaS tools + Hero Weekly Pro. The complete platform in one bill.</p>
+<div class="price-divider"></div>
+<ul class="price-features">
+<li>Hero Agents + Hero Copilot</li>
+<li>Hero Savings (15% of savings — $0 upfront) *</li>
+<li>Hero Weekly Pro included</li>
+<li>Up to 5 seats</li>
+<li>5,000 agent runs/month</li>
+<li>All integrations</li>
+<li>Cost-triggered automations</li>
+<li>Cross-product workflows</li>
+<li>Priority email support</li>
+</ul>
+<a href="/savings/app/login.html" class="price-btn price-btn-solid">Start free trial</a>
+</div>
+<div class="price-card">
+<div class="price-tier">Platform Pro</div>
+<div class="price-name">Scale</div>
+<div class="price-amount">
+<span class="price-dollar" data-monthly="449" data-annual="359">$449</span>
+<span class="price-period">/mo</span>
+</div>
+<div class="price-save" id="save-2"></div>
+<p class="price-desc">For growing teams that need more seats, unlimited runs, and enterprise controls.</p>
+<div class="price-divider"></div>
+<ul class="price-features">
+<li>Everything in Bundle *</li>
+<li>Up to 20 seats</li>
+<li>Unlimited agent runs</li>
+<li>Auto-remediation (Savings)</li>
+<li>SSO + audit logs</li>
+<li>Custom integrations</li>
+<li>Dedicated onboarding CSM</li>
+</ul>
+<a href="/savings/app/login.html" class="price-btn price-btn-outline">Start free trial</a>
+</div>
+<div class="price-card">
+<div class="price-tier">Enterprise</div>
+<div class="price-name">Custom</div>
+<div class="price-amount">
+<span class="price-dollar" style="font-size:26px">Custom</span>
+</div>
+<div class="price-save" id="save-3"></div>
+<p class="price-desc">White-label, on-prem, custom LLM models, volume pricing, and a dedicated SLA.</p>
+<div class="price-divider"></div>
+<ul class="price-features">
+<li>Everything in Scale *</li>
+<li>Unlimited seats</li>
+<li>White-label option</li>
+<li>On-prem deployment</li>
+<li>Claude Opus 4.6 for Copilot</li>
+<li>Custom contract + SLA</li>
+<li>99.9% uptime guarantee</li>
+</ul>
+<a href="mailto:sales@cloudheroai.com" class="price-btn price-btn-outline">Contact sales</a>
+</div>
+</div>
+<div style="max-width:1100px;margin:0 auto;padding:0 0 24px;text-align:center"><p style="font-size:12px;color:var(--muted);font-weight:300">* Hero Savings success fee (15% of monthly verified savings) applies in addition to the platform subscription price.</p></div>
+</section>
+
+<section class="comparison-section">
+<div class="comp-inner">
+<div class="reveal" style="text-align:center">
+<span class="section-label">Feature Comparison</span>
+<h2 class="section-title">Everything,<br><em>side by side.</em></h2>
+</div>
+<div class="comp-table-wrap reveal">
+<table class="comp-table">
+<thead>
+<tr>
+<th>Feature</th>
+<th>Starter</th>
+<th class="featured-col">Bundle</th>
+<th>Scale</th>
+<th>Enterprise</th>
+</tr>
+</thead>
+<tbody>
+<tr class="comp-category"><td colspan="5">Platform</td></tr>
+<tr><td>Number of products</td><td>1</td><td>All 4</td><td>All 4</td><td>All 4</td></tr>
+<tr><td>Seats included</td><td>3</td><td>5</td><td>20</td><td>Unlimited</td></tr>
+<tr><td>Unified dashboard</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr><td>Single billing</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr class="comp-category"><td colspan="5">Hero Agents</td></tr>
+<tr><td>Active workflows</td><td>3</td><td>Unlimited</td><td>Unlimited</td><td>Unlimited</td></tr>
+<tr><td>AI block runs/month</td><td>500</td><td>5,000</td><td>Unlimited</td><td>Unlimited</td></tr>
+<tr><td>Template marketplace</td><td class="cross">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr><td>Custom AI models</td><td class="cross">—</td><td class="cross">—</td><td class="cross">—</td><td class="check">✓</td></tr>
+<tr class="comp-category"><td colspan="5">Hero Savings — pay-as-you-save (standalone)</td></tr>
+<tr><td>Pricing model</td><td style="color:#00E5A0;font-weight:600">$0 + 15% of savings</td><td style="color:#00E5A0;font-weight:600">Included in bundle</td><td style="color:#00E5A0;font-weight:600">Included in bundle</td><td style="color:#00E5A0;font-weight:600">Custom</td></tr>
+<tr><td>Free savings audit</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr><td>Cloud providers</td><td>All 3</td><td>All 3</td><td>All 3</td><td>All 3</td></tr>
+<tr><td>1-click remediation</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr><td>Auto-remediation schedules</td><td class="cross">—</td><td class="cross">—</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr><td>Finance reporting / chargebacks</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr class="comp-category"><td colspan="5">Hero Copilot</td></tr>
+<tr><td>Terraform generation</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr><td>AI model</td><td>Sonnet 4.6</td><td>Sonnet 4.6</td><td>Sonnet 4.6</td><td>Opus 4.6</td></tr>
+<tr><td>GitHub / GitLab integration</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr class="comp-category"><td colspan="5">Hero Weekly</td></tr>
+<tr><td>Twice-weekly briefings</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr><td>Pro community access</td><td class="cross">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr><td>Full playbook library</td><td class="cross">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr class="comp-category"><td colspan="5">Security & Support</td></tr>
+<tr><td>SSO (SAML / OIDC)</td><td class="cross">—</td><td class="cross">—</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr><td>Audit logs</td><td class="cross">—</td><td class="cross">—</td><td class="check">✓</td><td class="check">✓</td></tr>
+<tr><td>SLA guarantee</td><td class="cross">—</td><td class="cross">—</td><td class="cross">—</td><td class="check">✓</td></tr>
+<tr><td>Support</td><td>Community</td><td>Priority email</td><td>Dedicated CSM</td><td>24/7 SLA</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section class="faq-section">
+<div class="faq-inner">
+<div class="reveal" style="text-align:center">
+<span class="section-label">FAQ</span>
+<h2 class="section-title">Questions<br><em>answered.</em></h2>
+</div>
+<div class="faq-list reveal">
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+Can I use just one product without the bundle?
+<div class="faq-chevron"></div>
+</div>
+<div class="faq-answer">Yes. <strong>Hero Savings</strong> is completely standalone with no subscription fee — you pay 15% of verified monthly savings, nothing else. For Hero Agents and Hero Copilot, the Starter plan lets you pick one product at $99/month. You can upgrade to the full Platform Bundle at any time and we'll prorate the difference. Hero Weekly Free is always free with no plan required.</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+How does the free Hero Savings audit work?
+<div class="faq-chevron"></div>
+</div>
+<div class="faq-answer">The free audit requires no credit card and no subscription. Connect your cloud account with a read-only IAM role (60 seconds), we scan all your resources across every region (2–3 minutes), and you get a full report with every wasteful resource and exact dollar amounts. If we find savings, you can apply fixes right away — and we only start charging 15% of the verified savings from that point. If we find nothing, you pay nothing. Ever.</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+What AI models power each product?
+<div class="faq-chevron"></div>
+</div>
+<div class="faq-answer">Hero Copilot uses Claude Sonnet 4.6 by default on all paid plans — it's fast, highly capable, and cost-effective for day-to-day infrastructure work. Enterprise customers can upgrade to Claude Opus 4.6, which offers maximum reasoning depth for complex architecture reviews. Hero Agents uses GPT-4o for AI processing blocks. Hero Savings uses a combination of rule-based analysis and AI for waste classification.</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+Is my cloud data secure?
+<div class="faq-chevron"></div>
+</div>
+<div class="faq-answer">Yes. For Hero Savings, we use read-only IAM credentials — we can never modify your infrastructure without explicit approval. Your raw cloud data is processed in memory and never stored on our servers. We store only your savings report. All data is encrypted in transit (TLS 1.3) and at rest (AES-256). We're completing our SOC 2 Type II audit — enterprise customers can request our security documentation.</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+What integrations are supported?
+<div class="faq-chevron"></div>
+</div>
+<div class="faq-answer">Hero Agents supports 100+ integrations including Slack, Gmail, HubSpot, Salesforce, Zendesk, Notion, Airtable, GitHub, GitLab, Jira, Linear, and more. Hero Copilot integrates with GitHub, GitLab, Bitbucket, VS Code, Slack, and PagerDuty. Hero Savings connects to AWS, Google Cloud, and Microsoft Azure. Custom integrations via webhook and REST API are available on Scale and Enterprise plans.</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+Can I cancel anytime?
+<div class="faq-chevron"></div>
+</div>
+<div class="faq-answer">Yes. There are no lock-in contracts on monthly billing. Cancel anytime from your dashboard — your subscription ends at the end of the current billing period. For annual plans, we offer a pro-rated refund within 30 days of purchase. No cancellation fees, ever.</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+Do you offer discounts for startups or nonprofits?
+<div class="faq-chevron"></div>
+</div>
+<div class="faq-answer">Yes. We offer 50% off for early-stage startups (under $1M ARR) and verified nonprofits. We also offer educational pricing for universities and bootcamps. Contact us at sales@cloudheroai.com with proof of eligibility and we'll set you up within 24 hours.</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+What's the difference between Sonnet and Opus for Hero Copilot?
+<div class="faq-chevron"></div>
+</div>
+<div class="faq-answer">Claude Sonnet 4.6 (default) responds in ~2 seconds and handles the vast majority of DevOps tasks excellently — Terraform generation, deployment debugging, architecture Q&A, runbook creation. Claude Opus 4.6 (Enterprise) takes ~5 seconds but offers significantly deeper reasoning for complex multi-service architecture reviews, security audits across large codebases, and nuanced cost optimization analysis. For most teams, Sonnet is the right choice.</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="newsletter" id="newsletter">
+<div class="newsletter-inner">
+<div class="reveal">
+<span class="section-label">Get Started</span>
+<h2 class="section-title" style="margin-bottom:16px">Start with a<br><em>free savings audit.</em></h2>
+<p style="font-size:18px;color:var(--muted);font-weight:300;margin-bottom:40px">No credit card. No sales call. Just connect your cloud account and see exactly how much you're wasting in 3 minutes.</p>
+<div class="perk"><div class="perk-icon">⚡</div><div class="perk-text"><h4>14-day free trial on all plans</h4><p>Try the full platform with your team before you pay anything.</p></div></div>
+<div class="perk"><div class="perk-icon">🔒</div><div class="perk-text"><h4>No lock-in contracts</h4><p>Month-to-month billing. Cancel anytime in two clicks.</p></div></div>
+<div class="perk"><div class="perk-icon">💬</div><div class="perk-text"><h4>Onboarding call included</h4><p>Every paid plan includes a 30-minute onboarding call with our team.</p></div></div>
+</div>
+<div class="reveal">
+<div class="newsletter-form-wrap">
+<h3 style="font-size:22px;font-weight:500;margin-bottom:8px;letter-spacing:-0.02em">Start your free trial</h3>
+<p style="font-size:14px;color:var(--muted);margin-bottom:24px;font-weight:300">14 days free. No credit card required.</p>
+<label class="form-label">First name</label>
+<input class="form-input" type="text" id="name-input" placeholder="Your first name">
+<label class="form-label">Work email</label>
+<input class="form-input" type="email" id="email-input" placeholder="you@company.com">
+<label class="form-label">Which plan are you interested in?</label>
+<select class="form-input"><option value="">Select a plan</option><option>Starter — $99/mo</option><option>Platform Bundle — $199/mo</option><option>Scale — $449/mo</option><option>Enterprise — Custom</option></select>
+<button class="nl-btn" id="subscribe-btn" onclick="handleSubscribe(event)">Start free trial →</button>
+<p style="font-size:12px;color:var(--muted);margin-top:16px;text-align:center;font-weight:300">Questions? Email us at <a href="mailto:hello@cloudheroai.com" style="color:var(--cyan);text-decoration:none">hello@cloudheroai.com</a></p>
+</div>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="footer-brand">
+<a href="/" class="nav-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none"><div class="logo-mark"></div><span class="logo-text">Cloud<span>Hero</span> AI</span></a>
+<p>The AI platform built for cloud teams. Four tools. One mission.</p>
+</div>
+<div class="footer-col"><h5>Products</h5><ul><li><a href="/agents/">Hero Agents</a></li><li><a href="/savings/">Hero Savings</a></li><li><a href="/copilot/">Hero Copilot</a></li><li><a href="/weekly/">Hero Weekly</a></li></ul></div>
+<div class="footer-col"><h5>Platform</h5><ul><li><a href="/pricing/">Pricing</a></li>
+<li><a href="/blog/">Blog</a></li><li><a href="#">Documentation</a></li><li><a href="#">API Reference</a></li><li><a href="#">Changelog</a></li></ul></div>
+<div class="footer-col"><h5>Company</h5><ul><li><a href="/about/">About</a></li><li><a href="#">Blog</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
+</footer>
+<div class="footer-bottom">
+<span>© 2026 Cloud Hero AI. All rights reserved.</span>
+<div style="display:flex;gap:24px"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="#">Security</a></div>
+</div>
+
+<script>
+const canvas=document.getElementById('grid-canvas');
+const ctx=canvas.getContext('2d');
+let W,H,dots=[],mouse={x:-999,y:-999};
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+function initDots(){dots=[];const cols=Math.floor(W/60);const rows=Math.floor(H/60);for(let i=0;i<=cols;i++){for(let j=0;j<=rows;j++){const phase=Math.random()*Math.PI*2;dots.push({ox:i*60,oy:j*60,phase,speed:0.3+Math.random()*0.3,r:0.5+Math.random()*1,br:0.5+Math.random()*1});}}}
+let t=0;
+function draw(){t+=0.016;ctx.clearRect(0,0,W,H);ctx.strokeStyle='rgba(0,217,255,0.035)';ctx.lineWidth=0.5;for(let x=0;x<W;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}for(let y=0;y<H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+dots.forEach(d=>{const x=d.ox+Math.sin(t*d.speed+d.phase)*8;const y=d.oy+Math.cos(t*d.speed*0.7+d.phase)*8;const dist=Math.hypot(x-mouse.x,y-mouse.y);const near=dist<120;const r=near?2.5:d.br;const op=near?0.9:0.3;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=`rgba(0,217,255,${op})`;ctx.fill();});requestAnimationFrame(draw);}
+resize();initDots();draw();
+window.addEventListener('resize',()=>{resize();initDots();});
+window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+const nav=document.getElementById('main-nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>40));
+const reveals=document.querySelectorAll('.reveal');
+const revealObs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);revealObs.unobserve(e.target);}});},{threshold:0.1});
+reveals.forEach(r=>revealObs.observe(r));
+
+// BILLING TOGGLE
+let isAnnual=false;
+function setBilling(mode){
+  isAnnual=(mode==='annual');
+  const ml=document.getElementById('monthly-label');
+  const al=document.getElementById('annual-label');
+  const slider=document.getElementById('toggle-slider');
+  if(isAnnual){
+    ml.classList.remove('active');al.classList.add('active');
+    slider.style.transform='translateX(100%)';
+  } else {
+    al.classList.remove('active');ml.classList.add('active');
+    slider.style.transform='translateX(0)';
+  }
+  updatePrices();
+}
+function updatePrices(){
+  document.querySelectorAll('[data-monthly]').forEach((el,i)=>{
+    const mo=parseInt(el.dataset.monthly);
+    const an=parseInt(el.dataset.annual);
+    if(isNaN(mo)||isNaN(an))return;
+    el.textContent='$'+(isAnnual?an:mo);
+    const saveEl=document.getElementById('save-'+i);
+    if(saveEl)saveEl.textContent=isAnnual?'Save $'+((mo-an)*12)+'/yr':'';
+  });
+  // Hero Savings is performance-based — not affected by billing period
+  const savingsNote=document.getElementById('savings-billing-note');
+  if(savingsNote)savingsNote.style.display=isAnnual?'block':'none';
+}
+
+// TAB SWITCHING
+function setTab(tab, btn){
+  document.querySelectorAll('.plan-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  // Just visual — prices already shown. In a full build this would swap card content.
+}
+
+// FAQ ACCORDION
+function toggleFaq(el){
+  const item=el.parentElement;
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen)item.classList.add('open');
+}
+
+function handleSubscribe(event){
+  if(event)event.preventDefault();
+  const btn=document.getElementById('subscribe-btn');
+  const emailEl=document.getElementById('email-input');
+  const email=(emailEl&&emailEl.value||'').trim();
+  if(!email||!email.includes('@')){if(emailEl)emailEl.style.borderColor='var(--amber)';return;}
+  btn.textContent='Sending...';btn.disabled=true;
+  fetch('/api/newsletter/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,source:'pricing-page'})})
+  .then(r=>r.json()).then(()=>{
+    btn.textContent='✓ Check your email — trial link sent!';btn.style.background='var(--green)';btn.style.color='var(--navy)';btn.disabled=true;
+  }).catch(()=>{btn.textContent='Start free trial →';btn.disabled=false;});
+}
+document.fonts.ready.then(()=>{document.body.style.opacity='1';});
+document.body.style.opacity='0';document.body.style.transition='opacity 0.3s';
+</script>
+<script src="/js/newsletter.js"></script>
+
+<div id="cookie-banner" style="position:fixed;bottom:0;left:0;right:0;z-index:999;background:var(--navy-2);border-top:1px solid var(--border);padding:16px 5vw;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+  <p style="font-size:13px;color:var(--muted);margin:0;font-weight:300">We use cookies to operate the service and analyse traffic. <a href="/privacy/" style="color:var(--cyan)">Learn more</a></p>
+  <button onclick="document.getElementById('cookie-banner').style.display='none';localStorage.setItem('ch_cookies','1')" style="background:var(--cyan);color:var(--navy);border:none;padding:8px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit">Got it</button>
+</div>
+<script>if(localStorage.getItem('ch_cookies'))document.getElementById('cookie-banner').style.display='none';</script>
+
+</body>
+</html>

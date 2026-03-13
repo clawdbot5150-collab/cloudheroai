@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finding and Eliminating AWS Idle Resources: The $47B Problem — Cloud Hero AI Blog</title>
+<meta name="description" content="Discover how to find and eliminate AWS idle resources draining your budget. Covers stopped EC2s, orphaned EBS volumes, unused Elastic IPs, and forgotten NAT gateways.">
+<link rel="canonical" href="https://cloudheroai.com/blog/aws-idle-resources-finding-waste.html">
+<meta property="og:title" content="Finding and Eliminating AWS Idle Resources: The $47B Problem">
+<meta property="og:description" content="Discover how to find and eliminate AWS idle resources draining your budget. Covers stopped EC2s, orphaned EBS volumes, unused Elastic IPs, and forgotten NAT gateways.">
+<meta property="og:image" content="https://cloudheroai.com/og-image.jpg">
+<meta property="og:url" content="https://cloudheroai.com/blog/aws-idle-resources-finding-waste.html">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6FG0M0E54M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6FG0M0E54M");</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@1,9..144,300&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Finding and Eliminating AWS Idle Resources: The $47B Problem",
+  "description": "Discover how to find and eliminate AWS idle resources draining your budget. Covers stopped EC2s, orphaned EBS volumes, unused Elastic IPs, and forgotten NAT gateways.",
+  "author": {"@type": "Organization", "name": "Cloud Hero AI"},
+  "publisher": {"@type": "Organization", "name": "Cloud Hero AI", "url": "https://cloudheroai.com"},
+  "datePublished": "2026-01-21",
+  "dateModified": "2026-01-21",
+  "mainEntityOfPage": "https://cloudheroai.com/blog/aws-idle-resources-finding-waste.html"
+}
+</script>
+<style>
+:root{--navy:#070B14;--navy-2:#0D1424;--navy-3:#111827;--cyan:#00D9FF;--cyan-dim:rgba(0,217,255,0.12);--green:#00E5A0;--purple:#7B6FFF;--amber:#FFB547;--white:#F0F4FF;--muted:#7A8CAB;--faint:#3D4F6A;--border:rgba(255,255,255,0.07);--border-bright:rgba(0,217,255,0.2)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);font-size:16px;line-height:1.65;opacity:0;transition:opacity 0.3s}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5vw;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,11,20,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:30px;height:30px;border:1.5px solid var(--cyan);border-radius:7px;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.logo-mark::before{content:'';position:absolute;width:14px;height:14px;border:1.5px solid var(--cyan);border-radius:50%}
+.logo-mark::after{content:'';position:absolute;width:5px;height:5px;background:var(--cyan);border-radius:50%;box-shadow:0 0 6px var(--cyan)}
+.logo-text{font-family:'Space Mono',monospace;font-size:13px;color:var(--white)}
+.logo-text span{color:var(--cyan)}
+.nav-cta{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:7px 18px;border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;transition:background 0.2s}
+.nav-cta:hover{background:var(--cyan-dim)}
+.article-wrap{max-width:760px;margin:0 auto;padding:108px 5vw 80px}
+.article-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;display:block}
+.article-title{font-size:clamp(28px,4.5vw,48px);font-weight:300;line-height:1.1;letter-spacing:-0.025em;margin-bottom:20px}
+.article-title em{font-family:'Fraunces',serif;font-style:italic;color:var(--cyan)}
+.article-meta{display:flex;gap:20px;font-size:13px;color:var(--faint);font-family:'Space Mono',monospace;margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.article-body h2{font-size:24px;font-weight:500;letter-spacing:-0.02em;margin:40px 0 16px;color:var(--white)}
+.article-body h3{font-size:19px;font-weight:500;letter-spacing:-0.01em;margin:28px 0 12px;color:var(--white)}
+.article-body p{font-size:16px;color:var(--muted);line-height:1.8;margin-bottom:20px;font-weight:300}
+.article-body p strong{color:var(--white);font-weight:500}
+.article-body ul,.article-body ol{padding-left:22px;margin-bottom:20px}
+.article-body li{font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:8px;font-weight:300}
+.article-body li strong{color:var(--white)}
+.article-body a{color:var(--cyan);text-decoration:none}
+.article-body a:hover{text-decoration:underline}
+.callout{background:var(--navy-2);border-left:3px solid var(--cyan);border-radius:0 10px 10px 0;padding:20px 24px;margin:28px 0}
+.callout p{margin:0;font-size:15px}
+.callout.green{border-left-color:var(--green)}
+.callout.amber{border-left-color:var(--amber)}
+code{font-family:'Space Mono',monospace;font-size:13px;background:var(--navy-3);padding:2px 6px;border-radius:4px;color:var(--cyan)}
+pre{background:var(--navy-3);border:1px solid var(--border);border-radius:10px;padding:20px;overflow-x:auto;margin:24px 0}
+pre code{background:none;padding:0;font-size:13px;color:var(--green)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0}
+.stat-box{background:var(--navy-2);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--cyan);display:block}
+.stat-label{font-size:12px;color:var(--muted);margin-top:4px}
+.cta-box{background:linear-gradient(135deg,rgba(0,217,255,0.08),rgba(0,229,160,0.05));border:1px solid var(--border-bright);border-radius:16px;padding:36px;margin:48px 0;text-align:center}
+.cta-box h3{font-size:22px;font-weight:500;margin-bottom:12px}
+.cta-box p{font-size:15px;color:var(--muted);margin-bottom:24px;font-weight:300}
+.btn-primary{background:var(--cyan);color:var(--navy);border:none;padding:13px 28px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;font-family:'DM Sans',sans-serif}
+.btn-primary:hover{box-shadow:0 4px 20px rgba(0,217,255,0.3)}
+table{width:100%;border-collapse:collapse;margin:24px 0}
+th{background:var(--navy-2);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);padding:12px 16px;text-align:left;border-bottom:2px solid var(--border)}
+td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:14px;color:var(--muted);vertical-align:top}
+td strong{color:var(--white)}
+.faq-section{margin:48px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:20px 0}
+.faq-q{font-size:16px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq-q::after{content:'+';font-family:'Space Mono',monospace;color:var(--cyan);font-size:18px;flex-shrink:0}
+.faq-a{font-size:14px;color:var(--muted);line-height:1.7;margin-top:12px;font-weight:300;display:none}
+footer{border-top:1px solid var(--border);padding:32px 5vw;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--faint);flex-wrap:wrap;gap:12px}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--white)}
+@media(max-width:640px){.stat-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><div class="logo-mark"></div><span class="logo-text">Cloud<span>Hero</span> AI</span></a>
+  <a href="/savings/app/login.html" class="nav-cta">Free savings audit →</a>
+</nav>
+
+<article class="article-wrap">
+  <span class="article-label">Cloud Cost Optimization</span>
+  <h1 class="article-title">Finding and Eliminating <em>AWS Idle Resources</em>: The $47B Problem</h1>
+  <div class="article-meta">
+    <span>Cloud Hero AI</span>
+    <span>January 21, 2026</span>
+    <span>12 min read</span>
+  </div>
+  <div class="article-body">
+
+    <p>According to Flexera's 2025 State of the Cloud report, enterprises now waste an estimated <strong>$47 billion per year</strong> on unused or underutilized cloud resources. That's not a rounding error — it's nearly a third of all cloud spend globally. And the problem is getting worse, not better, as cloud environments grow more complex and teams move faster without governance guardrails.</p>
+
+    <p>AWS idle resources are the single biggest contributor to this waste. Idle resources are services you're paying for that deliver zero business value: stopped EC2 instances with running EBS volumes, unattached Elastic IPs, forgotten NAT Gateways, ancient EBS snapshots from instances long since terminated, and load balancers pointing at nothing. In any AWS environment older than 6 months, these exist — often in quantities that would shock even experienced engineers.</p>
+
+    <p>This guide gives you the exact CLI commands to find them, the math to quantify the waste, and a step-by-step cleanup process to eliminate it.</p>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <span class="stat-num">$47B</span>
+        <div class="stat-label">Global cloud waste in 2025 (Flexera)</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">32%</span>
+        <div class="stat-label">Of all cloud spend is wasted on average</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">68%</span>
+        <div class="stat-label">Of orgs report cloud waste as a top concern</div>
+      </div>
+    </div>
+
+    <h2>Why Idle Resources Accumulate</h2>
+
+    <p>Understanding why waste happens is important for preventing its recurrence. The root causes are almost always organizational, not technical:</p>
+
+    <ul>
+      <li><strong>No termination discipline:</strong> Engineers spin up resources for testing, the test completes, and the resource is forgotten. Without a "you broke it, you pay for it" tag-and-own culture, resources accumulate indefinitely.</li>
+      <li><strong>Ticket-driven provisioning without decommissioning:</strong> Ticketing systems track creation but rarely track deletion. An instance created for a project 18 months ago may outlive the project by years.</li>
+      <li><strong>Conservative safety culture:</strong> "Don't delete it in case we need it" is a natural instinct. Without a cost-visible culture, the risk of deleting something valuable feels higher than the cost of keeping it.</li>
+      <li><strong>Multi-account complexity:</strong> Large orgs with dozens of AWS accounts have no consolidated view of idle resources. Each account's waste goes unnoticed.</li>
+    </ul>
+
+    <div class="callout">
+      <p><strong>The Flexera finding that shocked us:</strong> 53% of cloud resources in surveyed organizations had zero activity in the past 30 days. Not underutilized — zero activity. These aren't overprovisioned resources; they're truly idle, doing nothing, billing every hour.</p>
+    </div>
+
+    <h2>Category 1: Stopped EC2 Instances and Their Volumes</h2>
+
+    <p>A stopped EC2 instance doesn't charge you for compute — but it absolutely charges you for the attached EBS volumes. A stopped <code>m5.4xlarge</code> with two 500 GB gp3 EBS volumes costs you $0 for compute but $80/month for storage. Multiplied across a fleet of stopped instances, this adds up fast.</p>
+
+    <p>Find all stopped instances across your account:</p>
+
+    <pre><code>aws ec2 describe-instances \
+  --filters "Name=instance-state-name,Values=stopped" \
+  --query 'Reservations[*].Instances[*].{
+    ID:InstanceId,
+    Type:InstanceType,
+    Name:Tags[?Key==`Name`]|[0].Value,
+    Stopped:StateTransitionReason,
+    VolumeCount:BlockDeviceMappings|length(@)
+  }' \
+  --output table
+
+----------------------------------------------------------
+| DescribeInstances                                      |
++------------------+--------+----------------+-----------+
+| ID               | Type   | Name           | Stopped   |
++------------------+--------+----------------+-----------+
+| i-0abc123def456  | m5.2xl | prod-migration | User stop |
+| i-0def456abc789  | t3.med | test-server-01 | User stop |
+| i-0ghi789jkl012  | r5.xl  | perf-test-db   | User stop |
++------------------+--------+----------------+-----------+</code></pre>
+
+    <p>For each stopped instance, check its EBS volumes and calculate the monthly cost:</p>
+
+    <pre><code>aws ec2 describe-volumes \
+  --filters "Name=attachment.instance-id,Values=i-0abc123def456" \
+  --query 'Volumes[*].{
+    VolumeId:VolumeId,
+    Size:Size,
+    Type:VolumeType,
+    MonthlyCost:Size
+  }' \
+  --output table
+
+# gp3: $0.08/GB/month | gp2: $0.10/GB/month | io1: $0.125/GB/month</code></pre>
+
+    <p>The action: For each stopped instance, determine if it's still needed. If not, take a final AMI snapshot, terminate the instance, and delete (or snapshot+delete) its volumes. If the instance might be needed again, at minimum stop EBS billing by creating a snapshot and deleting the volume — you can recreate the volume from the snapshot when needed.</p>
+
+    <h2>Category 2: Unattached EBS Volumes</h2>
+
+    <p>These are the worst kind of idle resource because they have no parent instance to hint at their purpose. An unattached EBS volume is in "available" state — not attached to any instance — and billing you 24/7.</p>
+
+    <pre><code>aws ec2 describe-volumes \
+  --filters "Name=status,Values=available" \
+  --query 'Volumes[*].{
+    VolumeId:VolumeId,
+    Size:Size,
+    Type:VolumeType,
+    Created:CreateTime,
+    IOPS:Iops
+  }' \
+  --output table
+
+-------------------------------------------------------------------
+| DescribeVolumes                                                  |
++----------------------+------+------+---------------------------+-+
+| VolumeId             | Size | Type | Created                   | |
++----------------------+------+------+---------------------------+-+
+| vol-0abc123def456789 | 500  | gp2  | 2024-03-15T09:22:11.000Z  | |
+| vol-0def456abc789012 | 200  | gp3  | 2024-07-03T14:55:33.000Z  | |
+| vol-0ghi789jkl012345 | 1000 | io1  | 2023-11-28T08:10:22.000Z  | |
+| vol-0jkl012mno345678 | 100  | gp2  | 2024-01-19T16:44:07.000Z  | |
++----------------------+------+------+---------------------------+-+
+
+# Estimated waste: 500*$0.10 + 200*$0.08 + 1000*$0.125 + 100*$0.10
+# = $50 + $16 + $125 + $10 = $201/month from 4 volumes</code></pre>
+
+    <p>In large AWS accounts, it's common to find 50–200 unattached volumes representing $500–$5,000/month in waste. Tag each volume with its last known instance before deleting — that context helps you determine whether it's safe to remove.</p>
+
+    <div class="callout amber">
+      <p><strong>Enable "Delete on termination" going forward:</strong> The default EC2 behavior is to <em>not</em> delete root volumes on termination. Change this for all future instances by setting <code>DeleteOnTermination=true</code> in the block device mapping. This prevents the accumulation problem at the source. For existing instances, you can update this setting via the EC2 console or AWS CLI without stopping the instance.</p>
+    </div>
+
+    <h2>Category 3: Ancient EBS Snapshots</h2>
+
+    <p>EBS snapshots are cheap at $0.05/GB/month — until you have thousands of them. Automated backup tools (AWS Backup, third-party tools, custom scripts) create snapshots daily or weekly and frequently have no retention policy. A database with 500 GB of data being snapshotted daily for 2 years accumulates 730 snapshots totaling roughly 36 TB of snapshot storage — at $0.05/GB/month, that's <strong>$1,800/month</strong> in snapshot costs alone.</p>
+
+    <pre><code># Find snapshots older than 90 days that you own
+aws ec2 describe-snapshots \
+  --owner-ids self \
+  --query 'Snapshots[?StartTime<=`2025-10-12`].{
+    ID:SnapshotId,
+    Size:VolumeSize,
+    Created:StartTime,
+    Desc:Description
+  }' \
+  --output table | head -50
+
+# Count and total size of all your snapshots
+aws ec2 describe-snapshots --owner-ids self \
+  --query 'Snapshots[*].VolumeSize' \
+  --output text | tr '\t' '\n' | \
+  awk '{sum+=$1; count++} END {
+    printf "Snapshots: %d\nTotal GB: %d\nEst. cost: $%.2f/month\n",
+    count, sum, sum*0.05
+  }'</code></pre>
+
+    <p>The fix: Implement AWS Data Lifecycle Manager (DLM) policies that automatically delete snapshots older than your retention requirement. Most teams need 7–30 days of daily snapshots for operational recovery, and 90 days for compliance. Beyond that, snapshots should either be deleted or moved to EBS Snapshot Archive (75% cheaper for rarely-accessed archives).</p>
+
+    <h2>Category 4: Unused Elastic IP Addresses</h2>
+
+    <p>Elastic IPs (EIPs) are allocated IPv4 addresses. AWS charges <strong>$0.005/hr ($3.60/month) for every EIP not associated with a running instance</strong>. This sounds trivial until you find 50 of them — $180/month for addresses attached to nothing.</p>
+
+    <pre><code>aws ec2 describe-addresses \
+  --query 'Addresses[?AssociationId==null].{
+    AllocationId:AllocationId,
+    PublicIP:PublicIp,
+    Domain:Domain
+  }' \
+  --output table
+
+# Output shows all EIPs with no current association:
+------------------------------------------------
+| DescribeAddresses                            |
++---------------------------+----------------+-+
+| AllocationId              | PublicIP       | |
++---------------------------+----------------+-+
+| eipalloc-0abc123def456789 | 54.234.12.87   | |
+| eipalloc-0def456abc789012 | 18.144.55.200  | |
+| eipalloc-0ghi789jkl012345 | 3.88.12.145    | |
++---------------------------+----------------+-+
+# 3 idle EIPs = $10.80/month wasted</code></pre>
+
+    <p>Release unused EIPs immediately. Before releasing, check if the IP is referenced in DNS records, firewall rules, or application configs — but if none of those are the case, release it. AWS will give you a different EIP when you need one.</p>
+
+    <h2>Category 5: Forgotten NAT Gateways</h2>
+
+    <p>NAT Gateways are charged at <strong>$0.045/hr ($32.40/month) per gateway</strong>, plus $0.045/GB of data processed. A NAT Gateway provisioned for a VPC that no longer has private subnet instances is pure waste — $32.40/month for a gateway routing zero bytes.</p>
+
+    <pre><code>aws ec2 describe-nat-gateways \
+  --filter "Name=state,Values=available" \
+  --query 'NatGateways[*].{
+    ID:NatGatewayId,
+    VpcId:VpcId,
+    SubnetId:SubnetId,
+    Created:CreateTime
+  }' \
+  --output table
+
+# For each NAT Gateway, check if any instances in its VPC
+# are actually routing through it by checking CloudWatch metrics:
+aws cloudwatch get-metric-statistics \
+  --namespace AWS/NATGateway \
+  --metric-name BytesOutToDestination \
+  --dimensions Name=NatGatewayId,Value=nat-0abc123def456789 \
+  --start-time 2026-01-14T00:00:00Z \
+  --end-time 2026-01-21T00:00:00Z \
+  --period 604800 \
+  --statistics Sum \
+  --output text
+# If Sum is 0 or very low, the NAT Gateway is idle</code></pre>
+
+    <div class="callout green">
+      <p><strong>Consolidate NAT Gateways with VPC endpoints:</strong> Before deleting NAT Gateways, evaluate whether VPC endpoints could replace the traffic they're handling. S3, DynamoDB, ECR, SQS, SNS, and most AWS services support VPC endpoints, which route traffic within the AWS network for free. Replacing NAT Gateway traffic to these services with VPC endpoints can eliminate NAT Gateway costs entirely for some workloads.</p>
+    </div>
+
+    <h2>Category 6: Idle Load Balancers</h2>
+
+    <p>Application Load Balancers (ALBs) cost <strong>$0.008/LCU/hr plus $0.0225/hr base</strong> — roughly $16–$20/month per ALB at minimum. Classic Load Balancers cost $0.025/hr (~$18/month base). An ALB with no healthy targets in any target group is idle — it's processing nothing, but you're still paying the hourly rate.</p>
+
+    <pre><code>aws elbv2 describe-load-balancers \
+  --query 'LoadBalancers[*].{
+    Name:LoadBalancerName,
+    ARN:LoadBalancerArn,
+    Type:Type,
+    State:State.Code
+  }' \
+  --output table
+
+# Then check target health for each ALB:
+aws elbv2 describe-target-groups \
+  --load-balancer-arn arn:aws:elasticloadbalancing:... \
+  --query 'TargetGroups[*].TargetGroupArn' \
+  --output text | xargs -I{} aws elbv2 describe-target-health \
+  --target-group-arn {}</code></pre>
+
+    <p>Any ALB with zero healthy targets for more than 7 days should be evaluated for deletion. Check if it's still referenced in Route 53 records or application configs before removing.</p>
+
+    <h2>Building a Systematic Waste Detection Process</h2>
+
+    <p>Running these commands manually works for a one-time cleanup, but idle resources accumulate continuously. To maintain a clean environment, you need ongoing detection. Here are three approaches from simple to comprehensive:</p>
+
+    <h3>Option 1: AWS Trusted Advisor (Built-In)</h3>
+    <p>Available on Business ($100/month minimum) and Enterprise support plans, Trusted Advisor automatically flags idle EC2 instances (under 10% CPU for 4+ days), unused EIPs, underutilized EBS volumes, and idle load balancers. It's not comprehensive and misses many waste categories, but it's included in your support plan cost.</p>
+
+    <h3>Option 2: Scheduled AWS CLI Scans</h3>
+    <p>A weekly Lambda function running the queries above and posting results to Slack costs virtually nothing and catches most idle resource categories. The limitation is that it requires engineering time to build and maintain, and the output requires manual review.</p>
+
+    <h3>Option 3: AI-Powered Continuous Monitoring</h3>
+    <p>Tools like <a href="/savings/">Cloud Hero AI's savings platform</a> continuously analyze your AWS environment, identify waste across all categories, quantify the exact dollar cost, and (with permissions) can remediate issues automatically. This is the fastest path from finding waste to eliminating it without requiring engineering cycles.</p>
+
+    <div class="cta-box">
+      <h3>Find Your Hidden AWS Waste in Minutes</h3>
+      <p>Cloud Hero AI scans your entire AWS environment for idle resources, orphaned volumes, unused IPs, and forgotten gateways — then shows you exactly how much each is costing you, with one-click remediation options.</p>
+      <a href="https://cloudheroai.com/savings/" class="btn-primary">Start Free Waste Scan →</a>
+    </div>
+
+    <div class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="faq-item">
+        <div class="faq-q">Is it safe to delete old EBS snapshots?</div>
+        <div class="faq-a">Generally yes, with caveats. First, verify the snapshot isn't referenced by any AMI (you can't delete a snapshot that's the basis for a registered AMI). Second, check whether the snapshot is your only backup of production data — if so, keep it or archive it to EBS Snapshot Archive. Third, confirm no compliance requirements mandate keeping it. For application snapshots older than your defined retention window (typically 30–90 days), deletion is safe and recommended.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Why does AWS keep charging for stopped instances?</div>
+        <div class="faq-a">AWS only stops charging for compute (the EC2 instance hourly rate) when an instance is stopped. Attached EBS volumes, Elastic IPs, and other associated resources continue to bill regardless of instance state. To stop all billing, you must terminate the instance — not just stop it. Stopping is useful when you need to preserve the instance's configuration and data temporarily, but termination is the only way to eliminate all associated costs.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">How often should I audit for idle resources?</div>
+        <div class="faq-a">At minimum, monthly. For fast-moving teams, weekly or continuous automated monitoring is better. Idle resources accumulate quickly — a two-week project can leave behind $200/month in orphaned volumes and IPs. The longer idle resources go undetected, the more they compound. Automated scanning tools make continuous monitoring trivial from a cost perspective.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Can I automate the cleanup of idle resources?</div>
+        <div class="faq-a">Yes, with appropriate guardrails. Releasing unused Elastic IPs, deleting expired snapshots (past retention policy), and removing empty target groups can be safely automated. Terminating EC2 instances or deleting EBS volumes should require human approval because the blast radius of a mistake is higher. <a href="/savings/">Cloud Hero AI</a> supports automated remediation for low-risk items and human-approved workflows for higher-risk cleanups.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What's the fastest way to find idle resources across multiple AWS accounts?</div>
+        <div class="faq-a">AWS Organizations with Resource Explorer or AWS Config aggregators can provide cross-account visibility into resources. However, native tooling requires significant setup and still requires manual analysis. Purpose-built tools like Cloud Hero AI are designed specifically for multi-account analysis and can scan an entire AWS Organization in minutes, aggregating idle resource findings with dollar costs across every account.</div>
+      </div>
+    </div>
+
+  </div>
+</article>
+
+<footer>
+  <span>© 2026 Cloud Hero AI</span>
+  <div style="display:flex;gap:20px"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/">Home</a></div>
+</footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const a=q.nextElementSibling;
+    a.style.display=a.style.display==='block'?'none':'block';
+    q.style.setProperty('--after-content', a.style.display==='block'?'"−"':'"+"');
+    q.classList.toggle('open');
+  });
+});
+document.fonts.ready.then(()=>{document.body.style.opacity='1';});
+</script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 2026 Cloud Cost Optimization Checklist: 47 Things to Do Before Q2 — Cloud Hero AI Blog</title>
+<meta name="description" content="The definitive 2026 cloud cost optimization checklist with 47 actionable items across compute, storage, database, networking, reservations, governance, and tooling. With estimated savings ranges.">
+<link rel="canonical" href="https://cloudheroai.com/blog/cloud-cost-optimization-checklist.html">
+<meta property="og:title" content="The 2026 Cloud Cost Optimization Checklist: 47 Things to Do Before Q2">
+<meta property="og:description" content="The definitive 2026 cloud cost optimization checklist with 47 actionable items across compute, storage, database, networking, reservations, governance, and tooling. With estimated savings ranges.">
+<meta property="og:image" content="https://cloudheroai.com/og-image.jpg">
+<meta property="og:url" content="https://cloudheroai.com/blog/cloud-cost-optimization-checklist.html">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6FG0M0E54M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6FG0M0E54M");</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@1,9..144,300&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The 2026 Cloud Cost Optimization Checklist: 47 Things to Do Before Q2",
+  "description": "The definitive 2026 cloud cost optimization checklist with 47 actionable items across compute, storage, database, networking, reservations, governance, and tooling. With estimated savings ranges.",
+  "author": {"@type": "Organization", "name": "Cloud Hero AI"},
+  "publisher": {"@type": "Organization", "name": "Cloud Hero AI", "url": "https://cloudheroai.com"},
+  "datePublished": "2026-03-10",
+  "dateModified": "2026-03-10",
+  "mainEntityOfPage": "https://cloudheroai.com/blog/cloud-cost-optimization-checklist.html"
+}
+</script>
+<style>
+:root{--navy:#070B14;--navy-2:#0D1424;--navy-3:#111827;--cyan:#00D9FF;--cyan-dim:rgba(0,217,255,0.12);--green:#00E5A0;--purple:#7B6FFF;--amber:#FFB547;--white:#F0F4FF;--muted:#7A8CAB;--faint:#3D4F6A;--border:rgba(255,255,255,0.07);--border-bright:rgba(0,217,255,0.2)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);font-size:16px;line-height:1.65;opacity:0;transition:opacity 0.3s}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5vw;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,11,20,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:30px;height:30px;border:1.5px solid var(--cyan);border-radius:7px;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.logo-mark::before{content:'';position:absolute;width:14px;height:14px;border:1.5px solid var(--cyan);border-radius:50%}
+.logo-mark::after{content:'';position:absolute;width:5px;height:5px;background:var(--cyan);border-radius:50%;box-shadow:0 0 6px var(--cyan)}
+.logo-text{font-family:'Space Mono',monospace;font-size:13px;color:var(--white)}
+.logo-text span{color:var(--cyan)}
+.nav-cta{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:7px 18px;border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;transition:background 0.2s}
+.nav-cta:hover{background:var(--cyan-dim)}
+.article-wrap{max-width:760px;margin:0 auto;padding:108px 5vw 80px}
+.article-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;display:block}
+.article-title{font-size:clamp(28px,4.5vw,48px);font-weight:300;line-height:1.1;letter-spacing:-0.025em;margin-bottom:20px}
+.article-title em{font-family:'Fraunces',serif;font-style:italic;color:var(--cyan)}
+.article-meta{display:flex;gap:20px;font-size:13px;color:var(--faint);font-family:'Space Mono',monospace;margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.article-body h2{font-size:24px;font-weight:500;letter-spacing:-0.02em;margin:40px 0 16px;color:var(--white)}
+.article-body h3{font-size:19px;font-weight:500;letter-spacing:-0.01em;margin:28px 0 12px;color:var(--white)}
+.article-body p{font-size:16px;color:var(--muted);line-height:1.8;margin-bottom:20px;font-weight:300}
+.article-body p strong{color:var(--white);font-weight:500}
+.article-body ul,.article-body ol{padding-left:22px;margin-bottom:20px}
+.article-body li{font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:8px;font-weight:300}
+.article-body li strong{color:var(--white)}
+.article-body a{color:var(--cyan);text-decoration:none}
+.article-body a:hover{text-decoration:underline}
+.callout{background:var(--navy-2);border-left:3px solid var(--cyan);border-radius:0 10px 10px 0;padding:20px 24px;margin:28px 0}
+.callout p{margin:0;font-size:15px}
+.callout.green{border-left-color:var(--green)}
+.callout.amber{border-left-color:var(--amber)}
+code{font-family:'Space Mono',monospace;font-size:13px;background:var(--navy-3);padding:2px 6px;border-radius:4px;color:var(--cyan)}
+pre{background:var(--navy-3);border:1px solid var(--border);border-radius:10px;padding:20px;overflow-x:auto;margin:24px 0}
+pre code{background:none;padding:0;font-size:13px;color:var(--green)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0}
+.stat-box{background:var(--navy-2);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--cyan);display:block}
+.stat-label{font-size:12px;color:var(--muted);margin-top:4px}
+.cta-box{background:linear-gradient(135deg,rgba(0,217,255,0.08),rgba(0,229,160,0.05));border:1px solid var(--border-bright);border-radius:16px;padding:36px;margin:48px 0;text-align:center}
+.cta-box h3{font-size:22px;font-weight:500;margin-bottom:12px}
+.cta-box p{font-size:15px;color:var(--muted);margin-bottom:24px;font-weight:300}
+.btn-primary{background:var(--cyan);color:var(--navy);border:none;padding:13px 28px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;font-family:'DM Sans',sans-serif}
+.btn-primary:hover{box-shadow:0 4px 20px rgba(0,217,255,0.3)}
+table{width:100%;border-collapse:collapse;margin:24px 0}
+th{background:var(--navy-2);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);padding:12px 16px;text-align:left;border-bottom:2px solid var(--border)}
+td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:14px;color:var(--muted);vertical-align:top}
+td strong{color:var(--white)}
+.faq-section{margin:48px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:20px 0}
+.faq-q{font-size:16px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq-q::after{content:'+';font-family:'Space Mono',monospace;color:var(--cyan);font-size:18px;flex-shrink:0}
+.faq-a{font-size:14px;color:var(--muted);line-height:1.7;margin-top:12px;font-weight:300;display:none}
+footer{border-top:1px solid var(--border);padding:32px 5vw;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--faint);flex-wrap:wrap;gap:12px}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--white)}
+@media(max-width:640px){.stat-row{grid-template-columns:1fr 1fr}}
+.checklist-section{margin:36px 0}
+.checklist-section h2{margin-bottom:8px}
+.savings-badge{display:inline-block;font-family:'Space Mono',monospace;font-size:10px;background:rgba(0,217,255,0.1);color:var(--cyan);border:1px solid rgba(0,217,255,0.2);border-radius:4px;padding:2px 8px;margin-left:10px;vertical-align:middle;letter-spacing:0.05em}
+.checklist-section ul{list-style:none;padding-left:0}
+.checklist-section ul li{padding:10px 0 10px 32px;border-bottom:1px solid var(--border);position:relative;font-size:15px;color:var(--muted);line-height:1.6}
+.checklist-section ul li::before{content:'☐';position:absolute;left:0;color:var(--cyan);font-size:16px;font-family:'Space Mono',monospace}
+.checklist-section ul li strong{color:var(--white);font-weight:500}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><div class="logo-mark"></div><span class="logo-text">Cloud<span>Hero</span> AI</span></a>
+  <a href="/savings/app/login.html" class="nav-cta">Free savings audit →</a>
+</nav>
+
+<article class="article-wrap">
+  <span class="article-label">Cloud Cost Optimization</span>
+  <h1 class="article-title">The 2026 <em>Cloud Cost Optimization Checklist</em>: 47 Things to Do Before Q2</h1>
+  <div class="article-meta">
+    <span>Cloud Hero AI</span>
+    <span>March 10, 2026</span>
+    <span>16 min read</span>
+  </div>
+  <div class="article-body">
+
+    <p>Q1 is the best time to run a comprehensive cloud cost audit. Budgets are set, teams are staffed, and there's no better time to identify and eliminate waste before it compounds through the rest of the year. This checklist covers all 47 optimization actions we recommend running through before Q2 kicks off — organized by category with estimated savings ranges for each.</p>
+
+    <p>We've built this from real analysis of hundreds of AWS accounts at Cloud Hero AI. Every item on this list has generated real savings for real teams. Not every item applies to every environment, but if you go through all 47 and find 20–30 that apply to you, you'll capture the majority of your optimization opportunity.</p>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <span class="stat-num">47</span>
+        <div class="stat-label">Optimization actions in this checklist</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">25–40%</span>
+        <div class="stat-label">Typical bill reduction after full checklist</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">30 days</span>
+        <div class="stat-label">Time to implement and see full savings</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>How to use this checklist:</strong> Work through each section systematically. Mark items that apply to your environment and create Jira/Linear tickets for each. Prioritize by estimated savings — the items with the highest dollar impact should be tackled first. Complete each item before moving to the next within a section, as some optimizations depend on others (e.g., rightsize before purchasing Reserved Instances).</p>
+    </div>
+
+    <div class="checklist-section">
+      <h2>Compute (12 Items) <span class="savings-badge">Potential: 15–30% of total bill</span></h2>
+
+      <ul>
+        <li><strong>1. Identify and terminate all stopped EC2 instances</strong> — Stopped instances don't charge for compute but EBS volumes keep billing. Audit with <code>aws ec2 describe-instances --filters Name=instance-state-name,Values=stopped</code>. For each: take a final AMI, terminate the instance. <em>Savings: $50–$500/month per cluster of stopped instances.</em></li>
+
+        <li><strong>2. Run EC2 rightsizing analysis in Cost Explorer</strong> — Navigate to Cost Explorer → Recommendations → Rightsizing. Review all flagged instances. Any instance with &lt;20% average CPU utilization is a candidate for one size down. <em>Savings: 30–50% on downsized instances.</em></li>
+
+        <li><strong>3. Evaluate Graviton migration for top 5 instance families</strong> — AWS Graviton3 (m7g, c7g, r7g) delivers 20% better price-performance than x86 equivalents. Identify your top EC2 instance families by spend and test Graviton for each. <em>Savings: 15–20% per migrated instance family.</em></li>
+
+        <li><strong>4. Implement Auto Scaling for web/API tiers</strong> — Any EC2 fleet serving variable traffic should be behind an Auto Scaling Group. Manual scaling to peak capacity 24/7 wastes 30–60% of compute on off-peak hours. <em>Savings: 20–40% on applicable instance groups.</em></li>
+
+        <li><strong>5. Enable Delete-on-Termination for EBS root volumes</strong> — Change the default EC2 block device mapping so volumes are deleted when instances terminate. Prevents future orphaned volume accumulation at the source. <em>Savings: Prevents future waste; typically $50–$300/month ongoing.</em></li>
+
+        <li><strong>6. Review EC2 instance families for generation currency</strong> — Running m4 or m5 instances? The m7g (Graviton3) or m6i/m7i are faster and cheaper. Old generation instances can cost 10–20% more than current generation equivalents. <em>Savings: 10–20% per upgraded instance.</em></li>
+
+        <li><strong>7. Audit Lambda function memory configurations</strong> — Lambda charges per GB-second. Many Lambda functions have more memory allocated than needed. Use AWS Lambda Power Tuning (open source) to find the optimal memory configuration. <em>Savings: 10–40% on Lambda spend for over-provisioned functions.</em></li>
+
+        <li><strong>8. Evaluate Fargate Spot for non-critical ECS tasks</strong> — Fargate Spot is 70% cheaper than standard Fargate. Background jobs, batch processing, and dev/staging ECS tasks can typically run on Spot with minor configuration changes. <em>Savings: 70% on eligible Fargate tasks.</em></li>
+
+        <li><strong>9. Schedule non-production EC2 instances to stop nights and weekends</strong> — Dev and staging environments don't need to run 24/7. A simple scheduler that stops instances at 7pm and starts them at 8am on weekdays cuts those instances' compute cost by 73%. <em>Savings: 70–73% on non-production compute.</em></li>
+
+        <li><strong>10. Review Spot Instance usage for batch and stateless workloads</strong> — On-demand instances for batch processing, data pipelines, or stateless API workers are overpaying by 60–80%. Evaluate Spot for these workloads with appropriate fault tolerance. <em>Savings: 60–80% on eligible workloads.</em></li>
+
+        <li><strong>11. Identify and terminate zombie EC2 instances with no traffic</strong> — EC2 instances with zero inbound traffic for 30+ days via CloudWatch NetworkIn metric are zombie candidates. These are running, not stopped, but serving no purpose. <em>Savings: 100% of those instances' hourly cost.</em></li>
+
+        <li><strong>12. Check for oversized launch template defaults</strong> — If your Auto Scaling Groups have a launch template with an oversized instance type, every new instance is over-provisioned by default. Audit ASG launch templates and update them to reflect your rightsizing analysis. <em>Savings: 20–50% on ASG-launched instances.</em></li>
+      </ul>
+    </div>
+
+    <div class="checklist-section">
+      <h2>Storage (8 Items) <span class="savings-badge">Potential: 5–12% of total bill</span></h2>
+
+      <ul>
+        <li><strong>13. Find and delete all unattached EBS volumes</strong> — Run <code>aws ec2 describe-volumes --filters Name=status,Values=available</code>. Snapshot any you're unsure about, delete the rest. <em>Savings: $0.08–$0.125/GB/month per deleted volume.</em></li>
+
+        <li><strong>14. Migrate all gp2 EBS volumes to gp3</strong> — gp3 is 20% cheaper than gp2 at the same size and provides better baseline performance. Zero-downtime migration via the AWS console or CLI. <em>Savings: 20% on all migrated EBS storage.</em></li>
+
+        <li><strong>15. Implement EBS Snapshot Data Lifecycle Manager policies</strong> — Set automated retention policies for all EBS snapshots. Most teams need 7–30 days for operational recovery and 90 days for compliance. Anything beyond without a policy wastes money. <em>Savings: $50–$2,000+/month depending on snapshot accumulation.</em></li>
+
+        <li><strong>16. Archive old snapshots to EBS Snapshot Archive</strong> — Snapshots you must retain (compliance) but rarely access can be moved to EBS Snapshot Archive at 75% cost reduction. <em>Savings: 75% on archived snapshots vs standard snapshot storage.</em></li>
+
+        <li><strong>17. Implement S3 lifecycle policies on all buckets</strong> — Transition objects to Standard-IA after 30 days, Glacier Instant Retrieval after 90 days. For compliance archives: Glacier Deep Archive after 365 days. <em>Savings: 50–95% on transitioned objects vs S3 Standard.</em></li>
+
+        <li><strong>18. Enable S3 Intelligent-Tiering for new buckets</strong> — For buckets with unpredictable access patterns, Intelligent-Tiering automatically moves objects between tiers. The $0.0025/1,000 objects monitoring fee pays for itself immediately for buckets over 1 TB. <em>Savings: 15–40% on eligible object storage.</em></li>
+
+        <li><strong>19. Review and remove S3 multipart upload incomplete parts</strong> — Failed or incomplete multipart uploads accumulate silently. Enable S3 lifecycle rules to abort incomplete multipart uploads after 7 days. <em>Savings: Variable; can eliminate hidden storage costs entirely.</em></li>
+
+        <li><strong>20. Identify S3 buckets with versioning and old versions</strong> — S3 versioning keeps every previous version of every object. Old versions accumulate indefinitely without lifecycle policies. Add lifecycle rules to delete old versions after 30–90 days. <em>Savings: 20–80% on over-versioned buckets.</em></li>
+      </ul>
+    </div>
+
+    <div class="checklist-section">
+      <h2>Database (7 Items) <span class="savings-badge">Potential: 8–20% of total bill</span></h2>
+
+      <ul>
+        <li><strong>21. Disable Multi-AZ on dev and staging RDS instances</strong> — Multi-AZ doubles RDS cost. Dev and staging databases almost never need it. Check all RDS instances and disable Multi-AZ for non-production. <em>Savings: 50% on eligible RDS instances (dev/staging only).</em></li>
+
+        <li><strong>22. Rightsize RDS instance classes</strong> — Pull CloudWatch metrics for CPU and FreeableMemory over 30 days for each RDS instance. Any database consistently at &lt;20% CPU and &gt;50% FreeableMemory is oversized. <em>Savings: 30–60% per downsized RDS instance.</em></li>
+
+        <li><strong>23. Migrate RDS gp2 storage to gp3</strong> — Same 20% savings as EC2 EBS, now applied to RDS storage. Zero-downtime migration available via console modify with "Apply immediately". <em>Savings: 20% on all RDS storage.</em></li>
+
+        <li><strong>24. Review RDS automated backup retention periods</strong> — Default is 7 days in some configurations but many databases have it set to 35 days. Every additional day of automated backups increases snapshot storage costs. Audit and reduce to your actual recovery point objective. <em>Savings: Snapshot storage reduction proportional to retention reduction.</em></li>
+
+        <li><strong>25. Identify idle RDS instances with no connections</strong> — An RDS instance with zero database connections in 30 days is effectively unused. Use CloudWatch's DatabaseConnections metric to find them. <em>Savings: 100% of that instance's hourly rate.</em></li>
+
+        <li><strong>26. Evaluate Aurora Serverless v2 for variable database workloads</strong> — Applications with highly variable database load (peaks 10x average) are strong candidates for Aurora Serverless v2, which scales down to near-zero during idle periods. <em>Savings: 40–70% vs provisioned Aurora for spiky workloads.</em></li>
+
+        <li><strong>27. Review ElastiCache cluster sizing and multi-AZ</strong> — Apply the same rightsizing and multi-AZ discipline to ElastiCache as to RDS. ElastiCache dev/staging clusters rarely need multi-AZ or production-scale node types. <em>Savings: 30–60% on non-production ElastiCache.</em></li>
+      </ul>
+    </div>
+
+    <div class="checklist-section">
+      <h2>Networking (6 Items) <span class="savings-badge">Potential: 3–8% of total bill</span></h2>
+
+      <ul>
+        <li><strong>28. Release all unassociated Elastic IP addresses</strong> — Run <code>aws ec2 describe-addresses --query 'Addresses[?AssociationId==null]'</code>. Release every unassociated EIP. <em>Savings: $3.60/month per released EIP.</em></li>
+
+        <li><strong>29. Delete idle NAT Gateways</strong> — Check CloudWatch BytesOutToDestination for each NAT Gateway. Zero or minimal traffic over 14 days = idle gateway. <em>Savings: $32.40/month per deleted NAT Gateway plus data processing charges.</em></li>
+
+        <li><strong>30. Deploy VPC Endpoints for S3, DynamoDB, and ECR</strong> — Traffic to S3 and DynamoDB through NAT Gateways is charged at $0.045/GB processing. VPC endpoints route this traffic within the AWS network at no charge. <em>Savings: Highly variable; $100–$5,000+/month for data-intensive workloads.</em></li>
+
+        <li><strong>31. Review cross-AZ data transfer patterns</strong> — Microservices calling each other across Availability Zones pay $0.01/GB each way. Use CloudWatch metrics to identify high cross-AZ talkers and evaluate co-locating them. <em>Savings: Variable; significant for data-intensive cross-AZ flows.</em></li>
+
+        <li><strong>32. Delete unused load balancers</strong> — Find ALBs and NLBs with no healthy targets (or with zero RequestCount for 14 days). Delete idle load balancers. <em>Savings: $16–$18/month base + data processing per deleted LB.</em></li>
+
+        <li><strong>33. Review CloudFront distribution costs and cache hit rates</strong> — CloudFront distributions with low cache hit rates (under 80%) mean you're paying for origin data transfer that could be cached. Tune cache behaviors to improve hit rates. <em>Savings: 20–50% on origin transfer costs for improved caching.</em></li>
+      </ul>
+    </div>
+
+    <div class="checklist-section">
+      <h2>Reserved/Committed Spend (6 Items) <span class="savings-badge">Potential: 20–40% on covered spend</span></h2>
+
+      <ul>
+        <li><strong>34. Purchase a 1-year Compute Savings Plan for baseline EC2 spend</strong> — After completing rightsizing (items 2–3), buy a Compute Savings Plan covering 70–80% of your baseline EC2 spend. Do this AFTER rightsizing so you're committing to the right amount. <em>Savings: 33–40% on covered spend.</em></li>
+
+        <li><strong>35. Buy RDS Reserved Instances for stable production databases</strong> — Any RDS instance that's been running stably for 6+ months at its current size is a RI candidate. Purchase 1-year No Upfront to start. <em>Savings: 40% vs on-demand for 1-year No Upfront RIs.</em></li>
+
+        <li><strong>36. Review Savings Plan utilization in Cost Explorer</strong> — Navigate to Savings Plans → Utilization. Any existing Savings Plan below 80% utilization is over-committed. Understand why and adjust future purchases accordingly. <em>Impact: Prevents future waste from over-committed Savings Plans.</em></li>
+
+        <li><strong>37. Set Savings Plan expiration calendar reminders</strong> — Savings Plans and RIs expire at end of term. Without renewal, you revert to on-demand pricing overnight. Set 60-day and 30-day reminders before every expiration. <em>Impact: Prevents costly lapses in coverage.</em></li>
+
+        <li><strong>38. Evaluate ElastiCache and OpenSearch Reserved Instances</strong> — Apply the same RI discipline to non-EC2 services. ElastiCache RIs save up to 40% for 1-year No Upfront. <em>Savings: 40–55% on covered service spend.</em></li>
+
+        <li><strong>39. Consider RI Marketplace for over-committed Standard RIs</strong> — If you have Standard RIs that are consistently under-utilized (below 50%), list them on the AWS RI Marketplace. You'll typically recover 80–95% of remaining value. <em>Impact: Recovers stranded commitment value.</em></li>
+      </ul>
+    </div>
+
+    <div class="checklist-section">
+      <h2>Governance &amp; Tagging (5 Items) <span class="savings-badge">Potential: Enables ongoing savings</span></h2>
+
+      <ul>
+        <li><strong>40. Audit tag coverage across all resources</strong> — Use AWS Resource Groups Tag Editor to find all untagged resources. Set minimum required tags: Environment, Owner, CostCenter, and Project. Resources without tags are invisible to cost allocation and chargeback. <em>Impact: Enables accurate cost attribution and accountability.</em></li>
+
+        <li><strong>41. Create AWS Budgets for every account and key service</strong> — Set budgets for: total account spend, EC2 spend, RDS spend, and data transfer. Configure alerts at 80% and 100% of budget. This is the simplest early-warning system for cost anomalies. <em>Impact: Catch overspends before they compound.</em></li>
+
+        <li><strong>42. Enable Cost Anomaly Detection monitors</strong> — In Cost Explorer, create anomaly monitors for your top 3–5 services by spend. Configure SNS/email alerts for anomalies above $50. Anomaly detection catches cost spikes you'd miss with static budget alerts. <em>Impact: Reduces MTTR for cost anomalies from days to hours.</em></li>
+
+        <li><strong>43. Implement AWS Service Control Policies (SCPs) for cost guardrails</strong> — In AWS Organizations, use SCPs to prevent provisioning of expensive instance types without approval, block resource creation in unapproved regions, and require tags on all resource creation. <em>Impact: Prevents future waste at the policy level.</em></li>
+
+        <li><strong>44. Set up monthly cost review cadence</strong> — Schedule a 30-minute monthly cost review with your engineering team. Review: top 5 services by spend change, rightsizing recommendations, and RI/SP coverage. Costs only stay optimized if someone is looking at them regularly. <em>Impact: Ongoing — prevents drift back to wasteful patterns.</em></li>
+      </ul>
+    </div>
+
+    <div class="checklist-section">
+      <h2>Tooling (3 Items) <span class="savings-badge">Potential: Enables 2–5x faster optimization</span></h2>
+
+      <ul>
+        <li><strong>45. Enable AWS Cost Explorer and configure saved views</strong> — If you haven't enabled Cost Explorer yet, do it today. Create saved views for: EC2 spend by instance type, storage by service, and spend by environment tag. See our <a href="/blog/aws-cost-explorer-guide.html">complete Cost Explorer guide</a> for setup instructions. <em>Impact: Baseline visibility required for all other optimizations.</em></li>
+
+        <li><strong>46. Deploy Kubecost for Kubernetes cost visibility</strong> — If you're running EKS or other Kubernetes workloads, install Kubecost (free community edition) to get namespace and workload-level cost attribution. Combined with VPA recommendations (see our <a href="/blog/kubernetes-cost-optimization.html">K8s cost guide</a>), this typically surfaces 30–40% savings opportunities in K8s environments. <em>Savings: 30–40% on Kubernetes spend via rightsizing.</em></li>
+
+        <li><strong>47. Connect a dedicated FinOps platform for automated scanning</strong> — For teams spending $10K+/month, a dedicated FinOps tool pays for itself immediately. <a href="/savings/">Cloud Hero AI's Hero Savings</a> connects to your AWS account via read-only IAM role and surfaces prioritized savings opportunities with one-click remediation — in minutes, not days. <em>Savings: 3–10x ROI on tool cost from first-month findings.</em></li>
+      </ul>
+    </div>
+
+    <div class="cta-box">
+      <h3>Let Hero Savings Run This Checklist For You</h3>
+      <p>Instead of manually working through all 47 items, connect your AWS account to Hero Savings and let our AI surface your specific opportunities — with exact dollar values, prioritized by impact, and one-click remediation where available.</p>
+      <a href="https://cloudheroai.com/savings/" class="btn-primary">Get My Free Savings Report →</a>
+    </div>
+
+    <div class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="faq-item">
+        <div class="faq-q">How long does it take to complete this entire checklist?</div>
+        <div class="faq-a">For a single AWS account with one engineer focused on it: 2–4 weeks to complete all applicable items, depending on complexity. The quick wins (EIPs, orphaned volumes, gp2→gp3) take a few hours each. Rightsizing requires 1–2 weeks of monitoring before acting. Savings Plan purchases require analysis but can be done in a day once you have the data. Governance items (tagging, SCPs) are the most time-intensive if starting from scratch. Use a project management tool to track progress and don't try to do everything in a single sprint.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Which items on this checklist give the fastest ROI?</div>
+        <div class="faq-a">In order of speed + impact: (1) Delete orphaned EBS volumes — takes 1 hour, shows up on next bill; (2) Disable Multi-AZ on dev/staging RDS — 30 minutes, immediately halves those RDS costs; (3) Release unused Elastic IPs — 15 minutes; (4) Buy a Compute Savings Plan — 1 hour of analysis, 33–40% savings on covered spend immediately. These four actions alone typically save $2,000–$20,000/month for teams spending $50K+/month on AWS.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Should I rightsize before or after buying Reserved Instances?</div>
+        <div class="faq-a">Always rightsize first, then commit. If you buy Reserved Instances for your current (oversized) fleet and then downsize, you're stuck with RI commitments that don't match your new instance sizes. The correct order: (1) identify and implement rightsizing opportunities, (2) let the rightsized fleet run for 2–4 weeks to confirm stability, (3) analyze your stable baseline usage, (4) purchase Savings Plans or Reserved Instances based on that baseline. This sequence ensures you commit to the right amount at the right size.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What if I'm not sure whether a resource is safe to delete?</div>
+        <div class="faq-a">The rule of zero activity: if a resource has had zero meaningful activity (zero network traffic, zero API calls, zero CloudWatch metrics activity) for 30+ days, it's almost certainly safe to delete. Before deleting: (1) check if it's referenced in DNS, load balancer configs, or application settings; (2) snapshot or archive it if there's any doubt; (3) tag it as "marked-for-deletion" and wait 7 days before deleting — if anyone objects, you still have the resource. This "soft delete" approach eliminates the risk of deleting something important while still eliminating the cost.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">How do I convince my team to prioritize cloud cost optimization?</div>
+        <div class="faq-a">Frame it in terms that resonate with your audience. For engineers: "we could hire two more engineers with the money we're wasting on idle EC2 instances." For finance: "our cloud bill has grown 45% year-over-year while our usage has grown 15% — that gap is pure waste we can recover." For executives: "we're spending $X/month on cloud and our analysis shows $Y/month is waste — here's the 30-day plan to recover it." Attaching specific dollar amounts to specific resources (not just percentages) is the most persuasive approach. Run a quick scan with <a href="/savings/">Hero Savings</a> and bring a real dollar figure to the conversation.</div>
+      </div>
+    </div>
+
+  </div>
+</article>
+
+<footer>
+  <span>© 2026 Cloud Hero AI</span>
+  <div style="display:flex;gap:20px"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/">Home</a></div>
+</footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const a=q.nextElementSibling;
+    a.style.display=a.style.display==='block'?'none':'block';
+    q.style.setProperty('--after-content', a.style.display==='block'?'"−"':'"+"');
+    q.classList.toggle('open');
+  });
+});
+document.fonts.ready.then(()=>{document.body.style.opacity='1';});
+</script>
+</body>
+</html>

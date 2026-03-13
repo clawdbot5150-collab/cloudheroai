@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero Savings Admin — Cloud Hero AI</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: #0a0f1a; color: #e5e7eb; min-height: 100vh; }
+  .header { background: #111827; border-bottom: 1px solid #1f2937; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .header h1 { font-size: 20px; font-weight: 700; color: #06b6d4; }
+  .header .badge { background: #1f2937; color: #9ca3af; font-size: 12px; padding: 4px 10px; border-radius: 20px; }
+  .login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .login-box { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 40px; width: 360px; }
+  .login-box h2 { font-size: 22px; color: #06b6d4; margin-bottom: 8px; }
+  .login-box p { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+  .main { display: none; }
+  input { width: 100%; background: #1f2937; border: 1px solid #374151; color: #e5e7eb; padding: 10px 14px; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
+  button { width: 100%; background: #06b6d4; color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  button:hover { background: #0891b2; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 32px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .stat-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 20px; }
+  .stat-card .label { font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+  .stat-card .value { font-size: 32px; font-weight: 700; }
+  .stat-card .sub { font-size: 12px; color: #4b5563; margin-top: 4px; }
+  .green { color: #10b981; }
+  .cyan { color: #06b6d4; }
+  .amber { color: #f59e0b; }
+  .purple { color: #a855f7; }
+  .section { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+  .section h2 { font-size: 16px; font-weight: 600; color: #e5e7eb; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; color: #6b7280; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; padding: 8px 12px; border-bottom: 1px solid #1f2937; }
+  td { padding: 10px 12px; border-bottom: 1px solid #111827; color: #d1d5db; }
+  tr:hover td { background: #1a2234; }
+  .badge-pro { background: #0c4a6e; color: #7dd3fc; font-size: 11px; padding: 2px 8px; border-radius: 20px; }
+  .badge-free { background: #1f2937; color: #6b7280; font-size: 11px; padding: 2px 8px; border-radius: 20px; }
+  .badge-active { background: #064e3b; color: #6ee7b7; font-size: 11px; padding: 2px 8px; border-radius: 20px; }
+  .nav { display: flex; gap: 4px; margin-bottom: 24px; }
+  .nav button { width: auto; background: #1f2937; color: #9ca3af; padding: 8px 16px; font-size: 13px; border-radius: 8px; }
+  .nav button.active { background: #06b6d4; color: #fff; }
+  .tab { display: none; }
+  .tab.active { display: block; }
+  .err { color: #f87171; font-size: 13px; margin-top: 8px; }
+  .refresh-btn { width: auto; background: #1f2937; color: #9ca3af; padding: 6px 14px; font-size: 12px; border-radius: 6px; margin-left: auto; display: block; }
+</style>
+</head>
+<body>
+
+<!-- Login Screen -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <h2>🛡️ Admin Access</h2>
+    <p>Hero Savings internal dashboard</p>
+    <input type="password" id="adminToken" placeholder="Admin token" onkeydown="if(event.key==='Enter')login()">
+    <button onclick="login()">Enter Dashboard</button>
+    <div class="err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- Main Dashboard -->
+<div class="main" id="mainDash">
+  <div class="header">
+    <h1>🚀 Hero Savings Admin</h1>
+    <div style="display:flex;gap:12px;align-items:center">
+      <span class="badge" id="lastUpdated">Loading...</span>
+      <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- KPI Cards -->
+    <div class="grid-4" id="kpiCards">
+      <div class="stat-card"><div class="label">MRR (This Month)</div><div class="value green" id="kpiMRR">—</div><div class="sub">monthly recurring revenue</div></div>
+      <div class="stat-card"><div class="label">All-Time Revenue</div><div class="value cyan" id="kpiRevenue">—</div><div class="sub">total fees collected</div></div>
+      <div class="stat-card"><div class="label">Active Subscriptions</div><div class="value amber" id="kpiSubs">—</div><div class="sub">paying customers</div></div>
+      <div class="stat-card"><div class="label">Total Users</div><div class="value purple" id="kpiUsers">—</div><div class="sub" id="kpiNew">new this week: —</div></div>
+      <div class="stat-card"><div class="label">Savings Found (All)</div><div class="value green" id="kpiSavings">—</div><div class="sub">total waste identified</div></div>
+      <div class="stat-card"><div class="label">Audits Run</div><div class="value cyan" id="kpiAudits">—</div><div class="sub" id="kpiFindings">findings: —</div></div>
+      <div class="stat-card"><div class="label">Cloud Connections</div><div class="value amber" id="kpiConns">—</div><div class="sub" id="kpiConnsSub">AWS / GCP / Azure</div></div>
+      <div class="stat-card"><div class="label">Pro Users</div><div class="value purple" id="kpiPro">—</div><div class="sub">of total users</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="nav">
+      <button class="active" onclick="showTab('customers')">👥 Customers</button>
+      <button onclick="showTab('revenue')">💰 Revenue</button>
+      <button onclick="showTab('audits')">🔍 Audits</button>
+    </div>
+
+    <!-- Customers Tab -->
+    <div class="tab active" id="tab-customers">
+      <div class="section">
+        <h2>👥 All Customers</h2>
+        <table>
+          <thead><tr>
+            <th>Email</th><th>Plan</th><th>Billing</th><th>Audits</th>
+            <th>Max Savings Found</th><th>Total Fees Paid</th><th>AWS</th><th>Joined</th>
+          </tr></thead>
+          <tbody id="customersTable"><tr><td colspan="8" style="text-align:center;color:#4b5563">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Revenue Tab -->
+    <div class="tab" id="tab-revenue">
+      <div class="section">
+        <h2>📊 Monthly Revenue Rollup</h2>
+        <table>
+          <thead><tr><th>Period</th><th>Revenue</th><th>Customers Billed</th><th>Avg Per Customer</th></tr></thead>
+          <tbody id="revenueMonthly"></tbody>
+        </table>
+      </div>
+      <div class="section">
+        <h2>🧾 Recent Billing Records</h2>
+        <table>
+          <thead><tr><th>Customer</th><th>Period</th><th>Savings Found</th><th>Fee Charged</th><th>Date</th></tr></thead>
+          <tbody id="revenueRecords"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Audits Tab -->
+    <div class="tab" id="tab-audits">
+      <div class="section">
+        <h2>🔍 Recent Audits</h2>
+        <table>
+          <thead><tr><th>Customer</th><th>Status</th><th>Waste Found</th><th>Findings</th><th>Resources</th><th>Started</th></tr></thead>
+          <tbody id="auditsTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const API = '/api/admin';
+let adminToken = '';
+
+function login() {
+  const token = document.getElementById('adminToken').value.trim();
+  if (!token) return;
+  adminToken = token;
+  loadAll();
+}
+
+async function apiFetch(path) {
+  const resp = await fetch(API + path, { headers: { 'x-admin-token': adminToken } });
+  if (resp.status === 401) {
+    document.getElementById('loginErr').textContent = 'Invalid admin token';
+    adminToken = '';
+    return null;
+  }
+  return resp.json();
+}
+
+async function loadAll() {
+  const [overview, customers, revenue] = await Promise.all([
+    apiFetch('/overview'),
+    apiFetch('/customers'),
+    apiFetch('/revenue')
+  ]);
+
+  if (!overview) return;
+
+  // Show dashboard
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainDash').style.display = 'block';
+
+  document.getElementById('lastUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString();
+
+  // KPIs
+  document.getElementById('kpiMRR').textContent = '$' + (overview.billing.currentMRR || 0).toLocaleString('en-US', {minimumFractionDigits: 2});
+  document.getElementById('kpiRevenue').textContent = '$' + (overview.billing.allTimeRevenue || 0).toLocaleString('en-US', {minimumFractionDigits: 2});
+  document.getElementById('kpiSubs').textContent = overview.billing.activeSubscriptions;
+  document.getElementById('kpiUsers').textContent = overview.users.total;
+  document.getElementById('kpiNew').textContent = 'new this week: ' + overview.users.recent7d;
+  document.getElementById('kpiSavings').textContent = '$' + (overview.audits.totalSavingsFound || 0).toLocaleString('en-US', {minimumFractionDigits: 2}) + '/mo';
+  document.getElementById('kpiAudits').textContent = overview.audits.total;
+  document.getElementById('kpiFindings').textContent = 'findings: ' + overview.audits.findings.toLocaleString();
+  document.getElementById('kpiConns').textContent = overview.connections.aws + overview.connections.gcp + overview.connections.azure;
+  document.getElementById('kpiConnsSub').textContent = `AWS ${overview.connections.aws} / GCP ${overview.connections.gcp} / Azure ${overview.connections.azure}`;
+  document.getElementById('kpiPro').textContent = overview.users.pro;
+
+  // Customers table
+  const ctbody = document.getElementById('customersTable');
+  if (customers?.customers?.length) {
+    ctbody.innerHTML = customers.customers.map(c => `
+      <tr>
+        <td>${c.email}</td>
+        <td><span class="badge-${c.plan}">${c.plan}</span></td>
+        <td><span class="badge-${c.billing_status === 'active' ? 'active' : 'free'}">${c.billing_status || 'inactive'}</span></td>
+        <td>${c.audit_count || 0}</td>
+        <td class="green">${c.max_savings_found ? '$' + parseFloat(c.max_savings_found).toFixed(2) + '/mo' : '—'}</td>
+        <td class="cyan">${c.total_fees_paid ? '$' + parseFloat(c.total_fees_paid).toFixed(2) : '$0'}</td>
+        <td>${c.aws_connections || 0}</td>
+        <td style="color:#4b5563">${new Date(c.created_at).toLocaleDateString()}</td>
+      </tr>`).join('');
+  } else {
+    ctbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#4b5563">No customers yet</td></tr>';
+  }
+
+  // Revenue monthly
+  const rmbody = document.getElementById('revenueMonthly');
+  if (revenue?.monthly?.length) {
+    rmbody.innerHTML = revenue.monthly.map(r => `
+      <tr>
+        <td>${r.billing_period}</td>
+        <td class="green">$${parseFloat(r.revenue).toFixed(2)}</td>
+        <td>${r.customers_billed}</td>
+        <td class="cyan">$${(r.revenue / r.customers_billed).toFixed(2)}</td>
+      </tr>`).join('');
+  } else {
+    rmbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#4b5563">No billing records yet</td></tr>';
+  }
+
+  // Revenue records
+  const rrbody = document.getElementById('revenueRecords');
+  if (revenue?.records?.length) {
+    rrbody.innerHTML = revenue.records.map(r => `
+      <tr>
+        <td>${r.email}</td>
+        <td>${r.billing_period}</td>
+        <td class="green">$${parseFloat(r.savings_found).toFixed(2)}/mo</td>
+        <td class="cyan">$${parseFloat(r.fee_charged).toFixed(2)}</td>
+        <td style="color:#4b5563">${new Date(r.created_at).toLocaleDateString()}</td>
+      </tr>`).join('');
+  } else {
+    rrbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#4b5563">No billing records yet</td></tr>';
+  }
+}
+
+async function loadAudits() {
+  const data = await apiFetch('/audits');
+  const tbody = document.getElementById('auditsTable');
+  if (data?.audits?.length) {
+    tbody.innerHTML = data.audits.map(a => `
+      <tr>
+        <td>${a.email}</td>
+        <td><span class="badge-${a.status === 'complete' ? 'active' : 'free'}">${a.status}</span></td>
+        <td class="green">${a.total_waste_monthly ? '$' + parseFloat(a.total_waste_monthly).toFixed(2) + '/mo' : '—'}</td>
+        <td>${a.findings_count || 0}</td>
+        <td>${a.resources_scanned || 0}</td>
+        <td style="color:#4b5563">${new Date(a.started_at).toLocaleDateString()}</td>
+      </tr>`).join('');
+  } else {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#4b5563">No audits yet</td></tr>';
+  }
+}
+
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'audits') loadAudits();
+}
+</script>
+</body>
+</html>

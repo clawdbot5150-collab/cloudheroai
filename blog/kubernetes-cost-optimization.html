@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kubernetes Cost Optimization: How to Stop Wasting 40% of Your K8s Budget — Cloud Hero AI Blog</title>
+<meta name="description" content="Learn how to cut Kubernetes costs by 40% or more. Covers overprovisioned pods, idle namespaces, unused PVCs, VPA, HPA, Karpenter, and Kubecost with real YAML examples and savings numbers.">
+<link rel="canonical" href="https://cloudheroai.com/blog/kubernetes-cost-optimization.html">
+<meta property="og:title" content="Kubernetes Cost Optimization: How to Stop Wasting 40% of Your K8s Budget">
+<meta property="og:description" content="Learn how to cut Kubernetes costs by 40% or more. Covers overprovisioned pods, idle namespaces, unused PVCs, VPA, HPA, Karpenter, and Kubecost with real YAML examples and savings numbers.">
+<meta property="og:image" content="https://cloudheroai.com/og-image.jpg">
+<meta property="og:url" content="https://cloudheroai.com/blog/kubernetes-cost-optimization.html">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6FG0M0E54M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6FG0M0E54M");</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@1,9..144,300&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Kubernetes Cost Optimization: How to Stop Wasting 40% of Your K8s Budget",
+  "description": "Learn how to cut Kubernetes costs by 40% or more. Covers overprovisioned pods, idle namespaces, unused PVCs, VPA, HPA, Karpenter, and Kubecost with real YAML examples and savings numbers.",
+  "author": {"@type": "Organization", "name": "Cloud Hero AI"},
+  "publisher": {"@type": "Organization", "name": "Cloud Hero AI", "url": "https://cloudheroai.com"},
+  "datePublished": "2026-03-03",
+  "dateModified": "2026-03-03",
+  "mainEntityOfPage": "https://cloudheroai.com/blog/kubernetes-cost-optimization.html"
+}
+</script>
+<style>
+:root{--navy:#070B14;--navy-2:#0D1424;--navy-3:#111827;--cyan:#00D9FF;--cyan-dim:rgba(0,217,255,0.12);--green:#00E5A0;--purple:#7B6FFF;--amber:#FFB547;--white:#F0F4FF;--muted:#7A8CAB;--faint:#3D4F6A;--border:rgba(255,255,255,0.07);--border-bright:rgba(0,217,255,0.2)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);font-size:16px;line-height:1.65;opacity:0;transition:opacity 0.3s}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5vw;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,11,20,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:30px;height:30px;border:1.5px solid var(--cyan);border-radius:7px;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.logo-mark::before{content:'';position:absolute;width:14px;height:14px;border:1.5px solid var(--cyan);border-radius:50%}
+.logo-mark::after{content:'';position:absolute;width:5px;height:5px;background:var(--cyan);border-radius:50%;box-shadow:0 0 6px var(--cyan)}
+.logo-text{font-family:'Space Mono',monospace;font-size:13px;color:var(--white)}
+.logo-text span{color:var(--cyan)}
+.nav-cta{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:7px 18px;border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;transition:background 0.2s}
+.nav-cta:hover{background:var(--cyan-dim)}
+.article-wrap{max-width:760px;margin:0 auto;padding:108px 5vw 80px}
+.article-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;display:block}
+.article-title{font-size:clamp(28px,4.5vw,48px);font-weight:300;line-height:1.1;letter-spacing:-0.025em;margin-bottom:20px}
+.article-title em{font-family:'Fraunces',serif;font-style:italic;color:var(--cyan)}
+.article-meta{display:flex;gap:20px;font-size:13px;color:var(--faint);font-family:'Space Mono',monospace;margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.article-body h2{font-size:24px;font-weight:500;letter-spacing:-0.02em;margin:40px 0 16px;color:var(--white)}
+.article-body h3{font-size:19px;font-weight:500;letter-spacing:-0.01em;margin:28px 0 12px;color:var(--white)}
+.article-body p{font-size:16px;color:var(--muted);line-height:1.8;margin-bottom:20px;font-weight:300}
+.article-body p strong{color:var(--white);font-weight:500}
+.article-body ul,.article-body ol{padding-left:22px;margin-bottom:20px}
+.article-body li{font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:8px;font-weight:300}
+.article-body li strong{color:var(--white)}
+.article-body a{color:var(--cyan);text-decoration:none}
+.article-body a:hover{text-decoration:underline}
+.callout{background:var(--navy-2);border-left:3px solid var(--cyan);border-radius:0 10px 10px 0;padding:20px 24px;margin:28px 0}
+.callout p{margin:0;font-size:15px}
+.callout.green{border-left-color:var(--green)}
+.callout.amber{border-left-color:var(--amber)}
+code{font-family:'Space Mono',monospace;font-size:13px;background:var(--navy-3);padding:2px 6px;border-radius:4px;color:var(--cyan)}
+pre{background:var(--navy-3);border:1px solid var(--border);border-radius:10px;padding:20px;overflow-x:auto;margin:24px 0}
+pre code{background:none;padding:0;font-size:13px;color:var(--green)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0}
+.stat-box{background:var(--navy-2);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--cyan);display:block}
+.stat-label{font-size:12px;color:var(--muted);margin-top:4px}
+.cta-box{background:linear-gradient(135deg,rgba(0,217,255,0.08),rgba(0,229,160,0.05));border:1px solid var(--border-bright);border-radius:16px;padding:36px;margin:48px 0;text-align:center}
+.cta-box h3{font-size:22px;font-weight:500;margin-bottom:12px}
+.cta-box p{font-size:15px;color:var(--muted);margin-bottom:24px;font-weight:300}
+.btn-primary{background:var(--cyan);color:var(--navy);border:none;padding:13px 28px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;font-family:'DM Sans',sans-serif}
+.btn-primary:hover{box-shadow:0 4px 20px rgba(0,217,255,0.3)}
+table{width:100%;border-collapse:collapse;margin:24px 0}
+th{background:var(--navy-2);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);padding:12px 16px;text-align:left;border-bottom:2px solid var(--border)}
+td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:14px;color:var(--muted);vertical-align:top}
+td strong{color:var(--white)}
+.faq-section{margin:48px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:20px 0}
+.faq-q{font-size:16px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq-q::after{content:'+';font-family:'Space Mono',monospace;color:var(--cyan);font-size:18px;flex-shrink:0}
+.faq-a{font-size:14px;color:var(--muted);line-height:1.7;margin-top:12px;font-weight:300;display:none}
+footer{border-top:1px solid var(--border);padding:32px 5vw;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--faint);flex-wrap:wrap;gap:12px}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--white)}
+@media(max-width:640px){.stat-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><div class="logo-mark"></div><span class="logo-text">Cloud<span>Hero</span> AI</span></a>
+  <a href="/savings/app/login.html" class="nav-cta">Free savings audit →</a>
+</nav>
+
+<article class="article-wrap">
+  <span class="article-label">Cloud Cost Optimization</span>
+  <h1 class="article-title"><em>Kubernetes Cost Optimization</em>: How to Stop Wasting 40% of Your K8s Budget</h1>
+  <div class="article-meta">
+    <span>Cloud Hero AI</span>
+    <span>March 3, 2026</span>
+    <span>14 min read</span>
+  </div>
+  <div class="article-body">
+
+    <p>Kubernetes is the most powerful platform for running cloud-native applications — and one of the easiest platforms to waste enormous amounts of money on. The flexibility that makes K8s great (any workload, any scale, any configuration) also makes it trivially easy to provision vastly more compute than your workloads actually need. Industry analysis from CNCF and Kubecost consistently shows that the average Kubernetes cluster has <strong>40–60% of its allocated resources sitting idle</strong> — provisioned but unused.</p>
+
+    <p>Figma saved $2.1M/year by right-sizing their node pools. Datadog reduced their EKS bill by 38% through aggressive pod resource optimization. These are not outliers — they're the expected outcome of systematic K8s cost optimization in over-provisioned environments. This guide shows you exactly how to get there.</p>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <span class="stat-num">40–60%</span>
+        <div class="stat-label">Of K8s allocated resources are typically idle</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">$2.1M</span>
+        <div class="stat-label">Saved by Figma from K8s node pool rightsizing</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">38%</span>
+        <div class="stat-label">EKS cost reduction Datadog achieved via pod optimization</div>
+      </div>
+    </div>
+
+    <h2>Why Kubernetes Waste Happens: The Over-Provisioning Problem</h2>
+
+    <p>In Kubernetes, every container declares its resource <code>requests</code> (what the scheduler uses to place the pod on a node) and <code>limits</code> (the maximum the container can use). The node must have enough capacity to satisfy the sum of all pod requests on it — regardless of whether pods actually use those resources.</p>
+
+    <p>The classic over-provisioning pattern: a developer sets <code>requests: cpu: 1000m, memory: 2Gi</code> and <code>limits: cpu: 2000m, memory: 4Gi</code> without measuring actual usage. The application uses 100m CPU and 200Mi memory at peak. The pod takes up 10x more node capacity than it needs. Multiply this across 50 services and 200 pods and you're paying for 5–10x the compute you actually consume.</p>
+
+    <div class="callout">
+      <p><strong>The fundamental K8s cost equation:</strong> You pay for node compute capacity (EC2 instances), not pod utilization. If your nodes are 30% utilized on average, you're paying 3x what you need to pay. Every optimization strategy below targets either increasing utilization (packing more pods per node) or reducing node size (matching capacity to actual workload needs).</p>
+    </div>
+
+    <h2>Step 1: Measure Actual Resource Utilization</h2>
+
+    <p>You can't rightsize what you can't measure. Start with Metrics Server and kubectl top:</p>
+
+    <pre><code># Install Metrics Server if not present
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+# Check actual CPU and memory usage per pod
+kubectl top pods --all-namespaces --sort-by=cpu
+
+NAMESPACE    NAME                          CPU(cores)  MEMORY(bytes)
+production   api-deployment-7d9b4-xkp2n    45m         187Mi
+production   worker-deployment-6c8f3-jkl9  12m         94Mi
+staging      api-deployment-5c7a1-pqr8     8m          156Mi
+staging      worker-deployment-9d2e4-mno3  3m          78Mi
+
+# Compare actual usage to requests
+kubectl get pods --all-namespaces -o json | \
+  jq '.items[] | {
+    name: .metadata.name,
+    namespace: .metadata.namespace,
+    cpu_request: .spec.containers[].resources.requests.cpu,
+    mem_request: .spec.containers[].resources.requests.memory
+  }'</code></pre>
+
+    <p>For systematic analysis, Kubecost (free community edition) gives you a cluster-wide view of request vs actual utilization, broken down by namespace, deployment, and label. Install it with:</p>
+
+    <pre><code>helm repo add kubecost https://kubecost.github.io/cost-analyzer/
+helm repo update
+helm install kubecost kubecost/cost-analyzer \
+  --namespace kubecost --create-namespace \
+  --set kubecostToken="your-token" \
+  --set prometheus.nodeExporter.tolerations[0].operator="Exists"</code></pre>
+
+    <h2>Step 2: Implement Vertical Pod Autoscaler (VPA)</h2>
+
+    <p>The Vertical Pod Autoscaler automatically analyzes pod resource usage over time and recommends (or automatically sets) optimal <code>requests</code> values. In "Recommendation" mode, VPA shows you what it would set without changing anything — a safe way to see the opportunity before committing.</p>
+
+    <pre><code>apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: api-vpa
+  namespace: production
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: api-deployment
+  updatePolicy:
+    updateMode: "Off"  # "Off" = recommendations only, no auto-update
+    # Change to "Auto" once you trust the recommendations
+  resourcePolicy:
+    containerPolicies:
+    - containerName: "*"
+      minAllowed:
+        cpu: 50m
+        memory: 128Mi
+      maxAllowed:
+        cpu: 2000m
+        memory: 4Gi</code></pre>
+
+    <p>After 24–72 hours, check VPA recommendations:</p>
+
+    <pre><code>kubectl describe vpa api-vpa -n production
+
+# Output shows:
+# Container Recommendations:
+#   Container Name:  api
+#   Lower Bound:
+#     Cpu:     45m
+#     Memory:  192Mi
+#   Target:
+#     Cpu:     125m      ← VPA recommendation
+#     Memory:  256Mi     ← vs your current 2Gi request
+#   Upper Bound:
+#     Cpu:     500m
+#     Memory:  512Mi</code></pre>
+
+    <p>In the example above, VPA recommends 256Mi memory vs your current 2Gi request — an 87% reduction in memory allocation for this pod. Across a cluster, VPA recommendations typically reduce total requested resources by 30–60%, directly enabling you to run the same workloads on fewer or smaller nodes.</p>
+
+    <h2>Step 3: Configure Horizontal Pod Autoscaler (HPA)</h2>
+
+    <p>HPA scales the number of pod replicas based on CPU, memory, or custom metrics. The most common K8s cost mistake is running a static replica count (e.g., <code>replicas: 10</code>) that's sized for peak traffic 24/7. If your peak is 3 hours/day and you're running 10 replicas around the clock, you're paying for 10 replicas worth of capacity 21 hours/day unnecessarily.</p>
+
+    <pre><code>apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-hpa
+  namespace: production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-deployment
+  minReplicas: 2
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60  # Target 60% CPU utilization per pod
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 70
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300  # Wait 5 min before scaling down
+      policies:
+      - type: Percent
+        value: 25
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 30
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 30</code></pre>
+
+    <div class="callout amber">
+      <p><strong>HPA + VPA compatibility:</strong> Running HPA and VPA together can cause conflicts when both try to modify the same deployment simultaneously. The safe pattern is: use HPA for replica scaling (horizontal) and VPA in "Off" mode (recommendation only) for resource right-sizing guidance. If you want automatic VPA + HPA, use KEDA (Kubernetes Event-Driven Autoscaling) as a replacement for HPA, which integrates with VPA cleanly.</p>
+    </div>
+
+    <h2>Step 4: Karpenter for Node Group Optimization</h2>
+
+    <p>Karpenter (AWS's next-generation node autoscaler, now used by GKE and Azure too) replaces the Cluster Autoscaler with a smarter approach: instead of scaling predefined node groups, Karpenter provisions exactly the right instance type for each pending pod's requirements. This flexibility dramatically reduces the gap between allocated and available capacity.</p>
+
+    <pre><code>apiVersion: karpenter.sh/v1beta1
+kind: NodePool
+metadata:
+  name: default
+spec:
+  template:
+    spec:
+      requirements:
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64", "arm64"]  # Allow Graviton for 20% savings
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["spot", "on-demand"]  # Prefer Spot
+        - key: karpenter.k8s.aws/instance-category
+          operator: In
+          values: ["c", "m", "r"]  # Compute, memory, general purpose
+        - key: karpenter.k8s.aws/instance-generation
+          operator: Gt
+          values: ["2"]
+      nodeClassRef:
+        apiVersion: karpenter.k8s.aws/v1beta1
+        kind: EC2NodeClass
+        name: default
+  limits:
+    cpu: 1000
+    memory: 2000Gi
+  disruption:
+    consolidationPolicy: WhenUnderutilized
+    consolidateAfter: 30s  # Consolidate underutilized nodes quickly</code></pre>
+
+    <p>The <code>consolidationPolicy: WhenUnderutilized</code> setting is key — Karpenter continuously evaluates whether pods can be bin-packed more efficiently and terminates underutilized nodes, replacing them with fewer, better-utilized nodes. This automatic consolidation typically saves an additional 10–20% beyond what manual rightsizing achieves.</p>
+
+    <h2>Step 5: Address Unused PVCs and Idle Namespaces</h2>
+
+    <p>Persistent Volume Claims (PVCs) in Kubernetes are backed by EBS volumes (on EKS) or equivalent cloud storage. PVCs created for StatefulSets, databases, and jobs often persist after the workload is deleted. Finding and cleaning them up:</p>
+
+    <pre><code># Find PVCs not mounted by any running pod
+kubectl get pvc --all-namespaces | grep -v Bound
+
+# More detailed: PVCs where the pod no longer exists
+kubectl get pvc --all-namespaces -o json | \
+  jq '.items[] | select(.status.phase == "Released" or
+      (.metadata.annotations."volume.beta.kubernetes.io/storage-provisioner" != null and
+       .status.phase == "Bound"))' | \
+  jq '{name: .metadata.name, namespace: .metadata.namespace,
+       storage: .spec.resources.requests.storage}'</code></pre>
+
+    <p>Also check for entire idle namespaces — development or feature-branch namespaces that were never cleaned up:</p>
+
+    <pre><code># Find namespaces with no pod activity in the last 30 days
+kubectl get ns -o json | jq -r '.items[].metadata.name' | while read ns; do
+  pod_count=$(kubectl get pods -n "$ns" --no-headers 2>/dev/null | wc -l)
+  if [ "$pod_count" -eq 0 ]; then
+    echo "IDLE NAMESPACE: $ns"
+  fi
+done</code></pre>
+
+    <h2>Real-World Results: What These Optimizations Deliver</h2>
+
+    <p>Here's a realistic savings scenario for a team running a 20-node EKS cluster on <code>m5.2xlarge</code> instances in us-east-1:</p>
+
+    <ul>
+      <li><strong>Current cost:</strong> 20 × m5.2xlarge × $0.384/hr = $7.68/hr = $5,530/month</li>
+      <li><strong>After VPA rightsizing:</strong> Workloads fit on 12 nodes → $3,318/month (40% savings)</li>
+      <li><strong>After Karpenter + Graviton:</strong> Mix of m7g.xlarge and m7g.2xlarge for $2,400/month</li>
+      <li><strong>After HPA (no idle replicas off-peak):</strong> Further 15% reduction → ~$2,040/month</li>
+      <li><strong>Total savings: $3,490/month ($41,880/year)</strong> from a cluster that "worked fine" before.</li>
+    </ul>
+
+    <div class="cta-box">
+      <h3>Optimize Your Entire AWS + Kubernetes Bill</h3>
+      <p>Hero Savings covers your AWS infrastructure costs — EC2, RDS, S3, networking — with the same rigor you'd apply to K8s optimization. Get a complete picture of where your cloud money is going and exactly how to reduce it.</p>
+      <a href="https://cloudheroai.com/savings/" class="btn-primary">Start Free AWS Audit →</a>
+    </div>
+
+    <div class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="faq-item">
+        <div class="faq-q">Should I use VPA in Auto mode or just Recommendation mode?</div>
+        <div class="faq-a">Start with Recommendation mode ("Off" updateMode). Review recommendations for 1–2 weeks to build confidence that VPA's suggestions are correct for your workloads. Then, move low-risk workloads (batch jobs, internal tools) to Auto mode first. Be cautious with VPA in Auto mode for stateful workloads — it evicts pods to resize them, which can cause downtime if your deployment has a single replica or a stateful pod. For production stateful workloads, manual right-sizing informed by VPA recommendations is often safer.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What's the difference between Karpenter and Cluster Autoscaler?</div>
+        <div class="faq-a">Cluster Autoscaler scales predefined node groups up or down — it can only add/remove nodes of types you've pre-configured. Karpenter provisions any instance type that satisfies pending pod requirements, choosing the most cost-efficient option in real-time. Karpenter also consolidates underutilized nodes proactively (Cluster Autoscaler is more conservative). The practical result: Karpenter typically achieves 15–30% better node utilization than Cluster Autoscaler through smarter bin-packing and consolidation.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">How do I right-size Kubernetes resources without causing OOMKilled errors?</div>
+        <div class="faq-a">Always set memory requests equal to memory limits for containers with unpredictable memory usage — this prevents the pod from being scheduled on a node with insufficient memory and then OOMKilled. Use VPA recommendations as a floor, not a ceiling — set requests at the 95th percentile of observed usage, not the average. Add a 20–30% buffer above measured peak usage for memory limits. Enable memory metrics collection via the CloudWatch Agent or Prometheus Node Exporter to get accurate memory data before reducing limits.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Is Spot instance usage safe for Kubernetes workloads?</div>
+        <div class="faq-a">Yes, with the right architecture. Spot instances can be interrupted with 2-minute notice, so workloads on Spot nodes must be able to handle graceful termination. Best practices: (1) Use Karpenter's mixed Spot + On-Demand capacity type to ensure critical workloads always have On-Demand fallback; (2) Set <code>terminationGracePeriodSeconds</code> appropriately for your application; (3) Use pod disruption budgets to ensure minimum availability during Spot interruptions; (4) Avoid stateful workloads (databases, ZooKeeper) on Spot nodes. For stateless API servers, workers, and batch jobs, Spot is safe and delivers 60–80% cost savings.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What's the fastest way to identify the biggest K8s cost waste in my cluster?</div>
+        <div class="faq-a">Install Kubecost (free community edition) — it provides a cluster-wide cost breakdown by namespace, deployment, and label within minutes of installation. The "Efficiency" view shows the ratio of actual resource usage to requests, sorted by waste amount. Focus on the top 10 deployments by waste amount — they typically account for 80%+ of total over-provisioning. Fix those with VPA recommendations before worrying about the long tail. Kubecost + VPA recommendations together give you a complete picture and implementation path.</div>
+      </div>
+    </div>
+
+  </div>
+</article>
+
+<footer>
+  <span>© 2026 Cloud Hero AI</span>
+  <div style="display:flex;gap:20px"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/">Home</a></div>
+</footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const a=q.nextElementSibling;
+    a.style.display=a.style.display==='block'?'none':'block';
+    q.style.setProperty('--after-content', a.style.display==='block'?'"−"':'"+"');
+    q.classList.toggle('open');
+  });
+});
+document.fonts.ready.then(()=>{document.body.style.opacity='1';});
+</script>
+</body>
+</html>

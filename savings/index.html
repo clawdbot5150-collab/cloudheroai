@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Hero Savings — AI Cloud Cost Optimizer | Cloud Hero AI</title>
+<meta name="description" content="Connect your AWS, GCP, or Azure account and get an AI-powered audit in minutes. Find cloud waste, rightsize resources, and fix everything with one click.">
+<link rel="canonical" href="https://cloudheroai.com/savings/">
+<meta property="og:title" content="Hero Savings — AI Cloud Cost Optimizer | Cloud Hero AI">
+<meta property="og:description" content="Connect your AWS, GCP, or Azure account and get an AI-powered audit in minutes. Find cloud waste and fix it with one click.">
+<meta property="og:image" content="https://cloudheroai.com/og-image.jpg">
+<meta property="og:url" content="https://cloudheroai.com/savings/">
+<meta property="og:type" content="website">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6FG0M0E54M"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag("js", new Date());
+gtag("config", "G-6FG0M0E54M");
+</script>
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#070B14;--navy-2:#0D1424;--navy-3:#111827;--navy-4:#1a2235;--cyan:#00D9FF;--cyan-dim:rgba(0,217,255,0.12);--cyan-glow:rgba(0,217,255,0.25);--green:#00E5A0;--green-dim:rgba(0,229,160,0.1);--green-glow:rgba(0,229,160,0.25);--purple:#7B6FFF;--amber:#FFB547;--white:#F0F4FF;--muted:#7A8CAB;--border:rgba(255,255,255,0.07);--border-bright:rgba(0,217,255,0.2);--border-green:rgba(0,229,160,0.25)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;font-size:16px;line-height:1.6}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--navy)}::-webkit-scrollbar-thumb{background:var(--green);border-radius:2px}
+#grid-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.35}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5vw;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,11,20,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:border-color 0.3s}
+nav.scrolled{border-bottom-color:var(--border-bright)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:34px;height:34px;border:1.5px solid var(--cyan);border-radius:8px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.logo-mark::before{content:'';position:absolute;width:18px;height:18px;border:2px solid var(--cyan);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%)}
+.logo-mark::after{content:'';position:absolute;width:6px;height:6px;background:var(--cyan);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 8px var(--cyan)}
+.logo-text{font-family:'Space Mono',monospace;font-size:14px;color:var(--white);letter-spacing:0.02em}
+.logo-text span{color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:400;transition:color 0.2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{background:transparent;border:1px solid var(--cyan);color:var(--cyan)!important;padding:8px 20px;border-radius:6px;font-size:13px!important;font-weight:500!important;transition:background 0.2s,box-shadow 0.2s!important}
+.nav-cta:hover{background:var(--cyan-dim)!important;box-shadow:0 0 20px var(--cyan-glow)!important}
+section{position:relative;z-index:1}
+.btn-green{background:var(--green);color:var(--navy);border:none;padding:16px 40px;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform 0.2s,box-shadow 0.2s;font-family:'DM Sans',sans-serif}
+.btn-green:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--green-glow)}
+.btn-secondary{background:transparent;color:var(--white);border:1px solid var(--border);padding:14px 32px;border-radius:8px;font-size:15px;font-weight:400;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:border-color 0.2s,background 0.2s;font-family:'DM Sans',sans-serif}
+.btn-secondary:hover{border-color:var(--border-green);background:var(--green-dim)}
+.section-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);margin-bottom:16px;display:block}
+.section-title{font-size:clamp(32px,4vw,52px);font-weight:300;line-height:1.1;letter-spacing:-0.025em;margin-bottom:16px}
+.section-title em{font-family:'Fraunces',serif;font-style:italic;font-weight:300;color:var(--green)}
+.section-sub{font-size:18px;color:var(--muted);font-weight:300;max-width:520px;line-height:1.65}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 5vw 80px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border-green);background:var(--green-dim);padding:6px 16px;border-radius:100px;font-size:12px;font-family:'Space Mono',monospace;color:var(--green);letter-spacing:0.06em;margin-bottom:32px;animation:fadeUp 0.6s ease both}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:pulse 2s ease-in-out infinite}
+.hero h1{font-size:clamp(42px,6vw,88px);font-weight:300;line-height:1.05;letter-spacing:-0.03em;max-width:900px;animation:fadeUp 0.6s 0.1s ease both}
+.hero h1 em{font-family:'Fraunces',serif;font-style:italic;font-weight:300;color:var(--green)}
+.hero-sub{font-size:clamp(16px,2vw,20px);color:var(--muted);max-width:580px;margin:24px auto 48px;font-weight:300;line-height:1.7;animation:fadeUp 0.6s 0.2s ease both}
+.hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeUp 0.6s 0.3s ease both}
+
+/* DASHBOARD MOCKUP */
+.dashboard-mockup{margin-top:64px;width:100%;max-width:760px;background:var(--navy-3);border:1px solid var(--border-green);border-radius:16px;overflow:hidden;animation:fadeUp 0.6s 0.45s ease both;box-shadow:0 0 60px rgba(0,229,160,0.1)}
+.dash-bar{background:var(--navy-4);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.dash-title{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)}
+.dash-status{display:flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:10px;color:var(--green)}
+.dash-status::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:pulse 2s ease-in-out infinite}
+.dash-body{padding:24px}
+.dash-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px}
+.dash-stat{background:var(--navy-4);border:1px solid var(--border);border-radius:10px;padding:16px}
+.dash-stat-label{font-size:11px;color:var(--muted);margin-bottom:6px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.04em}
+.dash-stat-value{font-family:'Space Mono',monospace;font-size:22px;font-weight:700}
+.waste-rows{display:flex;flex-direction:column;gap:10px}
+.waste-row{display:grid;grid-template-columns:1fr 80px 80px;align-items:center;gap:12px;background:var(--navy-4);border:1px solid var(--border);border-radius:8px;padding:12px 16px}
+.waste-name{font-size:13px;color:var(--white)}
+.waste-bar-wrap{height:4px;background:rgba(255,255,255,0.06);border-radius:2px}
+.waste-bar{height:100%;border-radius:2px;background:var(--green)}
+.waste-amount{font-family:'Space Mono',monospace;font-size:12px;color:var(--amber);text-align:right}
+.dash-apply{margin-top:20px;width:100%;padding:14px;background:var(--green);color:var(--navy);border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;animation:applyPulse 3s ease-in-out infinite}
+@keyframes applyPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,160,0.4)}50%{box-shadow:0 0 0 8px rgba(0,229,160,0)}}
+
+/* AUDIT FLOW */
+.audit-flow{padding:100px 5vw;background:var(--navy-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.audit-inner{max-width:900px;margin:0 auto}
+.audit-steps{display:flex;flex-direction:column;gap:0;margin-top:48px;counter-reset:step-counter}
+.audit-step{display:grid;grid-template-columns:60px 1fr;gap:32px;padding:32px 0;border-bottom:1px solid var(--border);align-items:start}
+.audit-step:last-child{border-bottom:none}
+.audit-step-num{width:48px;height:48px;border-radius:50%;border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:14px;color:var(--green);font-weight:700;flex-shrink:0}
+.audit-step-content h3{font-size:20px;font-weight:500;margin-bottom:8px;letter-spacing:-0.01em}
+.audit-step-content p{font-size:15px;color:var(--muted);line-height:1.65;font-weight:300}
+.audit-step-detail{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+.audit-chip{font-size:11px;font-family:'Space Mono',monospace;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:4px;padding:4px 10px;color:var(--muted)}
+
+/* WASTE CATEGORIES */
+.waste-cats{padding:100px 5vw}
+.waste-inner{max-width:1100px;margin:0 auto}
+.waste-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.waste-card{background:var(--navy-2);border:1px solid var(--border);border-radius:14px;padding:32px;transition:border-color 0.3s,transform 0.3s}
+.waste-card:hover{border-color:var(--border-green);transform:translateY(-3px)}
+.waste-card-icon{font-size:28px;margin-bottom:16px;display:block}
+.waste-card-name{font-size:18px;font-weight:500;margin-bottom:6px;letter-spacing:-0.01em}
+.waste-card-desc{font-size:14px;color:var(--muted);line-height:1.6;font-weight:300;margin-bottom:16px}
+.waste-card-savings{padding-top:16px;border-top:1px solid var(--border);font-family:'Space Mono',monospace;font-size:13px}
+.waste-savings-label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;display:block}
+.waste-savings-value{color:var(--green);font-size:18px;font-weight:700}
+
+/* ROI CALCULATOR */
+.roi-calc{padding:100px 5vw;background:var(--navy-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.roi-inner{max-width:800px;margin:0 auto;text-align:center}
+.calc-card{background:var(--navy-3);border:1px solid var(--border-green);border-radius:20px;padding:48px;margin-top:48px}
+.calc-slider-label{font-size:14px;color:var(--muted);margin-bottom:8px;text-align:left;font-weight:400}
+.calc-slider-value{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--white);margin-bottom:24px;text-align:left}
+input[type="range"]{width:100%;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;outline:none;appearance:none;cursor:pointer;margin-bottom:40px}
+input[type="range"]::-webkit-slider-thumb{appearance:none;width:20px;height:20px;border-radius:50%;background:var(--green);cursor:pointer;box-shadow:0 0 12px var(--green-glow)}
+input[type="range"]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--green);cursor:pointer;box-shadow:0 0 12px var(--green-glow);border:none}
+.calc-results{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.calc-result{background:var(--navy-4);border:1px solid var(--border);border-radius:12px;padding:20px}
+.calc-result-label{font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;display:block}
+.calc-result-value{font-family:'Space Mono',monospace;font-size:22px;font-weight:700}
+.calc-payback{margin-top:24px;padding:16px 24px;background:var(--green-dim);border:1px solid var(--border-green);border-radius:10px;font-size:14px;color:var(--white);line-height:1.6}
+.calc-payback strong{color:var(--green)}
+
+/* TRUST */
+.trust{padding:80px 5vw}
+.trust-inner{max-width:900px;margin:0 auto;text-align:center}
+.trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-top:48px}
+.trust-item{background:var(--navy-2);border:1px solid var(--border);border-radius:14px;padding:28px 20px;text-align:center}
+.trust-icon{font-size:28px;margin-bottom:12px;display:block}
+.trust-item h4{font-size:15px;font-weight:500;margin-bottom:6px}
+.trust-item p{font-size:13px;color:var(--muted);line-height:1.55;font-weight:300}
+
+/* NEWSLETTER */
+.newsletter{padding:100px 5vw;background:var(--navy-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.newsletter-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.newsletter-form-wrap{background:var(--navy-3);border:1px solid var(--border);border-radius:16px;padding:36px}
+.form-label{font-size:13px;color:var(--muted);margin-bottom:8px;display:block}
+.form-input{width:100%;background:var(--navy);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:15px;color:var(--white);font-family:'DM Sans',sans-serif;margin-bottom:12px;transition:border-color 0.2s;outline:none}
+.form-input:focus{border-color:var(--green)}
+.form-input::placeholder{color:rgba(122,140,171,0.5)}
+.perk{display:flex;gap:16px;align-items:flex-start;margin-bottom:20px}
+.perk-icon{width:36px;height:36px;border-radius:8px;background:var(--green-dim);border:1px solid var(--border-green);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.perk-text h4{font-size:15px;font-weight:500;margin-bottom:3px}
+.perk-text p{font-size:13px;color:var(--muted);font-weight:300;line-height:1.5}
+.nl-btn{background:var(--green);color:var(--navy);border:none;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform 0.2s,box-shadow 0.2s;font-family:'DM Sans',sans-serif;width:100%;justify-content:center}
+.nl-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--green-glow)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:48px 5vw;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;position:relative;z-index:1}
+.footer-brand p{font-size:13px;color:var(--muted);line-height:1.65;font-weight:300;max-width:220px;margin-top:12px}
+.footer-col h5{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:10px}
+.footer-col ul li a{font-size:14px;color:rgba(240,244,255,0.55);text-decoration:none;transition:color 0.2s;font-weight:300}
+.footer-col ul li a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid var(--border);padding:24px 5vw;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);position:relative;z-index:1}
+.footer-bottom a{color:var(--muted);text-decoration:none}
+.footer-bottom a:hover{color:var(--white)}
+
+@media(max-width:900px){.dash-summary{grid-template-columns:1fr 1fr}.waste-grid{grid-template-columns:1fr 1fr}.calc-results{grid-template-columns:1fr}.trust-grid{grid-template-columns:1fr 1fr}.newsletter-inner{grid-template-columns:1fr}footer{grid-template-columns:1fr 1fr}.nav-links{display:none}}
+@media(max-width:600px){.waste-grid{grid-template-columns:1fr}.trust-grid{grid-template-columns:1fr 1fr}footer{grid-template-columns:1fr}.dash-summary{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
+</style>
+</head>
+<body>
+<canvas id="grid-canvas"></canvas>
+
+<nav id="main-nav">
+<a href="/" class="nav-logo"><div class="logo-mark"></div><span class="logo-text">Cloud<span>Hero</span> AI</span></a>
+<ul class="nav-links">
+<li><a href="/agents/">Agents</a></li>
+<li><a href="/savings/" style="color:var(--white)">Savings</a></li>
+<li><a href="/copilot/">Copilot</a></li>
+<li><a href="/weekly/">Weekly</a></li>
+<li><a href="/pricing/">Pricing</a></li>
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/savings/app/login.html" style="font-size:13px;color:var(--muted);text-decoration:none;margin-right:8px" class="nav-signin">Sign in</a><a href="/savings/app/login.html" class="nav-cta">Free audit</a></li>
+</ul>
+</nav>
+
+<section class="hero">
+<div class="hero-badge">Hero Savings — Free Audit</div>
+<h1>You're wasting<br><em>28% of your<br>cloud budget.</em></h1>
+<p class="hero-sub">Hero Savings finds every wasted dollar across your AWS, GCP, and Azure accounts — and fixes it automatically. You pay nothing upfront. We take 15% of what we save you. That's it.</p>
+<div class="hero-actions">
+<a href="/savings/app/login.html" class="btn-green">Start free — we only charge when you save →</a>
+<a href="#how-it-works" class="btn-secondary">See how it works</a>
+</div>
+<p style="font-size:13px;color:var(--muted);margin-top:16px;letter-spacing:0.01em">No credit card &nbsp;·&nbsp; No platform fee &nbsp;·&nbsp; 15% of verified savings only &nbsp;·&nbsp; Cancel anytime</p>
+<p style="font-family:'Space Mono',monospace;font-size:11px;color:var(--green);margin-top:10px;letter-spacing:0.05em;opacity:0.8">We don't make money until you do.</p>
+<div class="dashboard-mockup reveal">
+<div class="dash-bar">
+<span class="dash-title">aws-production — savings report</span>
+<span class="dash-status">Scan complete</span>
+</div>
+<div class="dash-body">
+<div class="dash-summary">
+<div class="dash-stat">
+<div class="dash-stat-label">Monthly spend</div>
+<div class="dash-stat-value" style="color:var(--white)">$24,800</div>
+</div>
+<div class="dash-stat">
+<div class="dash-stat-label">Waste found</div>
+<div class="dash-stat-value" style="color:var(--amber)">$6,970</div>
+</div>
+<div class="dash-stat">
+<div class="dash-stat-label">Annual savings</div>
+<div class="dash-stat-value" style="color:var(--green)">$83,640</div>
+</div>
+</div>
+<div class="waste-rows">
+<div class="waste-row">
+<span class="waste-name">Idle EC2 instances (14)</span>
+<div class="waste-bar-wrap"><div class="waste-bar" style="width:72%"></div></div>
+<span class="waste-amount">$2,340/mo</span>
+</div>
+<div class="waste-row">
+<span class="waste-name">Oversized RDS clusters (3)</span>
+<div class="waste-bar-wrap"><div class="waste-bar" style="width:56%"></div></div>
+<span class="waste-amount">$1,760/mo</span>
+</div>
+<div class="waste-row">
+<span class="waste-name">Orphaned EBS volumes (31)</span>
+<div class="waste-bar-wrap"><div class="waste-bar" style="width:29%"></div></div>
+<span class="waste-amount">$890/mo</span>
+</div>
+<div class="waste-row">
+<span class="waste-name">Old snapshots &amp; AMIs (203)</span>
+<div class="waste-bar-wrap"><div class="waste-bar" style="width:22%"></div></div>
+<span class="waste-amount">$420/mo</span>
+</div>
+</div>
+<button class="dash-apply">⚡ Apply all fixes — save $6,970/mo</button>
+</div>
+</div>
+</section>
+
+<section class="audit-flow" id="how-it-works">
+<div class="audit-inner">
+<div class="reveal" style="text-align:center">
+<span class="section-label">How It Works</span>
+<h2 class="section-title">From zero to savings<br><em>in 3 minutes.</em></h2>
+<p class="section-sub" style="margin:0 auto">No agents to install. No complex setup. Just connect your cloud account and we do the rest.</p>
+</div>
+<div class="audit-steps reveal">
+<div class="audit-step">
+<div class="audit-step-num">01</div>
+<div class="audit-step-content">
+<h3>Connect your cloud account</h3>
+<p>Create a read-only IAM role in 60 seconds using our CloudFormation template. We request only the permissions we need — nothing more. Your data is never stored on our servers.</p>
+<div class="audit-step-detail">
+<span class="audit-chip">AWS</span>
+<span class="audit-chip">GCP</span>
+<span class="audit-chip">Azure</span>
+<span class="audit-chip">Read-only IAM</span>
+<span class="audit-chip">60 seconds</span>
+</div>
+</div>
+</div>
+<div class="audit-step">
+<div class="audit-step-num">02</div>
+<div class="audit-step-content">
+<h3>We scan every resource across all regions</h3>
+<p>Hero Savings analyzes every compute instance, database cluster, storage volume, snapshot, and network resource across all your regions and accounts. Takes 2–3 minutes on average.</p>
+<div class="audit-step-detail">
+<span class="audit-chip">847 resources avg</span>
+<span class="audit-chip">All regions</span>
+<span class="audit-chip">2–3 minutes</span>
+</div>
+</div>
+</div>
+<div class="audit-step">
+<div class="audit-step-num">03</div>
+<div class="audit-step-content">
+<h3>See your full waste report with dollar amounts</h3>
+<p>Every wasteful resource is listed with the monthly dollar amount it's costing you, why it's wasteful, and exactly what we recommend doing about it. No technical jargon — just clear savings opportunities.</p>
+<div class="audit-step-detail">
+<span class="audit-chip">Per-resource breakdown</span>
+<span class="audit-chip">Dollar amounts</span>
+<span class="audit-chip">Risk assessment</span>
+</div>
+</div>
+</div>
+<div class="audit-step">
+<div class="audit-step-num">04</div>
+<div class="audit-step-content">
+<h3>Fix everything with one click — or approve individually</h3>
+<p>Click "Apply all fixes" to automate remediation across your entire account. Or approve changes one by one. We verify the verified savings against your 90-day baseline and charge 15% of what you actually saved — billed monthly, recurring.</p>
+<div class="audit-step-detail">
+<span class="audit-chip">1-click remediation</span>
+<span class="audit-chip">Approve individually</span>
+<span class="audit-chip">15% of verified savings</span>
+<span class="audit-chip">Full audit trail</span>
+</div>
+</div>
+</div>
+
+<div class="audit-step">
+<div class="audit-step-num">05</div>
+<div class="audit-step-content">
+<h3>Savings defended every month</h3>
+<p>We keep monitoring. New waste gets flagged and fixed every month. You keep paying only 15% of ongoing verified savings — and we keep earning it. Your cloud bill gets leaner over time, automatically.</p>
+<div class="audit-step-detail">
+<span class="audit-chip">Continuous monitoring</span>
+<span class="audit-chip">Monthly reports</span>
+<span class="audit-chip">Auto new waste detection</span>
+<span class="audit-chip">Cancel anytime</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="waste-cats" id="waste">
+<div class="waste-inner">
+<div class="reveal" style="text-align:center">
+<span class="section-label">What We Find</span>
+<h2 class="section-title">Six categories of waste.<br><em>One-click fixes for all of them.</em></h2>
+<p class="section-sub" style="margin:0 auto">Hero Savings finds every type of cloud waste — not just the obvious stuff. Our AI catches what humans miss.</p>
+</div>
+<div class="waste-grid reveal">
+<div class="waste-card">
+<span class="waste-card-icon">🖥️</span>
+<h3 class="waste-card-name">Idle EC2 Instances</h3>
+<p class="waste-card-desc">Instances with CPU utilization under 5% for the past 14 days. Dev boxes that nobody turned off. Forgotten staging environments running 24/7.</p>
+<div class="waste-card-savings">
+<span class="waste-savings-label">Avg monthly savings</span>
+<span class="waste-savings-value">$2,100/mo</span>
+</div>
+</div>
+<div class="waste-card">
+<span class="waste-card-icon">💾</span>
+<h3 class="waste-card-name">Unattached EBS Volumes</h3>
+<p class="waste-card-desc">Storage volumes left behind when instances are terminated. Pay for storage that's connected to nothing and accessed by no one.</p>
+<div class="waste-card-savings">
+<span class="waste-savings-label">Avg monthly savings</span>
+<span class="waste-savings-value">$640/mo</span>
+</div>
+</div>
+<div class="waste-card">
+<span class="waste-card-icon">🗄️</span>
+<h3 class="waste-card-name">Oversized RDS Clusters</h3>
+<p class="waste-card-desc">Database clusters provisioned for peak load that's never happened. Multi-AZ setups where a single instance would do. db.r6g.4xlarge running at 8% memory utilization.</p>
+<div class="waste-card-savings">
+<span class="waste-savings-label">Avg monthly savings</span>
+<span class="waste-savings-value">$1,800/mo</span>
+</div>
+</div>
+<div class="waste-card">
+<span class="waste-card-icon">📸</span>
+<h3 class="waste-card-name">Old Snapshots &amp; AMIs</h3>
+<p class="waste-card-desc">Automated snapshots from 18 months ago still sitting in S3. AMIs from builds that shipped and shipped again three major versions ago.</p>
+<div class="waste-card-savings">
+<span class="waste-savings-label">Avg monthly savings</span>
+<span class="waste-savings-value">$380/mo</span>
+</div>
+</div>
+<div class="waste-card">
+<span class="waste-card-icon">🌐</span>
+<h3 class="waste-card-name">Unused Elastic IPs</h3>
+<p class="waste-card-desc">Reserved but unattached Elastic IP addresses. AWS charges $0.005/hour whether they're doing anything or not. Small amounts that add up across a fleet.</p>
+<div class="waste-card-savings">
+<span class="waste-savings-label">Avg monthly savings</span>
+<span class="waste-savings-value">$110/mo</span>
+</div>
+</div>
+<div class="waste-card">
+<span class="waste-card-icon">🔀</span>
+<h3 class="waste-card-name">Oversized NAT Gateways</h3>
+<p class="waste-card-desc">NAT Gateways with minimal throughput that could be consolidated. Data transfer charges from poorly architected traffic routing patterns.</p>
+<div class="waste-card-savings">
+<span class="waste-savings-label">Avg monthly savings</span>
+<span class="waste-savings-value">$890/mo</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="roi-calc" id="calculator">
+<div class="roi-inner">
+<div class="reveal">
+<span class="section-label">ROI Calculator</span>
+<h2 class="section-title">See your<br><em>savings potential.</em></h2>
+<p class="section-sub" style="margin:0 auto">Drag the slider to your monthly cloud spend. See the waste we'll find, our 15% fee, and exactly how much you keep every month.</p>
+</div>
+<div class="calc-card reveal">
+<div class="calc-slider-label">My monthly cloud spend</div>
+<div class="calc-slider-value" id="spend-display">$10,000 / month</div>
+<input type="range" id="spend-slider" min="1000" max="200000" step="500" value="10000">
+<div class="calc-results">
+<div class="calc-result">
+<span class="calc-result-label">Estimated monthly waste (28%)</span>
+<div class="calc-result-value" id="waste-value" style="color:var(--amber)">$2,800</div>
+</div>
+<div class="calc-result">
+<span class="calc-result-label">Annual gross savings</span>
+<div class="calc-result-value" id="annual-value" style="color:var(--green)">$33,600</div>
+</div>
+<div class="calc-result">
+<span class="calc-result-label">Your Hero Savings fee (15%)</span>
+<div class="calc-result-value" id="sub-value" style="color:var(--cyan)">$420/mo</div>
+</div>
+<div class="calc-result">
+<span class="calc-result-label">Your net savings (you keep)</span>
+<div class="calc-result-value" id="net-value" style="color:var(--green)">$2,380/mo</div>
+</div>
+</div>
+<div class="calc-payback" id="payback-text">
+At $10,000/month cloud spend, we find roughly $2,800/month in waste. You pay <strong>$420/mo</strong> (15%). You keep <strong>$2,380/mo</strong> — positive ROI from day one.
+</div>
+</div>
+</div>
+</section>
+
+<section style="padding:100px 5vw;border-top:1px solid var(--border)">
+<div style="max-width:680px;margin:0 auto;text-align:center">
+<span class="section-label">Pricing</span>
+<div style="font-family:'Space Mono',monospace;font-size:72px;font-weight:700;color:#00E5A0;line-height:1;margin-bottom:12px">$0</div>
+<p style="font-size:18px;color:var(--muted);font-weight:300;line-height:1.65;max-width:520px;margin:0 auto 48px">to start. Then 15% of your monthly verified savings — recurring, for as long as we're saving you money.</p>
+
+<div style="background:var(--navy-2);border:1px solid rgba(0,229,160,0.3);border-radius:16px;padding:40px;text-align:left;margin-bottom:40px">
+<div style="font-family:'Space Mono',monospace;font-size:10px;color:#00E5A0;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:24px">EXAMPLE — $25K/MO CLOUD SPEND</div>
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--border);padding-bottom:14px">
+<span style="font-size:15px;color:var(--muted)">Your cloud spend</span>
+<span style="font-family:'Space Mono',monospace;font-weight:700">$25,000/mo</span>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--border);padding-bottom:14px">
+<span style="font-size:15px;color:var(--muted)">Waste we find <span style="font-size:12px">(29% avg)</span></span>
+<span style="font-family:'Space Mono',monospace;font-weight:700;color:var(--amber)">$7,250/mo</span>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--border);padding-bottom:14px">
+<span style="font-size:15px;color:var(--muted)">You pay Hero Savings <span style="font-size:12px">(15%)</span></span>
+<span style="font-family:'Space Mono',monospace;font-weight:700;color:var(--cyan)">$1,088/mo</span>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:baseline">
+<span style="font-size:15px;color:var(--white);font-weight:500">You keep</span>
+<span style="font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:#00E5A0">$6,162/mo</span>
+</div>
+</div>
+<div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+<span style="font-size:13px;color:var(--muted)">Your ROI</span>
+<span style="font-family:'Space Mono',monospace;font-weight:700;color:#00E5A0;font-size:18px">5.7× every month</span>
+</div>
+</div>
+
+<a href="/savings/app/login.html" class="btn-green" style="margin-bottom:20px">Run your free audit →</a>
+<p style="font-size:12px;color:var(--muted);font-weight:300;line-height:1.6">Savings measured against your 90-day pre-audit average. Full audit log provided. Cancel anytime with no penalty.<br>If we find $0 in verified savings, you pay $0. Simple.</p>
+</div>
+</section>
+
+<section class="trust" id="trust">
+<div class="trust-inner">
+<div class="reveal">
+<span class="section-label">Security & Trust</span>
+<h2 class="section-title">Your data is safe.<br><em>Your access is read-only.</em></h2>
+</div>
+<div class="trust-grid reveal">
+<div class="trust-item">
+<span class="trust-icon">🔒</span>
+<h4>Read-only IAM permissions</h4>
+<p>We never write, modify, or delete anything without your explicit approval. Every change requires a confirmation.</p>
+</div>
+<div class="trust-item">
+<span class="trust-icon">🚫</span>
+<h4>No data stored on our servers</h4>
+<p>Your cloud data is processed in memory and never persisted. We store only your savings report — nothing else.</p>
+</div>
+<div class="trust-item">
+<span class="trust-icon">✅</span>
+<h4>SOC 2 Type II (in progress)</h4>
+<p>We're completing our SOC 2 Type II audit. Enterprise customers can request our security documentation.</p>
+</div>
+<div class="trust-item">
+<span class="trust-icon">🔄</span>
+<h4>Cancel anytime</h4>
+<p>No lock-in contracts. Cancel anytime — no penalty, no questions. Your data is deleted within 24 hours.</p>
+</div>
+<div class="trust-item">
+<span class="trust-icon">🛡️</span>
+<h4>Zero risk pricing</h4>
+<p>If we don't save you money, you don't pay us. Our interests are 100% aligned with yours.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="newsletter" id="newsletter">
+<div class="newsletter-inner">
+<div class="reveal">
+<span class="section-label" style="color:var(--cyan)">Hero Weekly</span>
+<h2 class="section-title" style="margin-bottom:16px">Start saving.<br><em>Right now.</em></h2>
+<p class="section-sub" style="margin-bottom:40px">Run a free audit and see exactly what you're wasting. We only charge 15% of what we actually save you — nothing until we prove it.</p>
+<div class="perk"><div class="perk-icon">⚡</div><div class="perk-text"><h4>Free audit, no credit card</h4><p>See your full savings report at zero cost. No strings attached.</p></div></div>
+<div class="perk"><div class="perk-icon">🔐</div><div class="perk-text"><h4>Read-only, secure access</h4><p>We can't touch anything without your explicit approval.</p></div></div>
+<div class="perk"><div class="perk-icon">⏱️</div><div class="perk-text"><h4>Results in 3 minutes</h4><p>Connect your account, run the scan, see the dollar amounts. Done.</p></div></div>
+</div>
+<div class="reveal">
+<div class="newsletter-form-wrap">
+<h3 style="font-size:22px;font-weight:500;margin-bottom:8px;letter-spacing:-0.02em">Run your free savings audit</h3>
+<p style="font-size:14px;color:var(--muted);margin-bottom:24px;font-weight:300">Enter your email and we'll send you a setup link instantly.</p>
+<label class="form-label">Work email</label>
+<input class="form-input" type="email" id="email-input" placeholder="you@company.com">
+<label class="form-label">Cloud provider</label>
+<select class="form-input"><option value="">Select provider</option><option>AWS</option><option>Google Cloud</option><option>Microsoft Azure</option><option>Multiple providers</option></select>
+<label class="form-label">Estimated monthly cloud spend</label>
+<select class="form-input"><option value="">Select range</option><option>$1K – $5K/mo</option><option>$5K – $25K/mo</option><option>$25K – $100K/mo</option><option>$100K+/mo</option></select>
+<a href="/savings/app/login.html" class="nl-btn" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center">Start free audit — no credit card →</a>
+<p style="font-size:12px;color:var(--muted);margin-top:16px;text-align:center;font-weight:300">$0 upfront. 15% of verified savings only. <a href="/pricing/" style="color:var(--cyan);text-decoration:none">How pricing works →</a></p>
+</div>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="footer-brand">
+<a href="/" class="nav-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none"><div class="logo-mark"></div><span class="logo-text">Cloud<span>Hero</span> AI</span></a>
+<p>The AI platform built for cloud teams. Four tools. One mission.</p>
+</div>
+<div class="footer-col"><h5>Products</h5><ul><li><a href="/agents/">Hero Agents</a></li><li><a href="/savings/">Hero Savings</a></li><li><a href="/copilot/">Hero Copilot</a></li><li><a href="/weekly/">Hero Weekly</a></li></ul></div>
+<div class="footer-col"><h5>Platform</h5><ul><li><a href="/pricing/">Pricing</a></li>
+<li><a href="/blog/">Blog</a></li><li><a href="#">Documentation</a></li><li><a href="#">API Reference</a></li><li><a href="#">Changelog</a></li></ul></div>
+<div class="footer-col"><h5>Company</h5><ul><li><a href="/about/">About</a></li><li><a href="#">Blog</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
+</footer>
+<div class="footer-bottom">
+<span>© 2026 Cloud Hero AI. All rights reserved.</span>
+<div style="display:flex;gap:24px"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="#">Security</a></div>
+</div>
+
+<script>
+const canvas=document.getElementById('grid-canvas');
+const ctx=canvas.getContext('2d');
+let W,H,dots=[],mouse={x:-999,y:-999};
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+function initDots(){dots=[];const cols=Math.floor(W/60);const rows=Math.floor(H/60);for(let i=0;i<=cols;i++){for(let j=0;j<=rows;j++){const phase=Math.random()*Math.PI*2;dots.push({ox:i*60,oy:j*60,phase,speed:0.3+Math.random()*0.3,r:0.5+Math.random()*1,br:0.5+Math.random()*1});}}}
+let t=0;
+function draw(){t+=0.016;ctx.clearRect(0,0,W,H);ctx.strokeStyle='rgba(0,229,160,0.03)';ctx.lineWidth=0.5;for(let x=0;x<W;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}for(let y=0;y<H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+dots.forEach(d=>{const x=d.ox+Math.sin(t*d.speed+d.phase)*8;const y=d.oy+Math.cos(t*d.speed*0.7+d.phase)*8;const dist=Math.hypot(x-mouse.x,y-mouse.y);const near=dist<120;const r=near?2.5:d.br;const op=near?0.8:0.25;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=`rgba(0,229,160,${op})`;ctx.fill();});requestAnimationFrame(draw);}
+resize();initDots();draw();
+window.addEventListener('resize',()=>{resize();initDots();});
+window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+const nav=document.getElementById('main-nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>40));
+const reveals=document.querySelectorAll('.reveal');
+const revealObs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);revealObs.unobserve(e.target);}});},{threshold:0.1});
+reveals.forEach(r=>revealObs.observe(r));
+
+// ROI CALCULATOR
+const slider=document.getElementById('spend-slider');
+function formatDollar(n){if(n>=1000)return'$'+(n/1000).toFixed(n%1000===0?0:1)+'K';return'$'+n;}
+function updateCalc(){
+  const spend=parseInt(slider.value);
+  const waste=Math.round(spend*0.28);
+  const annual=waste*12;
+  const fee=Math.round(waste*0.15);
+  const net=waste-fee;
+  document.getElementById('spend-display').textContent=formatDollar(spend)+'/month';
+  document.getElementById('waste-value').textContent=formatDollar(waste);
+  document.getElementById('annual-value').textContent=formatDollar(annual);
+  document.getElementById('sub-value').textContent=formatDollar(fee)+'/mo';
+  document.getElementById('net-value').textContent=formatDollar(net)+'/mo';
+  document.getElementById('payback-text').innerHTML=`At ${formatDollar(spend)}/month cloud spend, we find roughly ${formatDollar(waste)}/month in waste. You pay <strong>${formatDollar(fee)}/mo</strong> (15%). You keep <strong>${formatDollar(net)}/mo</strong> — positive ROI from day one.`;
+}
+if(slider){slider.addEventListener('input',updateCalc);}
+
+function handleSubscribe(event){
+  if(event)event.preventDefault();
+  const btn=document.getElementById('subscribe-btn');
+  const emailEl=document.getElementById('email-input');
+  const email=(emailEl&&emailEl.value||'').trim();
+  if(!email||!email.includes('@')){if(emailEl)emailEl.style.borderColor='var(--amber)';return;}
+  btn.textContent='Sending...';btn.disabled=true;
+  fetch('/api/newsletter/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,source:'savings-page'})})
+  .then(r=>r.json()).then(()=>{
+    btn.textContent='✓ Check your email for setup instructions!';btn.style.background='var(--cyan)';btn.disabled=true;
+  }).catch(()=>{btn.textContent='Start free audit →';btn.disabled=false;});
+}
+document.fonts.ready.then(()=>{document.body.style.opacity='1';});
+document.body.style.opacity='0';document.body.style.transition='opacity 0.3s';
+</script>
+<script src="/js/newsletter.js"></script>
+
+<div id="cookie-banner" style="position:fixed;bottom:0;left:0;right:0;z-index:999;background:var(--navy-2);border-top:1px solid var(--border);padding:16px 5vw;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+  <p style="font-size:13px;color:var(--muted);margin:0;font-weight:300">We use cookies to operate the service and analyse traffic. <a href="/privacy/" style="color:var(--cyan)">Learn more</a></p>
+  <button onclick="document.getElementById('cookie-banner').style.display='none';localStorage.setItem('ch_cookies','1')" style="background:var(--cyan);color:var(--navy);border:none;padding:8px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit">Got it</button>
+</div>
+<script>if(localStorage.getItem('ch_cookies'))document.getElementById('cookie-banner').style.display='none';</script>
+
+</body>
+</html>
