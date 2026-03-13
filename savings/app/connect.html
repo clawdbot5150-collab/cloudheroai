@@ -431,6 +431,10 @@
         style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
         🔷 Microsoft Azure
       </button>
+      <button onclick="switchProvider('snowflake')" id="tab-snowflake"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        ❄️ Snowflake
+      </button>
     </div>
 
     <!-- Existing connections -->
@@ -542,6 +546,45 @@
         </button>
         <div class="error-msg" id="azure-error"></div>
         <div class="success-msg" id="azure-success"></div>
+      </form>
+    </div>
+
+    <!-- Snowflake form -->
+    <div class="form-card" id="form-snowflake" style="display:none;">
+      <h2>Snowflake Account</h2>
+      <div class="info-banner">
+        ❄️ Connect with an ACCOUNTADMIN or SYSADMIN role for full cost visibility. We only run read-only queries. &nbsp;
+        <a href="https://app.snowflake.com/" target="_blank" rel="noopener">Open Snowflake →</a>
+      </div>
+      <form id="snowflake-connect-form" onsubmit="handleSnowflakeConnect(event)">
+        <div class="form-group">
+          <label for="sf-account">Account Identifier</label>
+          <input type="text" id="sf-account" class="mono-input" placeholder="xy12345.us-east-1" autocomplete="off" required>
+          <small style="color:#4b5563;font-size:12px;">Found in Snowflake under Admin → Accounts (e.g. xy12345.us-east-1)</small>
+        </div>
+        <div class="form-group">
+          <label for="sf-username">Username</label>
+          <input type="text" id="sf-username" class="mono-input" placeholder="ADMIN_USER" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="sf-password">Password</label>
+          <input type="password" id="sf-password" class="mono-input" placeholder="Your Snowflake password" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="sf-role">Role (optional)</label>
+          <input type="text" id="sf-role" class="mono-input" placeholder="ACCOUNTADMIN" autocomplete="off">
+          <small style="color:#4b5563;font-size:12px;">Leave blank to use ACCOUNTADMIN. Needs access to SNOWFLAKE.ACCOUNT_USAGE schema.</small>
+        </div>
+        <div class="form-group">
+          <label for="sf-warehouse">Default Warehouse (optional)</label>
+          <input type="text" id="sf-warehouse" class="mono-input" placeholder="COMPUTE_WH" autocomplete="off">
+        </div>
+        <button type="submit" class="btn-green" id="snowflake-connect-btn">
+          <div class="spinner" id="snowflake-spinner" style="display:none;"></div>
+          <span id="snowflake-btn-text">Connect Snowflake →</span>
+        </button>
+        <div class="error-msg" id="snowflake-error"></div>
+        <div class="success-msg" id="snowflake-success"></div>
       </form>
     </div>
 
@@ -708,14 +751,15 @@
     }
 
     // ── Cloud Provider Tab Switching ──
-    const PROVIDER_COLORS = { aws: '#ff9900', gcp: '#4285f4', azure: '#0078d4' };
+    const PROVIDER_COLORS = { aws: '#ff9900', gcp: '#4285f4', azure: '#0078d4', snowflake: '#29b5e8' };
     let currentProvider = 'aws';
 
     function switchProvider(provider) {
       currentProvider = provider;
-      ['aws', 'gcp', 'azure'].forEach(p => {
+      ['aws', 'gcp', 'azure', 'snowflake'].forEach(p => {
         const tab = document.getElementById('tab-' + p);
         const form = document.getElementById('form-' + p);
+        if (!tab || !form) return;
         if (p === provider) {
           tab.style.borderColor = PROVIDER_COLORS[p];
           tab.style.color = PROVIDER_COLORS[p];
@@ -806,6 +850,43 @@
         errEl.style.display = 'block';
       }
       btn.disabled = false; spinner.style.display = 'none'; btnText.textContent = 'Connect Azure Subscription →';
+    }
+
+    // ── Snowflake Connect ──
+    async function handleSnowflakeConnect(e) {
+      e.preventDefault();
+      const errEl = document.getElementById('snowflake-error');
+      const succEl = document.getElementById('snowflake-success');
+      errEl.style.display = 'none'; succEl.style.display = 'none';
+
+      const account = document.getElementById('sf-account').value.trim();
+      const username = document.getElementById('sf-username').value.trim();
+      const password = document.getElementById('sf-password').value.trim();
+      const role = document.getElementById('sf-role').value.trim() || 'ACCOUNTADMIN';
+      const warehouse = document.getElementById('sf-warehouse').value.trim();
+
+      const btn = document.getElementById('snowflake-connect-btn');
+      const spinner = document.getElementById('snowflake-spinner');
+      const btnText = document.getElementById('snowflake-btn-text');
+      btn.disabled = true; spinner.style.display = 'block'; btnText.textContent = 'Verifying credentials...';
+
+      try {
+        const res = await apiFetch('/api/snowflake/connect', { method: 'POST', body: JSON.stringify({ account, username, password, role, warehouse }) });
+        if (!res) return;
+        const data = await res.json();
+        if (!res.ok) {
+          errEl.textContent = data.error || 'Failed to connect Snowflake account.';
+          errEl.style.display = 'block';
+        } else {
+          succEl.textContent = `✓ Snowflake account ${account} connected. Running baseline scan...`;
+          succEl.style.display = 'block';
+          setTimeout(() => window.location.href = '/savings/app/dashboard.html', 1500);
+        }
+      } catch (err) {
+        errEl.textContent = 'Network error. Please try again.';
+        errEl.style.display = 'block';
+      }
+      btn.disabled = false; spinner.style.display = 'none'; btnText.textContent = 'Connect Snowflake →';
     }
 
     // Init
