@@ -431,6 +431,42 @@
         style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
         🔷 Microsoft Azure
       </button>
+      <button onclick="switchProvider('digitalocean')" id="tab-digitalocean"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        🌊 DigitalOcean
+      </button>
+      <button onclick="switchProvider('linode')" id="tab-linode"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        🟢 Linode / Akamai
+      </button>
+      <button onclick="switchProvider('vultr')" id="tab-vultr"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        🔵 Vultr
+      </button>
+      <button onclick="switchProvider('hetzner')" id="tab-hetzner"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        🔴 Hetzner
+      </button>
+      <button onclick="switchProvider('cloudflare')" id="tab-cloudflare"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        🟠 Cloudflare
+      </button>
+      <button onclick="switchProvider('ibmcloud')" id="tab-ibmcloud"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        💙 IBM Cloud
+      </button>
+      <button onclick="switchProvider('oracle')" id="tab-oracle"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        🔶 Oracle Cloud
+      </button>
+      <button onclick="switchProvider('tencent')" id="tab-tencent"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        🟡 Tencent Cloud
+      </button>
+      <button onclick="switchProvider('alibaba')" id="tab-alibaba"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        🟠 Alibaba Cloud
+      </button>
       <button onclick="switchProvider('snowflake')" id="tab-snowflake"
         style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
         ❄️ Snowflake
@@ -585,6 +621,123 @@
         </button>
         <div class="error-msg" id="snowflake-error"></div>
         <div class="success-msg" id="snowflake-success"></div>
+      </form>
+    </div>
+
+
+    <!-- DigitalOcean form -->
+    <div class="form-card" id="form-digitalocean" style="display:none;">
+      <h2>DigitalOcean Personal Access Token</h2>
+      <div class="info-banner">🌊 Create a read-only token at DigitalOcean → API → Tokens/Keys. &nbsp;<a href="https://cloud.digitalocean.com/account/api/tokens" target="_blank" rel="noopener">Open DO Console →</a></div>
+      <form id="digitalocean-connect-form" onsubmit="handleGenericConnect(event,'digitalocean')">
+        <div class="form-group"><label>API Token</label><input type="password" id="digitalocean-token" class="mono-input" placeholder="dop_v1_..." autocomplete="off" required></div>
+        <div class="form-group"><label>Account Name (optional)</label><input type="text" id="digitalocean-name" class="mono-input" placeholder="My DigitalOcean"></div>
+        <button type="submit" class="btn-green" id="digitalocean-connect-btn"><div class="spinner" id="digitalocean-spinner" style="display:none;"></div><span id="digitalocean-btn-text">Connect DigitalOcean →</span></button>
+        <div class="error-msg" id="digitalocean-error"></div><div class="success-msg" id="digitalocean-success"></div>
+      </form>
+    </div>
+
+    <!-- Linode form -->
+    <div class="form-card" id="form-linode" style="display:none;">
+      <h2>Linode / Akamai Cloud API Token</h2>
+      <div class="info-banner">🟢 Create a Personal Access Token with read-only scope at Linode → My Profile → API Tokens. &nbsp;<a href="https://cloud.linode.com/profile/tokens" target="_blank" rel="noopener">Open Linode →</a></div>
+      <form id="linode-connect-form" onsubmit="handleGenericConnect(event,'linode')">
+        <div class="form-group"><label>API Token</label><input type="password" id="linode-token" class="mono-input" placeholder="your-linode-token" autocomplete="off" required></div>
+        <div class="form-group"><label>Account Name (optional)</label><input type="text" id="linode-name" class="mono-input" placeholder="My Linode Account"></div>
+        <button type="submit" class="btn-green" id="linode-connect-btn"><div class="spinner" id="linode-spinner" style="display:none;"></div><span id="linode-btn-text">Connect Linode →</span></button>
+        <div class="error-msg" id="linode-error"></div><div class="success-msg" id="linode-success"></div>
+      </form>
+    </div>
+
+    <!-- Vultr form -->
+    <div class="form-card" id="form-vultr" style="display:none;">
+      <h2>Vultr API Key</h2>
+      <div class="info-banner">🔵 Get your API key from Vultr → Account → API. Enable read access. &nbsp;<a href="https://my.vultr.com/settings/#settingsapi" target="_blank" rel="noopener">Open Vultr →</a></div>
+      <form id="vultr-connect-form" onsubmit="handleGenericConnect(event,'vultr')">
+        <div class="form-group"><label>API Key</label><input type="password" id="vultr-token" class="mono-input" placeholder="your-vultr-api-key" autocomplete="off" required></div>
+        <div class="form-group"><label>Account Name (optional)</label><input type="text" id="vultr-name" class="mono-input" placeholder="My Vultr Account"></div>
+        <button type="submit" class="btn-green" id="vultr-connect-btn"><div class="spinner" id="vultr-spinner" style="display:none;"></div><span id="vultr-btn-text">Connect Vultr →</span></button>
+        <div class="error-msg" id="vultr-error"></div><div class="success-msg" id="vultr-success"></div>
+      </form>
+    </div>
+
+    <!-- Hetzner form -->
+    <div class="form-card" id="form-hetzner" style="display:none;">
+      <h2>Hetzner Cloud API Token</h2>
+      <div class="info-banner">🔴 Create a read-only API token in Hetzner Cloud Console → Project → Security → API Tokens. &nbsp;<a href="https://console.hetzner.cloud/" target="_blank" rel="noopener">Open Hetzner →</a></div>
+      <form id="hetzner-connect-form" onsubmit="handleGenericConnect(event,'hetzner')">
+        <div class="form-group"><label>API Token</label><input type="password" id="hetzner-token" class="mono-input" placeholder="your-hetzner-token" autocomplete="off" required></div>
+        <div class="form-group"><label>Account Name (optional)</label><input type="text" id="hetzner-name" class="mono-input" placeholder="My Hetzner Account"></div>
+        <button type="submit" class="btn-green" id="hetzner-connect-btn"><div class="spinner" id="hetzner-spinner" style="display:none;"></div><span id="hetzner-btn-text">Connect Hetzner →</span></button>
+        <div class="error-msg" id="hetzner-error"></div><div class="success-msg" id="hetzner-success"></div>
+      </form>
+    </div>
+
+    <!-- Cloudflare form -->
+    <div class="form-card" id="form-cloudflare" style="display:none;">
+      <h2>Cloudflare API Token</h2>
+      <div class="info-banner">🟠 Create an API token with Read permissions for Account, Zone, and R2. &nbsp;<a href="https://dash.cloudflare.com/profile/api-tokens" target="_blank" rel="noopener">Open Cloudflare →</a></div>
+      <form id="cloudflare-connect-form" onsubmit="handleGenericConnect(event,'cloudflare')">
+        <div class="form-group"><label>API Token</label><input type="password" id="cloudflare-token" class="mono-input" placeholder="your-cloudflare-api-token" autocomplete="off" required></div>
+        <div class="form-group"><label>Account Name (optional)</label><input type="text" id="cloudflare-name" class="mono-input" placeholder="My Cloudflare Account"></div>
+        <button type="submit" class="btn-green" id="cloudflare-connect-btn"><div class="spinner" id="cloudflare-spinner" style="display:none;"></div><span id="cloudflare-btn-text">Connect Cloudflare →</span></button>
+        <div class="error-msg" id="cloudflare-error"></div><div class="success-msg" id="cloudflare-success"></div>
+      </form>
+    </div>
+
+    <!-- IBM Cloud form -->
+    <div class="form-card" id="form-ibmcloud" style="display:none;">
+      <h2>IBM Cloud API Key</h2>
+      <div class="info-banner">💙 Create an API key in IBM Cloud → Manage → Access (IAM) → API Keys. Viewer role required. &nbsp;<a href="https://cloud.ibm.com/iam/apikeys" target="_blank" rel="noopener">Open IBM Cloud →</a></div>
+      <form id="ibmcloud-connect-form" onsubmit="handleGenericConnect(event,'ibmcloud')">
+        <div class="form-group"><label>API Key</label><input type="password" id="ibmcloud-token" class="mono-input" placeholder="your-ibm-cloud-api-key" autocomplete="off" required></div>
+        <div class="form-group"><label>Account Name (optional)</label><input type="text" id="ibmcloud-name" class="mono-input" placeholder="My IBM Cloud"></div>
+        <button type="submit" class="btn-green" id="ibmcloud-connect-btn"><div class="spinner" id="ibmcloud-spinner" style="display:none;"></div><span id="ibmcloud-btn-text">Connect IBM Cloud →</span></button>
+        <div class="error-msg" id="ibmcloud-error"></div><div class="success-msg" id="ibmcloud-success"></div>
+      </form>
+    </div>
+
+    <!-- Oracle Cloud form -->
+    <div class="form-card" id="form-oracle" style="display:none;">
+      <h2>Oracle Cloud (OCI) API Key</h2>
+      <div class="info-banner">🔶 Create an API key in OCI Console → Profile → API Keys. You'll need your Tenancy OCID, User OCID, and private key. &nbsp;<a href="https://cloud.oracle.com/" target="_blank" rel="noopener">Open OCI →</a></div>
+      <form id="oracle-connect-form" onsubmit="handleGenericConnect(event,'oracle')">
+        <div class="form-group"><label>Tenancy OCID</label><input type="text" id="oracle-tenancy" class="mono-input" placeholder="ocid1.tenancy.oc1..aaa..." autocomplete="off" required></div>
+        <div class="form-group"><label>User OCID</label><input type="text" id="oracle-user" class="mono-input" placeholder="ocid1.user.oc1..aaa..." autocomplete="off" required></div>
+        <div class="form-group"><label>API Key Fingerprint</label><input type="text" id="oracle-fingerprint" class="mono-input" placeholder="xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx" autocomplete="off" required></div>
+        <div class="form-group"><label>Private Key (PEM)</label><textarea id="oracle-privatekey" class="mono-input" rows="5" style="width:100%;resize:vertical;font-size:12px;background:var(--navy-4,#1a2235);border:1px solid rgba(255,255,255,0.12);color:#e5e7eb;border-radius:8px;padding:12px;font-family:monospace;" placeholder="-----BEGIN RSA PRIVATE KEY-----&#10;...&#10;-----END RSA PRIVATE KEY-----" required></textarea></div>
+        <div class="form-group"><label>Home Region</label><input type="text" id="oracle-region" class="mono-input" placeholder="us-ashburn-1" autocomplete="off" required></div>
+        <div class="form-group"><label>Account Name (optional)</label><input type="text" id="oracle-name" class="mono-input" placeholder="My OCI Account"></div>
+        <button type="submit" class="btn-green" id="oracle-connect-btn"><div class="spinner" id="oracle-spinner" style="display:none;"></div><span id="oracle-btn-text">Connect Oracle Cloud →</span></button>
+        <div class="error-msg" id="oracle-error"></div><div class="success-msg" id="oracle-success"></div>
+      </form>
+    </div>
+
+    <!-- Tencent Cloud form -->
+    <div class="form-card" id="form-tencent" style="display:none;">
+      <h2>Tencent Cloud API Keys</h2>
+      <div class="info-banner">🟡 Get your SecretId and SecretKey from Tencent Cloud → Access Management → API Key Management. &nbsp;<a href="https://console.cloud.tencent.com/cam/capi" target="_blank" rel="noopener">Open Tencent Cloud →</a></div>
+      <form id="tencent-connect-form" onsubmit="handleGenericConnect(event,'tencent')">
+        <div class="form-group"><label>Secret ID</label><input type="text" id="tencent-secretid" class="mono-input" placeholder="Your Tencent SecretId (starts with AKID...)" autocomplete="off" required></div>
+        <div class="form-group"><label>Secret Key</label><input type="password" id="tencent-secretkey" class="mono-input" placeholder="your-secret-key" autocomplete="off" required></div>
+        <div class="form-group"><label>Region</label><input type="text" id="tencent-region" class="mono-input" placeholder="ap-singapore" autocomplete="off" required></div>
+        <div class="form-group"><label>Account Name (optional)</label><input type="text" id="tencent-name" class="mono-input" placeholder="My Tencent Cloud"></div>
+        <button type="submit" class="btn-green" id="tencent-connect-btn"><div class="spinner" id="tencent-spinner" style="display:none;"></div><span id="tencent-btn-text">Connect Tencent Cloud →</span></button>
+        <div class="error-msg" id="tencent-error"></div><div class="success-msg" id="tencent-success"></div>
+      </form>
+    </div>
+
+    <!-- Alibaba Cloud form -->
+    <div class="form-card" id="form-alibaba" style="display:none;">
+      <h2>Alibaba Cloud Access Key</h2>
+      <div class="info-banner">🟠 Get your Access Key ID and Secret from Alibaba Cloud → RAM Console → Users → Security. &nbsp;<a href="https://ram.console.aliyun.com/users" target="_blank" rel="noopener">Open Alibaba Cloud →</a></div>
+      <form id="alibaba-connect-form" onsubmit="handleGenericConnect(event,'alibaba')">
+        <div class="form-group"><label>Access Key ID</label><input type="text" id="alibaba-keyid" class="mono-input" placeholder="LTAI5t..." autocomplete="off" required></div>
+        <div class="form-group"><label>Access Key Secret</label><input type="password" id="alibaba-keysecret" class="mono-input" placeholder="your-access-key-secret" autocomplete="off" required></div>
+        <div class="form-group"><label>Region</label><input type="text" id="alibaba-region" class="mono-input" placeholder="us-east-1" autocomplete="off" required></div>
+        <div class="form-group"><label>Account Name (optional)</label><input type="text" id="alibaba-name" class="mono-input" placeholder="My Alibaba Cloud"></div>
+        <button type="submit" class="btn-green" id="alibaba-connect-btn"><div class="spinner" id="alibaba-spinner" style="display:none;"></div><span id="alibaba-btn-text">Connect Alibaba Cloud →</span></button>
+        <div class="error-msg" id="alibaba-error"></div><div class="success-msg" id="alibaba-success"></div>
       </form>
     </div>
 
@@ -751,12 +904,12 @@
     }
 
     // ── Cloud Provider Tab Switching ──
-    const PROVIDER_COLORS = { aws: '#ff9900', gcp: '#4285f4', azure: '#0078d4', snowflake: '#29b5e8' };
+    const PROVIDER_COLORS = { aws: '#ff9900', gcp: '#4285f4', azure: '#0078d4', snowflake: '#29b5e8', digitalocean: '#0080ff', linode: '#00b050', vultr: '#007bfc', hetzner: '#d50c2d', cloudflare: '#f38020', ibmcloud: '#1f70c1', oracle: '#f80000', tencent: '#00a3ff', alibaba: '#ff6a00' };
     let currentProvider = 'aws';
 
     function switchProvider(provider) {
       currentProvider = provider;
-      ['aws', 'gcp', 'azure', 'snowflake'].forEach(p => {
+      ['aws','gcp','azure','snowflake','digitalocean','linode','vultr','hetzner','cloudflare','ibmcloud','oracle','tencent','alibaba'].forEach(p => {
         const tab = document.getElementById('tab-' + p);
         const form = document.getElementById('form-' + p);
         if (!tab || !form) return;
@@ -850,6 +1003,71 @@
         errEl.style.display = 'block';
       }
       btn.disabled = false; spinner.style.display = 'none'; btnText.textContent = 'Connect Azure Subscription →';
+    }
+
+
+    // ── Generic Connect Handler (token-based providers) ──
+    async function handleGenericConnect(e, provider) {
+      e.preventDefault();
+      const errEl = document.getElementById(provider+'-error');
+      const succEl = document.getElementById(provider+'-success');
+      errEl.style.display='none'; succEl.style.display='none';
+
+      // Build credentials object based on provider
+      let body = { name: (document.getElementById(provider+'-name')||{}).value || provider };
+      const tokenEl = document.getElementById(provider+'-token');
+      if (tokenEl) body.api_token = tokenEl.value.trim();
+
+      // Provider-specific fields
+      if (provider === 'oracle') {
+        body = {
+          name: document.getElementById('oracle-name').value.trim() || 'Oracle Cloud',
+          tenancyId: document.getElementById('oracle-tenancy').value.trim(),
+          userId: document.getElementById('oracle-user').value.trim(),
+          fingerprint: document.getElementById('oracle-fingerprint').value.trim(),
+          privateKey: document.getElementById('oracle-privatekey').value.trim(),
+          region: document.getElementById('oracle-region').value.trim()
+        };
+      } else if (provider === 'tencent') {
+        body = {
+          name: document.getElementById('tencent-name').value.trim() || 'Tencent Cloud',
+          secretId: document.getElementById('tencent-secretid').value.trim(),
+          secretKey: document.getElementById('tencent-secretkey').value.trim(),
+          region: document.getElementById('tencent-region').value.trim()
+        };
+      } else if (provider === 'alibaba') {
+        body = {
+          name: document.getElementById('alibaba-name').value.trim() || 'Alibaba Cloud',
+          accessKeyId: document.getElementById('alibaba-keyid').value.trim(),
+          accessKeySecret: document.getElementById('alibaba-keysecret').value.trim(),
+          region: document.getElementById('alibaba-region').value.trim()
+        };
+      } else if (provider === 'ibmcloud') {
+        body = { name: document.getElementById('ibmcloud-name').value.trim() || 'IBM Cloud', apiKey: tokenEl.value.trim() };
+      }
+
+      const btn = document.getElementById(provider+'-connect-btn');
+      const spinner = document.getElementById(provider+'-spinner');
+      const btnText = document.getElementById(provider+'-btn-text');
+      btn.disabled=true; spinner.style.display='block'; btnText.textContent='Verifying...';
+
+      try {
+        const res = await apiFetch('/api/'+provider+'/connect', { method:'POST', body: JSON.stringify(body) });
+        if (!res) return;
+        const data = await res.json();
+        if (!res.ok) {
+          errEl.textContent = data.error || 'Failed to connect.';
+          errEl.style.display = 'block';
+        } else {
+          succEl.textContent = '✓ ' + (data.message || provider + ' connected successfully');
+          succEl.style.display = 'block';
+          setTimeout(() => window.location.href = '/savings/app/dashboard.html', 1500);
+        }
+      } catch(err) {
+        errEl.textContent = 'Network error. Please try again.';
+        errEl.style.display = 'block';
+      }
+      btn.disabled=false; spinner.style.display='none'; btnText.textContent='Connect →';
     }
 
     // ── Snowflake Connect ──
