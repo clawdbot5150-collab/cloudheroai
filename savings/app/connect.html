@@ -471,6 +471,22 @@
         style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
         ❄️ Snowflake
       </button>
+      <button onclick="switchProvider('datadog')" id="tab-datadog"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        🐶 Datadog
+      </button>
+      <button onclick="switchProvider('mongoatlas')" id="tab-mongoatlas"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        🍃 MongoDB Atlas
+      </button>
+      <button onclick="switchProvider('lambdalabs')" id="tab-lambdalabs"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        λ Lambda Labs
+      </button>
+      <button onclick="switchProvider('vastai')" id="tab-vastai"
+        style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:2px solid #1f2937;background:#1f2937;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;">
+        ⚡ Vast.ai
+      </button>
     </div>
 
     <!-- Existing connections -->
@@ -741,6 +757,66 @@
       </form>
     </div>
 
+    <!-- Datadog -->
+    <div class="form-card" id="form-datadog" style="display:none;">
+      <h2>🐶 Datadog</h2>
+      <div class="info-banner">Create an API Key + Application Key in Datadog → Organization Settings → API Keys / Application Keys. The App Key needs read access. &nbsp;<a href="https://app.datadoghq.com/organization-settings/api-keys" target="_blank" rel="noopener">Open Datadog →</a></div>
+      <form id="datadog-connect-form" onsubmit="handleDatadogConnect(event)">
+        <div class="form-group"><label>API Key</label><input type="password" id="datadog-apikey" class="mono-input" placeholder="Your Datadog API Key" autocomplete="off" required></div>
+        <div class="form-group"><label>Application Key</label><input type="password" id="datadog-appkey" class="mono-input" placeholder="Your Datadog Application Key" autocomplete="off" required></div>
+        <div class="form-group">
+          <label>Site (default: datadoghq.com)</label>
+          <select id="datadog-site" class="mono-input" style="background:#111827;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:10px;">
+            <option value="datadoghq.com">US1 — datadoghq.com</option>
+            <option value="us3.datadoghq.com">US3 — us3.datadoghq.com</option>
+            <option value="us5.datadoghq.com">US5 — us5.datadoghq.com</option>
+            <option value="datadoghq.eu">EU1 — datadoghq.eu</option>
+            <option value="ap1.datadoghq.com">AP1 — ap1.datadoghq.com</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Account Name (optional)</label><input type="text" id="datadog-name" class="mono-input" placeholder="My Datadog Org"></div>
+        <button type="submit" class="btn-green" id="datadog-connect-btn"><div class="spinner" id="datadog-spinner" style="display:none;"></div><span id="datadog-btn-text">Connect Datadog →</span></button>
+        <div class="error-msg" id="datadog-error"></div><div class="success-msg" id="datadog-success"></div>
+      </form>
+    </div>
+
+    <!-- MongoDB Atlas -->
+    <div class="form-card" id="form-mongoatlas" style="display:none;">
+      <h2>🍃 MongoDB Atlas</h2>
+      <div class="info-banner">Create a Programmatic API Key in Atlas → Organization → Access Manager → API Keys. Assign "Organization Read Only" role. &nbsp;<a href="https://cloud.mongodb.com/v2#/org/access/apiKeys" target="_blank" rel="noopener">Open Atlas →</a></div>
+      <form id="mongoatlas-connect-form" onsubmit="handleMongoAtlasConnect(event)">
+        <div class="form-group"><label>Public Key</label><input type="text" id="mongoatlas-publickey" class="mono-input" placeholder="abcdefgh (8-char public key)" autocomplete="off" required></div>
+        <div class="form-group"><label>Private Key</label><input type="password" id="mongoatlas-privatekey" class="mono-input" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off" required></div>
+        <div class="form-group"><label>Account Name (optional)</label><input type="text" id="mongoatlas-name" class="mono-input" placeholder="My MongoDB Atlas Org"></div>
+        <button type="submit" class="btn-green" id="mongoatlas-connect-btn"><div class="spinner" id="mongoatlas-spinner" style="display:none;"></div><span id="mongoatlas-btn-text">Connect MongoDB Atlas →</span></button>
+        <div class="error-msg" id="mongoatlas-error"></div><div class="success-msg" id="mongoatlas-success"></div>
+      </form>
+    </div>
+
+    <!-- Lambda Labs -->
+    <div class="form-card" id="form-lambdalabs" style="display:none;">
+      <h2>λ Lambda Labs GPU Cloud</h2>
+      <div class="info-banner">Generate an API key at Lambda Labs → Account → API Keys. Read-only access is sufficient. &nbsp;<a href="https://cloud.lambdalabs.com/api-keys" target="_blank" rel="noopener">Open Lambda Labs →</a></div>
+      <form id="lambdalabs-connect-form" onsubmit="handleGenericConnect(event,'lambdalabs')">
+        <div class="form-group"><label>API Key</label><input type="password" id="lambdalabs-token" class="mono-input" placeholder="Your Lambda Labs API Key" autocomplete="off" required></div>
+        <div class="form-group"><label>Account Name (optional)</label><input type="text" id="lambdalabs-name" class="mono-input" placeholder="My Lambda Labs Account"></div>
+        <button type="submit" class="btn-green" id="lambdalabs-connect-btn"><div class="spinner" id="lambdalabs-spinner" style="display:none;"></div><span id="lambdalabs-btn-text">Connect Lambda Labs →</span></button>
+        <div class="error-msg" id="lambdalabs-error"></div><div class="success-msg" id="lambdalabs-success"></div>
+      </form>
+    </div>
+
+    <!-- Vast.ai -->
+    <div class="form-card" id="form-vastai" style="display:none;">
+      <h2>⚡ Vast.ai GPU Marketplace</h2>
+      <div class="info-banner">Generate an API key at Vast.ai → Account → API Keys. &nbsp;<a href="https://vast.ai/console/account/" target="_blank" rel="noopener">Open Vast.ai →</a></div>
+      <form id="vastai-connect-form" onsubmit="handleGenericConnect(event,'vastai')">
+        <div class="form-group"><label>API Key</label><input type="password" id="vastai-token" class="mono-input" placeholder="Your Vast.ai API Key" autocomplete="off" required></div>
+        <div class="form-group"><label>Account Name (optional)</label><input type="text" id="vastai-name" class="mono-input" placeholder="My Vast.ai Account"></div>
+        <button type="submit" class="btn-green" id="vastai-connect-btn"><div class="spinner" id="vastai-spinner" style="display:none;"></div><span id="vastai-btn-text">Connect Vast.ai →</span></button>
+        <div class="error-msg" id="vastai-error"></div><div class="success-msg" id="vastai-success"></div>
+      </form>
+    </div>
+
   </main>
 
   <script>
@@ -904,7 +980,7 @@
     }
 
     // ── Cloud Provider Tab Switching ──
-    const PROVIDER_COLORS = { aws: '#ff9900', gcp: '#4285f4', azure: '#0078d4', snowflake: '#29b5e8', digitalocean: '#0080ff', linode: '#00b050', vultr: '#007bfc', hetzner: '#d50c2d', cloudflare: '#f38020', ibmcloud: '#1f70c1', oracle: '#f80000', tencent: '#00a3ff', alibaba: '#ff6a00' };
+    const PROVIDER_COLORS = { aws: '#ff9900', gcp: '#4285f4', azure: '#0078d4', snowflake: '#29b5e8', digitalocean: '#0080ff', linode: '#00b050', vultr: '#007bfc', hetzner: '#d50c2d', cloudflare: '#f38020', ibmcloud: '#1f70c1', oracle: '#f80000', tencent: '#00a3ff', alibaba: '#ff6a00', datadog: '#632ca6', mongoatlas: '#00ed64', lambdalabs: '#e056fd', vastai: '#ff6b35' };
     let currentProvider = 'aws';
 
     function switchProvider(provider) {
@@ -1016,7 +1092,14 @@
       // Build credentials object based on provider
       let body = { name: (document.getElementById(provider+'-name')||{}).value || provider };
       const tokenEl = document.getElementById(provider+'-token');
-      if (tokenEl) body.api_token = tokenEl.value.trim();
+      // lambdalabs and vastai use apiKey field; most others use api_token
+      if (tokenEl) {
+        if (provider === 'lambdalabs' || provider === 'vastai') {
+          body.apiKey = tokenEl.value.trim();
+        } else {
+          body.api_token = tokenEl.value.trim();
+        }
+      }
 
       // Provider-specific fields
       if (provider === 'oracle') {
@@ -1106,6 +1189,72 @@
       }
       btn.disabled = false; spinner.style.display = 'none'; btnText.textContent = 'Connect Snowflake →';
     }
+
+    async function handleDatadogConnect(e) {
+      e.preventDefault();
+      const errEl = document.getElementById('datadog-error');
+      const succEl = document.getElementById('datadog-success');
+      errEl.style.display = 'none'; succEl.style.display = 'none';
+      const apiKey = document.getElementById('datadog-apikey').value.trim();
+      const appKey = document.getElementById('datadog-appkey').value.trim();
+      const site = document.getElementById('datadog-site').value;
+      const name = document.getElementById('datadog-name').value.trim() || 'My Datadog';
+      const btn = document.getElementById('datadog-connect-btn');
+      const spinner = document.getElementById('datadog-spinner');
+      const btnText = document.getElementById('datadog-btn-text');
+      btn.disabled = true; spinner.style.display = 'block'; btnText.textContent = 'Verifying...';
+      try {
+        const res = await apiFetch('/api/datadog/connect', { method: 'POST', body: JSON.stringify({ apiKey, appKey, site, name }) });
+        if (!res) return;
+        const data = await res.json();
+        if (!res.ok) {
+          errEl.textContent = data.error || 'Failed to connect Datadog.';
+          errEl.style.display = 'block';
+        } else {
+          succEl.textContent = '✓ Datadog connected! Scanning for waste...';
+          succEl.style.display = 'block';
+          setTimeout(() => window.location.href = '/savings/app/dashboard.html', 1500);
+        }
+      } catch (err) {
+        errEl.textContent = 'Network error. Please try again.';
+        errEl.style.display = 'block';
+      }
+      btn.disabled = false; spinner.style.display = 'none'; btnText.textContent = 'Connect Datadog →';
+    }
+
+    async function handleMongoAtlasConnect(e) {
+      e.preventDefault();
+      const errEl = document.getElementById('mongoatlas-error');
+      const succEl = document.getElementById('mongoatlas-success');
+      errEl.style.display = 'none'; succEl.style.display = 'none';
+      const publicKey = document.getElementById('mongoatlas-publickey').value.trim();
+      const privateKey = document.getElementById('mongoatlas-privatekey').value.trim();
+      const name = document.getElementById('mongoatlas-name').value.trim() || 'My MongoDB Atlas';
+      const btn = document.getElementById('mongoatlas-connect-btn');
+      const spinner = document.getElementById('mongoatlas-spinner');
+      const btnText = document.getElementById('mongoatlas-btn-text');
+      btn.disabled = true; spinner.style.display = 'block'; btnText.textContent = 'Verifying...';
+      try {
+        const res = await apiFetch('/api/mongoatlas/connect', { method: 'POST', body: JSON.stringify({ publicKey, privateKey, name }) });
+        if (!res) return;
+        const data = await res.json();
+        if (!res.ok) {
+          errEl.textContent = data.error || 'Failed to connect MongoDB Atlas.';
+          errEl.style.display = 'block';
+        } else {
+          succEl.textContent = '✓ MongoDB Atlas connected! Auditing clusters...';
+          succEl.style.display = 'block';
+          setTimeout(() => window.location.href = '/savings/app/dashboard.html', 1500);
+        }
+      } catch (err) {
+        errEl.textContent = 'Network error. Please try again.';
+        errEl.style.display = 'block';
+      }
+      btn.disabled = false; spinner.style.display = 'none'; btnText.textContent = 'Connect MongoDB Atlas →';
+    }
+
+    // Handle lambdalabs and vastai in handleGenericConnect (apiKey → api_token field)
+    // Already handled by generic handler — lambdalabs-token and vastai-token IDs match pattern
 
     // Init
     (async () => {
