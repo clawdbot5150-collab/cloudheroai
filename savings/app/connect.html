@@ -997,7 +997,7 @@
 
     function switchProvider(provider) {
       currentProvider = provider;
-      ['aws','gcp','azure','snowflake','digitalocean','linode','vultr','hetzner','cloudflare','ibmcloud','oracle','tencent','alibaba'].forEach(p => {
+      ['aws','gcp','azure','snowflake','digitalocean','linode','vultr','hetzner','cloudflare','ibmcloud','oracle','tencent','alibaba','datadog','mongoatlas','lambdalabs','vastai'].forEach(p => {
         const tab = document.getElementById('tab-' + p);
         const form = document.getElementById('form-' + p);
         if (!tab || !form) return;
