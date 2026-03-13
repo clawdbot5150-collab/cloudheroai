@@ -576,7 +576,7 @@
         window.location.href = '/savings/app/login.html';
         return null;
       }
-      return await res.json();
+      const _d = await res.json(); return _d.user || _d;
     }
 
     function signOut() {
