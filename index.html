@@ -173,16 +173,7 @@ section{position:relative;z-index:1}
 .perk-icon{width:36px;height:36px;border-radius:8px;background:var(--cyan-dim);border:1px solid var(--border-bright);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
 .perk-text h4{font-size:15px;font-weight:500;margin-bottom:3px}
 .perk-text p{font-size:13px;color:var(--muted);font-weight:300;line-height:1.5}
-/* MARGINS */
-.margins{padding:100px 5vw}
-.margins-inner{max-width:1100px;margin:0 auto}
-.margins-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:56px}
-.margin-bars{display:flex;flex-direction:column;gap:20px}
-.margin-row{display:grid;grid-template-columns:140px 1fr 60px;align-items:center;gap:16px}
-.margin-label{font-size:14px;color:var(--muted)}
-.margin-track{height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
-.margin-fill{height:100%;border-radius:4px;width:0;transition:width 1.2s cubic-bezier(0.16,1,0.3,1)}
-.margin-pct{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;text-align:right}
+
 /* PROOF */
 .proof{padding:80px 5vw;background:var(--navy-2);border-top:1px solid var(--border);text-align:center}
 .proof-logos{display:flex;gap:48px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:40px;opacity:0.35}
@@ -220,7 +211,7 @@ footer{border-top:1px solid var(--border);padding:48px 5vw;display:grid;grid-tem
 .t-cursor{display:inline-block;width:8px;height:14px;background:var(--cyan);vertical-align:middle;animation:blink 1s step-end infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 /* RESPONSIVE */
-@media(max-width:900px){.products-grid{grid-template-columns:1fr}.pricing-grid{grid-template-columns:1fr 1fr}.flywheel-inner{grid-template-columns:1fr}.flywheel-visual{display:none}.newsletter-inner{grid-template-columns:1fr}.margins-header{grid-template-columns:1fr}footer{grid-template-columns:1fr 1fr}.nav-links{display:none}}
+@media(max-width:900px){.products-grid{grid-template-columns:1fr}.pricing-grid{grid-template-columns:1fr 1fr}.flywheel-inner{grid-template-columns:1fr}.flywheel-visual{display:none}.newsletter-inner{grid-template-columns:1fr}footer{grid-template-columns:1fr 1fr}.nav-links{display:none}}
 @media(max-width:600px){.pricing-grid{grid-template-columns:1fr}footer{grid-template-columns:1fr}.stats-bar{flex-wrap:wrap}.stat-item{min-width:50%;border-right:none;border-bottom:1px solid var(--border)}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
 </style>
@@ -444,10 +435,7 @@ terminalLines.forEach(line=>{setTimeout(()=>{const div=document.createElement('d
 // COUNTERS
 const counterObs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('[data-target]').forEach(el=>{const target=+el.dataset.target;const prefix=el.dataset.prefix||'';const suffix=el.dataset.suffix||'';let start=0;const step=target/60;const timer=setInterval(()=>{start=Math.min(start+step,target);el.textContent=prefix+Math.floor(start)+suffix;if(start>=target)clearInterval(timer);},16);});counterObs.unobserve(e.target);}});},{threshold:0.5});
 document.querySelectorAll('.stats-bar').forEach(el=>counterObs.observe(el));
-// MARGIN BARS
-const marginObs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.margin-fill').forEach(bar=>{bar.style.width=bar.dataset.width+'%';});marginObs.unobserve(e.target);}});},{threshold:0.3});
-const marginBars=document.getElementById('margin-bars');
-if(marginBars)marginObs.observe(marginBars);
+
 // SUBSCRIBE
 function handleSubscribe(event){
   if(event)event.preventDefault();
