@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero Copilot — Cloud Hero AI</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#070B14;
+  --navy-2:#0C1220;
+  --navy-3:#111827;
+  --border:rgba(255,255,255,0.08);
+  --border-bright:rgba(255,255,255,0.15);
+  --cyan:#00D9FF;
+  --cyan-dim:rgba(0,217,255,0.08);
+  --cyan-glow:rgba(0,217,255,0.25);
+  --white:#F0F4FF;
+  --muted:rgba(240,244,255,0.5);
+  --muted-2:rgba(240,244,255,0.3);
+  --sidebar-w:260px;
+}
+html,body{height:100%;overflow:hidden;background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif}
+
+/* ── Layout ── */
+.app{display:flex;height:100vh}
+
+/* ── Sidebar ── */
+.sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);
+  background:var(--navy-2);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  height:100vh;overflow:hidden;
+}
+.sidebar-top{padding:16px;border-bottom:1px solid var(--border)}
+.sidebar-logo{display:flex;align-items:center;gap:8px;text-decoration:none;margin-bottom:14px}
+.logo-mark{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,#00D9FF,#0080FF);display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:14px;height:14px}
+.logo-text{font-size:13px;font-weight:700;color:var(--white);letter-spacing:-0.01em}
+.logo-text span{color:var(--cyan)}
+.new-chat-btn{
+  width:100%;padding:9px 14px;
+  background:var(--cyan);color:var(--navy);
+  border:none;border-radius:8px;
+  font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:opacity 0.15s;
+}
+.new-chat-btn:hover{opacity:0.9}
+
+.convs-label{padding:12px 16px 6px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted-2)}
+.convs-list{flex:1;overflow-y:auto;padding:4px 8px}
+.convs-list::-webkit-scrollbar{width:4px}
+.convs-list::-webkit-scrollbar-track{background:transparent}
+.convs-list::-webkit-scrollbar-thumb{background:var(--border-bright);border-radius:2px}
+
+.conv-item{
+  padding:9px 10px;border-radius:7px;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;margin-bottom:2px;
+  transition:background 0.15s;
+}
+.conv-item:hover{background:rgba(255,255,255,0.06)}
+.conv-item.active{background:var(--cyan-dim);border:1px solid rgba(0,217,255,0.2)}
+.conv-item.active .conv-title{color:var(--cyan)}
+.conv-title{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;line-height:1.4}
+.conv-delete{opacity:0;background:none;border:none;cursor:pointer;color:var(--muted-2);padding:2px;border-radius:3px;transition:opacity 0.15s,color 0.15s;flex-shrink:0}
+.conv-item:hover .conv-delete{opacity:1}
+.conv-delete:hover{color:#ff4d4d}
+.convs-empty{padding:20px 16px;text-align:center;color:var(--muted-2);font-size:13px;line-height:1.6}
+
+.sidebar-bottom{padding:12px;border-top:1px solid var(--border)}
+.usage-bar-wrap{margin-bottom:10px}
+.usage-label{font-size:11px;color:var(--muted-2);margin-bottom:5px;display:flex;justify-content:space-between}
+.usage-label span:last-child{color:var(--cyan)}
+.usage-bar-bg{height:4px;background:var(--border);border-radius:2px}
+.usage-bar-fill{height:4px;background:var(--cyan);border-radius:2px;transition:width 0.4s}
+.upgrade-btn{
+  width:100%;padding:8px;background:rgba(0,217,255,0.08);
+  border:1px solid rgba(0,217,255,0.2);border-radius:7px;
+  color:var(--cyan);font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;
+  cursor:pointer;text-decoration:none;display:block;text-align:center;
+  transition:background 0.15s;
+}
+.upgrade-btn:hover{background:rgba(0,217,255,0.15)}
+.sidebar-user{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.user-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#0080FF,#00D9FF);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--navy);flex-shrink:0}
+.user-email{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.sign-out-btn{background:none;border:none;cursor:pointer;color:var(--muted-2);padding:3px;border-radius:4px;transition:color 0.15s}
+.sign-out-btn:hover{color:#ff4d4d}
+
+/* ── Main Chat Area ── */
+.main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;min-width:0}
+
+.chat-header{
+  padding:14px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--navy-2);flex-shrink:0;
+}
+.chat-title{font-size:14px;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px}
+.model-badge{font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);background:var(--cyan-dim);border:1px solid rgba(0,217,255,0.2);padding:3px 9px;border-radius:20px}
+
+.messages{flex:1;overflow-y:auto;padding:24px 0;scroll-behavior:smooth}
+.messages::-webkit-scrollbar{width:6px}
+.messages::-webkit-scrollbar-track{background:transparent}
+.messages::-webkit-scrollbar-thumb{background:var(--border-bright);border-radius:3px}
+
+/* Welcome screen */
+.welcome{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;text-align:center;padding:40px 24px;
+}
+.welcome-icon{
+  width:64px;height:64px;border-radius:16px;
+  background:linear-gradient(135deg,rgba(0,217,255,0.15),rgba(0,128,255,0.15));
+  border:1px solid rgba(0,217,255,0.25);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+}
+.welcome h1{font-size:22px;font-weight:600;margin-bottom:10px;letter-spacing:-0.02em}
+.welcome h1 em{font-style:italic;color:var(--cyan)}
+.welcome p{font-size:14px;color:var(--muted);max-width:460px;line-height:1.65;margin-bottom:32px}
+.suggestions{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:560px;width:100%}
+.suggestion{
+  padding:12px 14px;background:var(--navy-3);
+  border:1px solid var(--border);border-radius:10px;
+  font-size:12px;color:var(--muted);text-align:left;cursor:pointer;
+  transition:border-color 0.15s,background 0.15s;line-height:1.5;
+}
+.suggestion:hover{border-color:rgba(0,217,255,0.3);background:var(--cyan-dim);color:var(--white)}
+.suggestion strong{display:block;color:var(--white);font-size:12px;margin-bottom:3px}
+
+/* Messages */
+.msg-row{padding:16px 24px;display:flex;gap:14px;max-width:860px;margin:0 auto;width:100%}
+.msg-row.user{flex-direction:row-reverse}
+.msg-avatar{
+  width:32px;height:32px;border-radius:8px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+}
+.msg-row.assistant .msg-avatar{background:linear-gradient(135deg,#00D9FF,#0080FF);color:var(--navy)}
+.msg-row.user .msg-avatar{background:linear-gradient(135deg,#7B6FFF,#0080FF);color:var(--white)}
+.msg-content{flex:1;min-width:0}
+.msg-row.user .msg-content{display:flex;justify-content:flex-end}
+.msg-bubble{
+  padding:12px 16px;border-radius:12px;font-size:14px;line-height:1.65;
+  max-width:100%;
+}
+.msg-row.user .msg-bubble{
+  background:rgba(123,111,255,0.15);border:1px solid rgba(123,111,255,0.25);
+  max-width:72%;
+}
+.msg-row.assistant .msg-bubble{background:transparent;padding:4px 0;width:100%}
+
+/* Markdown styles inside assistant messages */
+.msg-bubble h1,.msg-bubble h2,.msg-bubble h3{font-weight:600;margin:16px 0 8px;letter-spacing:-0.01em}
+.msg-bubble h1{font-size:18px}.msg-bubble h2{font-size:16px}.msg-bubble h3{font-size:14px;color:var(--cyan)}
+.msg-bubble p{margin-bottom:12px;line-height:1.7}
+.msg-bubble p:last-child{margin-bottom:0}
+.msg-bubble ul,.msg-bubble ol{margin:8px 0 12px 20px;line-height:1.8}
+.msg-bubble li{margin-bottom:3px}
+.msg-bubble strong{color:var(--white);font-weight:600}
+.msg-bubble em{color:var(--muted)}
+.msg-bubble code{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  background:rgba(0,217,255,0.08);color:var(--cyan);
+  padding:2px 6px;border-radius:4px;
+}
+.msg-bubble pre{
+  margin:12px 0;border-radius:10px;overflow:hidden;
+  border:1px solid var(--border);position:relative;
+}
+.msg-bubble pre code{
+  background:transparent;color:inherit;padding:0;border-radius:0;font-size:13px;
+  display:block;overflow-x:auto;
+}
+.code-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 14px;background:rgba(255,255,255,0.04);
+  border-bottom:1px solid var(--border);
+}
+.code-lang{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted-2);text-transform:uppercase;letter-spacing:0.08em}
+.copy-btn{
+  font-family:'Space Mono',monospace;font-size:10px;color:var(--muted-2);
+  background:none;border:1px solid var(--border);border-radius:4px;
+  padding:3px 8px;cursor:pointer;transition:color 0.15s,border-color 0.15s;
+}
+.copy-btn:hover{color:var(--cyan);border-color:rgba(0,217,255,0.3)}
+.copy-btn.copied{color:#00E5A0;border-color:rgba(0,229,160,0.3)}
+.msg-bubble pre .hljs{padding:14px 16px;background:#0d1117}
+.msg-bubble blockquote{border-left:3px solid var(--cyan);padding:8px 14px;margin:10px 0;background:var(--cyan-dim);border-radius:0 6px 6px 0;color:var(--muted);font-style:italic}
+.msg-bubble table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.msg-bubble th{padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid var(--border);text-align:left;font-weight:600;color:var(--cyan);font-size:12px}
+.msg-bubble td{padding:8px 12px;border:1px solid var(--border)}
+.msg-bubble hr{border:none;border-top:1px solid var(--border);margin:16px 0}
+
+/* Typing indicator */
+.typing-indicator{display:flex;align-items:center;gap:5px;padding:6px 0}
+.typing-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:typing 1.2s ease-in-out infinite}
+.typing-dot:nth-child(2){animation-delay:0.2s}
+.typing-dot:nth-child(3){animation-delay:0.4s}
+@keyframes typing{0%,60%,100%{opacity:0.3;transform:scale(0.85)}30%{opacity:1;transform:scale(1)}}
+
+/* Input area */
+.input-area{padding:16px 24px;border-top:1px solid var(--border);background:var(--navy-2);flex-shrink:0}
+.input-wrap{
+  max-width:860px;margin:0 auto;
+  background:var(--navy-3);border:1px solid var(--border);
+  border-radius:12px;display:flex;align-items:flex-end;gap:10px;padding:10px 12px;
+  transition:border-color 0.2s;
+}
+.input-wrap:focus-within{border-color:rgba(0,217,255,0.4)}
+#msg-input{
+  flex:1;background:transparent;border:none;outline:none;
+  color:var(--white);font-size:14px;font-family:'DM Sans',sans-serif;
+  resize:none;max-height:180px;line-height:1.6;
+  scrollbar-width:none;
+}
+#msg-input::placeholder{color:var(--muted-2)}
+#msg-input::-webkit-scrollbar{display:none}
+.send-btn{
+  width:36px;height:36px;border-radius:8px;flex-shrink:0;
+  background:var(--cyan);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity 0.15s,transform 0.15s;
+}
+.send-btn:hover:not(:disabled){transform:scale(1.05)}
+.send-btn:disabled{opacity:0.4;cursor:not-allowed}
+.input-footer{max-width:860px;margin:8px auto 0;display:flex;align-items:center;justify-content:space-between}
+.input-hint{font-size:11px;color:var(--muted-2)}
+.input-hint kbd{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-size:10px}
+.limit-warning{font-size:11px;color:#FFB547}
+
+/* Responsive mobile toggle */
+.sidebar-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--muted);padding:4px}
+@media(max-width:700px){
+  .sidebar{position:fixed;left:0;top:0;bottom:0;z-index:100;transform:translateX(-100%);transition:transform 0.25s}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99}
+  .sidebar-overlay.open{display:block}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <a href="/copilot/" class="sidebar-logo">
+        <div class="logo-mark">
+          <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1.5" stroke="#070B14" stroke-width="1.2"/><rect x="8" y="1" width="5" height="5" rx="1.5" stroke="#070B14" stroke-width="1.2"/><rect x="1" y="8" width="5" height="5" rx="1.5" stroke="#070B14" stroke-width="1.2"/><path d="M10.5 8v5M8 10.5h5" stroke="#070B14" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="logo-text">Cloud<span>Hero</span> AI</span>
+      </a>
+      <button class="new-chat-btn" id="new-chat-btn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="#070B14" stroke-width="2" stroke-linecap="round"/></svg>
+        New conversation
+      </button>
+    </div>
+
+    <div class="convs-label">Recent chats</div>
+    <div class="convs-list" id="convs-list">
+      <div class="convs-empty">No conversations yet.<br>Start one above.</div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="usage-bar-wrap" id="usage-wrap" style="display:none">
+        <div class="usage-label">
+          <span>Daily messages</span>
+          <span id="usage-count">0 / 20</span>
+        </div>
+        <div class="usage-bar-bg"><div class="usage-bar-fill" id="usage-fill" style="width:0%"></div></div>
+      </div>
+      <a href="/pricing/" class="upgrade-btn" id="upgrade-btn" style="display:none">⚡ Upgrade to Pro — unlimited</a>
+      <div class="sidebar-user" id="sidebar-user">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <span class="user-email" id="user-email">Loading…</span>
+        <button class="sign-out-btn" title="Sign out" onclick="signOut()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2h3a1 1 0 011 1v8a1 1 0 01-1 1H9M5 10l4-4-4-4M9 7H1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Main -->
+  <main class="main">
+    <header class="chat-header">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="sidebar-toggle" onclick="toggleSidebar()">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 4h14M2 9h14M2 14h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <span class="chat-title" id="chat-title">Hero Copilot</span>
+      </div>
+      <span class="model-badge">claude-sonnet-4-5</span>
+    </header>
+
+    <div class="messages" id="messages">
+      <!-- Welcome screen shown when no active conversation -->
+      <div class="welcome" id="welcome-screen">
+        <div class="welcome-icon">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M4 8h22M4 15h14M4 22h9" stroke="#00D9FF" stroke-width="1.8" stroke-linecap="round"/><circle cx="23" cy="21" r="6" stroke="#00D9FF" stroke-width="1.8"/><path d="M23 18.5v2.5l1.5 1.5" stroke="#00D9FF" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <h1>Your AI partner for<br><em>infrastructure work</em></h1>
+        <p>Write Terraform in seconds. Debug failing deploys. Get instant answers about your cloud architecture — without leaving your workflow.</p>
+        <div class="suggestions">
+          <div class="suggestion" onclick="useSuggestion(this)">
+            <strong>Write Terraform</strong>
+            AWS ECS cluster with auto-scaling, 2 AZs, and an ALB
+          </div>
+          <div class="suggestion" onclick="useSuggestion(this)">
+            <strong>Debug a deploy</strong>
+            My Kubernetes pod keeps OOMKilling — how do I diagnose it?
+          </div>
+          <div class="suggestion" onclick="useSuggestion(this)">
+            <strong>Review IAM policy</strong>
+            Audit my AWS IAM policy for least-privilege violations
+          </div>
+          <div class="suggestion" onclick="useSuggestion(this)">
+            <strong>GitHub Actions CI</strong>
+            Write a CI pipeline that builds, tests, and deploys to ECS
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="input-wrap">
+        <textarea id="msg-input" rows="1" placeholder="Ask anything about your infrastructure…" maxlength="8000"></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()" disabled>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14L14 8 2 2v5l8 1-8 1v5z" fill="#070B14"/></svg>
+        </button>
+      </div>
+      <div class="input-footer">
+        <span class="input-hint"><kbd>Enter</kbd> to send &nbsp;·&nbsp; <kbd>Shift+Enter</kbd> for new line</span>
+        <span class="limit-warning" id="limit-warning" style="display:none"></span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const API = '';  // same origin via Nginx
+const TOKEN_KEY = 'ch_token';
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+const token = () => localStorage.getItem(TOKEN_KEY);
+
+function parseJwt(t) {
+  try { return JSON.parse(atob(t.split('.')[1])); } catch { return null; }
+}
+
+function signOut() {
+  localStorage.removeItem(TOKEN_KEY);
+  window.location.href = '/savings/app/login.html';
+}
+
+// Redirect if not logged in
+if (!token()) {
+  window.location.href = '/savings/app/login.html?redirect=/copilot/app/';
+}
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let activeConvId = null;
+let isLoading = false;
+let conversations = [];
+let usageData = { messages_today: 0, daily_limit: 20, remaining: 20, plan: 'free' };
+
+// ── Marked config ─────────────────────────────────────────────────────────────
+marked.setOptions({ breaks: true, gfm: true });
+
+const renderer = new marked.Renderer();
+renderer.code = function(code, lang) {
+  const language = lang || 'plaintext';
+  let highlighted;
+  try {
+    highlighted = hljs.highlight(code, { language, ignoreIllegals: true }).value;
+  } catch {
+    highlighted = hljs.highlightAuto(code).value;
+  }
+  return `<pre><div class="code-header"><span class="code-lang">${language}</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><code class="hljs language-${language}">${highlighted}</code></pre>`;
+};
+marked.use({ renderer });
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function init() {
+  // Set user info
+  const decoded = parseJwt(token());
+  if (decoded) {
+    const email = decoded.email || '';
+    document.getElementById('user-email').textContent = email;
+    document.getElementById('user-avatar').textContent = email[0]?.toUpperCase() || '?';
+  }
+
+  await Promise.all([loadConversations(), loadUsage()]);
+}
+
+// ── Usage ─────────────────────────────────────────────────────────────────────
+async function loadUsage() {
+  try {
+    const res = await fetch(`${API}/api/copilot/usage`, {
+      headers: { Authorization: `Bearer ${token()}` }
+    });
+    if (!res.ok) return;
+    usageData = await res.json();
+    renderUsage();
+  } catch {}
+}
+
+function renderUsage() {
+  const wrap = document.getElementById('usage-wrap');
+  const fill = document.getElementById('usage-fill');
+  const count = document.getElementById('usage-count');
+  const upgradeBtn = document.getElementById('upgrade-btn');
+  const warning = document.getElementById('limit-warning');
+
+  if (usageData.plan === 'free' && usageData.daily_limit) {
+    wrap.style.display = 'block';
+    upgradeBtn.style.display = 'block';
+    const used = usageData.messages_today || 0;
+    const limit = usageData.daily_limit;
+    const pct = Math.min(100, (used / limit) * 100);
+    fill.style.width = pct + '%';
+    fill.style.background = pct >= 90 ? '#FFB547' : 'var(--cyan)';
+    count.textContent = `${used} / ${limit}`;
+
+    if (usageData.remaining <= 3 && usageData.remaining > 0) {
+      warning.textContent = `${usageData.remaining} messages left today`;
+      warning.style.display = 'inline';
+    } else if (usageData.remaining === 0) {
+      warning.textContent = 'Daily limit reached — upgrade for unlimited';
+      warning.style.display = 'inline';
+    } else {
+      warning.style.display = 'none';
+    }
+  }
+}
+
+// ── Conversations ─────────────────────────────────────────────────────────────
+async function loadConversations() {
+  try {
+    const res = await fetch(`${API}/api/copilot/conversations`, {
+      headers: { Authorization: `Bearer ${token()}` }
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    conversations = data.conversations || [];
+    renderConvList();
+  } catch {}
+}
+
+function renderConvList() {
+  const list = document.getElementById('convs-list');
+  if (!conversations.length) {
+    list.innerHTML = '<div class="convs-empty">No conversations yet.<br>Start one above.</div>';
+    return;
+  }
+  list.innerHTML = conversations.map(c => `
+    <div class="conv-item ${c.id === activeConvId ? 'active' : ''}" onclick="loadConversation(${c.id})">
+      <span class="conv-title">${escHtml(c.title || 'Untitled')}</span>
+      <button class="conv-delete" title="Delete" onclick="deleteConversation(event, ${c.id})">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  `).join('');
+}
+
+async function loadConversation(convId) {
+  if (convId === activeConvId) return closeSidebarMobile();
+  activeConvId = convId;
+  renderConvList();
+
+  try {
+    const res = await fetch(`${API}/api/copilot/conversations/${convId}`, {
+      headers: { Authorization: `Bearer ${token()}` }
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+
+    document.getElementById('chat-title').textContent = data.conversation.title || 'Conversation';
+    document.getElementById('welcome-screen').style.display = 'none';
+
+    const container = document.getElementById('messages');
+    // Clear existing messages (keep welcome screen hidden)
+    [...container.querySelectorAll('.msg-row')].forEach(el => el.remove());
+
+    data.messages.forEach(m => appendMessage(m.role, m.content, false));
+    scrollToBottom();
+  } catch {}
+
+  closeSidebarMobile();
+}
+
+async function deleteConversation(e, convId) {
+  e.stopPropagation();
+  if (!confirm('Delete this conversation?')) return;
+  try {
+    await fetch(`${API}/api/copilot/conversations/${convId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token()}` }
+    });
+    conversations = conversations.filter(c => c.id !== convId);
+    if (activeConvId === convId) {
+      activeConvId = null;
+      startNewChat();
+    }
+    renderConvList();
+  } catch {}
+}
+
+function startNewChat() {
+  activeConvId = null;
+  document.getElementById('chat-title').textContent = 'Hero Copilot';
+  document.getElementById('welcome-screen').style.display = '';
+  const container = document.getElementById('messages');
+  [...container.querySelectorAll('.msg-row')].forEach(el => el.remove());
+  renderConvList();
+  closeSidebarMobile();
+  document.getElementById('msg-input').focus();
+}
+
+// ── Send Message ──────────────────────────────────────────────────────────────
+async function sendMessage() {
+  const input = document.getElementById('msg-input');
+  const text = input.value.trim();
+  if (!text || isLoading) return;
+
+  if (usageData.plan === 'free' && usageData.remaining === 0) {
+    alert('Daily message limit reached. Upgrade to Pro for unlimited access.');
+    return;
+  }
+
+  isLoading = true;
+  input.value = '';
+  autoResize(input);
+  setSendEnabled(false);
+
+  // Hide welcome screen
+  document.getElementById('welcome-screen').style.display = 'none';
+
+  // Append user message
+  appendMessage('user', text, true);
+
+  // Show typing indicator
+  const typingId = showTyping();
+
+  try {
+    const res = await fetch(`${API}/api/copilot/chat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token()}`
+      },
+      body: JSON.stringify({
+        message: text,
+        conversation_id: activeConvId
+      })
+    });
+
+    removeTyping(typingId);
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      if (res.status === 429) {
+        appendMessage('assistant', `⚠️ **${err.error || 'Limit reached'}**\n\n${err.message || 'Please upgrade to continue.'}\n\n[Upgrade to Pro →](/pricing/)`, true);
+      } else if (res.status === 401) {
+        signOut();
+      } else {
+        appendMessage('assistant', `⚠️ **Something went wrong.** ${err.message || 'Please try again.'}`, true);
+      }
+      isLoading = false;
+      setSendEnabled(true);
+      return;
+    }
+
+    const data = await res.json();
+
+    // Set active conversation
+    if (!activeConvId) {
+      activeConvId = data.conversation_id;
+      document.getElementById('chat-title').textContent = text.slice(0, 60) + (text.length > 60 ? '…' : '');
+      // Add to top of conversations list
+      conversations.unshift({ id: activeConvId, title: text.slice(0, 80) });
+    }
+
+    appendMessage('assistant', data.response, true);
+    renderConvList();
+
+    // Update usage
+    if (data.remaining_messages !== null && data.remaining_messages !== undefined) {
+      usageData.messages_today = (usageData.daily_limit || 20) - data.remaining_messages;
+      usageData.remaining = data.remaining_messages;
+      renderUsage();
+    }
+
+  } catch (err) {
+    removeTyping(typingId);
+    appendMessage('assistant', `⚠️ **Network error.** Please check your connection and try again.`, true);
+  }
+
+  isLoading = false;
+  setSendEnabled(document.getElementById('msg-input').value.trim().length > 0);
+}
+
+// ── DOM Helpers ───────────────────────────────────────────────────────────────
+function appendMessage(role, content, scroll) {
+  const container = document.getElementById('messages');
+  const row = document.createElement('div');
+  row.className = `msg-row ${role}`;
+
+  const avatarInitial = role === 'assistant' ? 'H' : (parseJwt(token())?.email?.[0]?.toUpperCase() || 'U');
+
+  let bubbleContent;
+  if (role === 'assistant') {
+    bubbleContent = marked.parse(content);
+  } else {
+    bubbleContent = `<p style="margin:0">${escHtml(content).replace(/\n/g, '<br>')}</p>`;
+  }
+
+  row.innerHTML = `
+    <div class="msg-avatar">${avatarInitial}</div>
+    <div class="msg-content"><div class="msg-bubble">${bubbleContent}</div></div>
+  `;
+
+  container.appendChild(row);
+  if (scroll) scrollToBottom();
+}
+
+function showTyping() {
+  const container = document.getElementById('messages');
+  const id = 'typing-' + Date.now();
+  const row = document.createElement('div');
+  row.className = 'msg-row assistant';
+  row.id = id;
+  row.innerHTML = `
+    <div class="msg-avatar">H</div>
+    <div class="msg-content"><div class="msg-bubble">
+      <div class="typing-indicator">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    </div></div>
+  `;
+  container.appendChild(row);
+  scrollToBottom();
+  return id;
+}
+
+function removeTyping(id) {
+  document.getElementById(id)?.remove();
+}
+
+function scrollToBottom() {
+  const el = document.getElementById('messages');
+  el.scrollTop = el.scrollHeight;
+}
+
+function setSendEnabled(enabled) {
+  document.getElementById('send-btn').disabled = !enabled;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function copyCode(btn) {
+  const code = btn.closest('pre').querySelector('code');
+  navigator.clipboard.writeText(code.innerText).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function useSuggestion(el) {
+  const text = el.querySelector('strong').textContent + ' — ' + el.childNodes[2]?.textContent?.trim();
+  document.getElementById('msg-input').value = text;
+  autoResize(document.getElementById('msg-input'));
+  setSendEnabled(true);
+  document.getElementById('msg-input').focus();
+  sendMessage();
+}
+
+// ── Input ─────────────────────────────────────────────────────────────────────
+const msgInput = document.getElementById('msg-input');
+msgInput.addEventListener('input', function() {
+  autoResize(this);
+  setSendEnabled(this.value.trim().length > 0);
+});
+msgInput.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    if (!document.getElementById('send-btn').disabled) sendMessage();
+  }
+});
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 180) + 'px';
+}
+
+// ── Mobile Sidebar ────────────────────────────────────────────────────────────
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+function closeSidebarMobile() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
+// ── Boot ──────────────────────────────────────────────────────────────────────
+document.getElementById('new-chat-btn').addEventListener('click', startNewChat);
+init();
+</script>
+</body>
+</html>

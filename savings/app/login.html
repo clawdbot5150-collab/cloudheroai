@@ -349,10 +349,15 @@
 
     const API = '';
     const token = () => localStorage.getItem('ch_token');
+    const redirectAfterLogin = new URLSearchParams(window.location.search).get('redirect') || null;
 
     // If already logged in, redirect
     if (token()) {
-      window.location.href = '/savings/app/dashboard.html';
+      window.location.href = redirectAfterLogin || '/savings/app/dashboard.html';
+    }
+
+    function postLoginRedirect() {
+      window.location.href = redirectAfterLogin || '/savings/app/dashboard.html';
     }
 
     function switchTab(tab) {
@@ -409,7 +414,10 @@
         }
         localStorage.setItem('ch_token', data.token);
 
-        // Check if user has AWS connections
+        // If redirect param set, honour it (e.g. coming from Copilot)
+        if (redirectAfterLogin) { postLoginRedirect(); return; }
+
+        // Otherwise check if user has AWS connections to decide where to send them
         try {
           const connRes = await fetch(API + '/api/connect/aws', {
             headers: { 'Authorization': `Bearer ${data.token}` }
@@ -457,7 +465,7 @@
           return;
         }
         localStorage.setItem('ch_token', data.token);
-        window.location.href = '/savings/app/connect.html';
+        postLoginRedirect();
       } catch (err) {
         showError('register-error', 'Network error. Please try again.');
         setLoading('register', false);
