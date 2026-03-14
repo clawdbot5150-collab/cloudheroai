@@ -219,6 +219,8 @@
       accent-color: var(--green);
       cursor: pointer;
     }
+    .row-fixed td { opacity: 0.45; text-decoration: line-through; }
+    .row-fixed td:last-child { opacity: 1; text-decoration: none; }
 
     /* Sticky action bar */
     .action-bar {
@@ -419,10 +421,11 @@
 
   <!-- Confirm Modal -->
   <div class="modal-backdrop" id="modal-backdrop">
-    <div class="modal">
-      <h3>Apply fixes?</h3>
+    <div class="modal" style="max-width:520px;">
+      <h3 id="modal-title">Apply fixes?</h3>
       <p id="modal-body">This will mark selected resources for remediation. Apply?</p>
-      <div class="modal-actions">
+      <div id="modal-results" style="display:none;max-height:220px;overflow-y:auto;margin-bottom:16px;font-size:13px;"></div>
+      <div class="modal-actions" id="modal-actions">
         <button class="btn-cancel" onclick="closeModal()">Cancel</button>
         <button class="btn-confirm" id="confirm-btn" onclick="applyFixes()">Confirm</button>
       </div>
@@ -501,6 +504,7 @@
     // Track selected findings
     let allFindings = [];
     let selectedIds = new Set();
+    let pendingFindingIds = []; // IDs queued for the current modal action
 
     function toggleFinding(id, cost) {
       if (selectedIds.has(id)) {
@@ -518,69 +522,170 @@
         return;
       }
       actionBar.classList.add('visible');
-
-      // Calculate total savings for selected
       let totalSavings = 0;
       selectedIds.forEach(id => {
         const finding = allFindings.find(f => f.id === id);
-        if (finding) totalSavings += Number(finding.monthly_cost || finding.monthlyCost || 0);
+        if (finding) totalSavings += Number(finding.monthly_cost || 0);
       });
-
       document.getElementById('selection-label').textContent = `${selectedIds.size} finding${selectedIds.size !== 1 ? 's' : ''} selected`;
       document.getElementById('selection-savings').textContent = fmt(totalSavings);
     }
 
+    // Standard "Apply selected" button → confirm and apply only checked items
     function confirmApply() {
-      const count = selectedIds.size;
+      pendingFindingIds = [...selectedIds];
+      const count = pendingFindingIds.length;
       const totalSavings = allFindings
-        .filter(f => selectedIds.has(f.id))
-        .reduce((sum, f) => sum + Number(f.monthly_cost || f.monthlyCost || 0), 0);
-
+        .filter(f => pendingFindingIds.includes(f.id))
+        .reduce((sum, f) => sum + Number(f.monthly_cost || 0), 0);
+      document.getElementById('modal-title').textContent = 'Apply selected fixes?';
       document.getElementById('modal-body').textContent =
-        `This will mark ${count} resource${count !== 1 ? 's' : ''} for remediation (${fmt(totalSavings)}/month savings). Apply?`;
+        `This will apply ${count} fix${count !== 1 ? 'es' : ''} directly in your cloud account (${fmt(totalSavings)}/mo savings). This cannot be undone.`;
+      document.getElementById('modal-results').style.display = 'none';
+      document.getElementById('modal-actions').style.display = 'flex';
+      document.getElementById('confirm-btn').textContent = 'Confirm';
       document.getElementById('modal-backdrop').classList.add('open');
+    }
+
+    // Auto-fix all fixable findings — select them all then confirm
+    function autoFixAll() {
+      const fixable = allFindings.filter(f => f.fix_available && !f.fix_applied && f.id);
+      if (!fixable.length) { alert('No auto-fixable findings remaining.'); return; }
+      pendingFindingIds = fixable.map(f => f.id);
+      const totalSavings = fixable.reduce((s, f) => s + f.monthly_cost, 0);
+      document.getElementById('modal-title').textContent = `⚡ Auto-Fix ${fixable.length} finding${fixable.length !== 1 ? 's' : ''}?`;
+      document.getElementById('modal-body').innerHTML =
+        `This will automatically remediate <strong style="color:#06b6d4;">${fixable.length} issue${fixable.length !== 1 ? 's' : ''}</strong> in your cloud account, recovering <strong style="color:#10b981;">${fmt(totalSavings)}/month</strong>.<br><br>
+        <span style="font-size:12px;color:#9ca3af;">Actions: stop idle EC2s · delete unattached EBS volumes · release unused Elastic IPs · delete old snapshots.</span>`;
+      document.getElementById('modal-results').style.display = 'none';
+      document.getElementById('modal-actions').style.display = 'flex';
+      document.getElementById('confirm-btn').textContent = '⚡ Apply All Fixes';
+      document.getElementById('modal-backdrop').classList.add('open');
+    }
+
+    // Preview (dry run) — shows what would happen without applying
+    async function previewAutoFix() {
+      const fixable = allFindings.filter(f => f.fix_available && !f.fix_applied && f.id);
+      if (!fixable.length) { alert('No auto-fixable findings remaining.'); return; }
+      document.getElementById('modal-title').textContent = '🔍 Dry-Run Preview';
+      document.getElementById('modal-body').textContent = 'Running preview…';
+      document.getElementById('modal-results').style.display = 'none';
+      document.getElementById('modal-actions').innerHTML =
+        `<button class="btn-cancel" onclick="closeModal()">Close</button>`;
+      document.getElementById('modal-backdrop').classList.add('open');
+      try {
+        const res = await apiFetch('/api/fix/apply', {
+          method: 'POST',
+          body: JSON.stringify({ finding_ids: fixable.map(f => f.id), dry_run: true })
+        });
+        const data = await res.json();
+        document.getElementById('modal-body').textContent =
+          `${data.would_fix} finding${data.would_fix !== 1 ? 's' : ''} would be fixed — ${fmt(data.total_monthly_savings)}/month recovered:`;
+        const rows = (data.findings || []).map(f =>
+          `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1f2937;">
+            <span style="color:#e5e7eb;font-size:12px;">${f.category.replace(/_/g,' ')} · <span style="font-family:monospace;color:#9ca3af;">${f.resource_id}</span></span>
+            <span style="color:#10b981;font-weight:600;font-size:12px;">${fmt(f.monthly_savings)}/mo</span>
+          </div>`
+        ).join('');
+        document.getElementById('modal-results').innerHTML = rows;
+        document.getElementById('modal-results').style.display = 'block';
+        // Add apply button
+        document.getElementById('modal-actions').innerHTML =
+          `<button class="btn-cancel" onclick="closeModal()">Cancel</button>
+           <button class="btn-confirm" onclick="closeModal();autoFixAll()">⚡ Apply All Fixes</button>`;
+      } catch (e) {
+        document.getElementById('modal-body').textContent = 'Preview failed. Please try again.';
+      }
     }
 
     function closeModal() {
       document.getElementById('modal-backdrop').classList.remove('open');
+      document.getElementById('modal-actions').innerHTML =
+        `<button class="btn-cancel" onclick="closeModal()">Cancel</button>
+         <button class="btn-confirm" id="confirm-btn" onclick="applyFixes()">Confirm</button>`;
     }
 
     async function applyFixes() {
       const confirmBtn = document.getElementById('confirm-btn');
-      confirmBtn.disabled = true;
-      confirmBtn.textContent = 'Applying...';
+      if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.textContent = 'Applying…'; }
+
+      const idsToFix = pendingFindingIds.length ? pendingFindingIds : [...selectedIds];
+      if (!idsToFix.length) { closeModal(); return; }
 
       try {
         const res = await apiFetch('/api/fix/apply', {
           method: 'POST',
-          body: JSON.stringify({ finding_ids: [...selectedIds] })
+          body: JSON.stringify({ finding_ids: idsToFix })
         });
-        closeModal();
 
         if (res && res.ok) {
-          const count = selectedIds.size;
-          const banner = document.getElementById('success-banner');
-          banner.textContent = `✓ ${count} fix${count !== 1 ? 'es' : ''} applied! We're processing the changes.`;
-          banner.style.display = 'block';
-          banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          selectedIds.clear();
+          const data = await res.json();
+          const applied = data.applied || 0;
+          const failed = data.failed || 0;
+          const savedMo = data.total_savings_monthly || 0;
+
+          // Build per-finding result rows in the modal
+          const resultRows = (data.results || []).map(r => {
+            const icon = r.success ? '✓' : '✗';
+            const color = r.success ? '#10b981' : '#f87171';
+            return `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1f2937;gap:8px;">
+              <span style="font-size:12px;">${icon} <span style="color:#9ca3af;font-family:monospace;">${r.resource_id || r.id}</span></span>
+              <span style="font-size:12px;color:${color};flex-shrink:0;">${r.success ? (fmt(r.monthly_savings) + '/mo') : (r.reason || 'skipped')}</span>
+            </div>`;
+          }).join('');
+
+          document.getElementById('modal-title').textContent = `${applied > 0 ? '✓' : '⚠️'} Fix Results`;
+          document.getElementById('modal-body').innerHTML =
+            `<strong style="color:#10b981;">${applied} applied</strong>, ${failed} skipped — <strong style="color:#10b981;">${fmt(savedMo)}/mo</strong> recovered.`;
+          document.getElementById('modal-results').innerHTML = resultRows;
+          document.getElementById('modal-results').style.display = 'block';
+          document.getElementById('modal-actions').innerHTML =
+            `<button class="btn-confirm" onclick="closeModal()">Done</button>`;
+
+          // Visually mark fixed rows
+          (data.results || []).filter(r => r.success).forEach(r => {
+            const row = document.getElementById(`row-${r.id}`);
+            if (row) {
+              row.classList.add('row-fixed');
+              const lastCell = row.querySelector('td:last-child');
+              if (lastCell) lastCell.innerHTML = `<span style="color:var(--green);font-size:12px;font-weight:600;">✓ Fixed</span>`;
+            }
+          });
+
+          // Update allFindings fixed state
+          (data.results || []).filter(r => r.success).forEach(r => {
+            const f = allFindings.find(x => x.id === r.id);
+            if (f) f.fix_applied = 1;
+          });
+
+          // Clear selection
+          idsToFix.forEach(id => selectedIds.delete(id));
+          pendingFindingIds = [];
           updateActionBar();
-          // Uncheck all checkboxes
-          document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+          // Hide auto-fix panel if nothing left to fix
+          const remainingFixable = allFindings.filter(f => f.fix_available && !f.fix_applied && f.id);
+          if (!remainingFixable.length) {
+            const panel = document.getElementById('autofix-panel');
+            if (panel) panel.style.display = 'none';
+          }
+
+          // Show top-level success banner
+          const banner = document.getElementById('success-banner');
+          if (banner) {
+            banner.textContent = `⚡ ${applied} fix${applied !== 1 ? 'es' : ''} applied — ${fmt(savedMo)}/month recovered!`;
+            banner.style.display = 'block';
+            banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
         } else {
-          const data = res ? await res.json().catch(() => ({})) : {};
-          const errBanner = document.getElementById('error-banner');
-          errBanner.textContent = data.message || 'Failed to apply fixes. Please try again.';
-          errBanner.style.display = 'block';
+          const errData = res ? await res.json().catch(() => ({})) : {};
+          document.getElementById('modal-body').textContent = errData.error || errData.message || 'Failed to apply fixes. Please try again.';
+          if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.textContent = 'Retry'; }
         }
       } catch (e) {
-        closeModal();
-        const errBanner = document.getElementById('error-banner');
-        errBanner.textContent = 'Network error. Please try again.';
-        errBanner.style.display = 'block';
+        document.getElementById('modal-body').textContent = 'Network error. Please try again.';
+        if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.textContent = 'Retry'; }
       }
-      confirmBtn.disabled = false;
-      confirmBtn.textContent = 'Confirm';
     }
 
     function toggleSection(id) {
@@ -605,58 +710,111 @@
         return;
       }
 
-      const date = data.created_at || data.date || data.completedAt;
+      // Handle both API shapes:
+      // /report endpoint → { audit, summary, findings_by_category, ai_summary }
+      // /api/audit/:id   → flat audit row with findings[]
+      const auditRow = data.audit || data;
+      const date = auditRow.started_at || auditRow.created_at || auditRow.date || auditRow.completedAt;
       const dateStr = date ? new Date(date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : 'Unknown date';
-      const account = data.account_id || data.accountId || '—';
-      const regionCount = data.regions_scanned || data.regionCount || data.regions?.length || '—';
-      const resourcesScanned = data.resources_scanned ?? data.resourcesScanned ?? '—';
-      const findings = data.findings || [];
-      const totalFindings = data.total_findings ?? data.totalFindings ?? findings.length;
-      const monthlySavings = data.total_monthly_savings ?? data.totalMonthlySavings ?? data.monthly_waste ?? null;
+      const account = auditRow.account_id || auditRow.accountId || '—';
+      const regionCount = auditRow.regions_scanned || auditRow.regionCount || auditRow.regions?.length || '—';
+      const resourcesScanned = auditRow.resources_scanned ?? auditRow.resourcesScanned ?? '—';
+      const monthlySavings = (data.summary && data.summary.total_monthly) ?? auditRow.total_waste_monthly ?? auditRow.total_monthly_savings ?? auditRow.monthly_waste ?? null;
 
-      // Collect all individual findings across categories
-      allFindings = [];
-      if (Array.isArray(findings)) {
-        findings.forEach(category => {
-          const items = category.items || category.findings || [];
-          items.forEach(item => {
-            allFindings.push({
-              id: item.id || `${category.category}-${item.resource_id || Math.random()}`,
-              monthly_cost: item.monthly_cost || item.monthlyCost || 0,
-              severity: item.severity || 'low',
-              ...item
-            });
+      // Convert findings_by_category (object) OR findings[] (array) → normalised category array
+      let findingCats = [];
+      if (data.findings_by_category && typeof data.findings_by_category === 'object') {
+        findingCats = Object.entries(data.findings_by_category)
+          .filter(([, items]) => Array.isArray(items) && items.length > 0)
+          .map(([catKey, items]) => ({ category: catKey, items }));
+      } else {
+        const flat = data.findings || [];
+        if (Array.isArray(flat) && flat.length > 0) {
+          // flat array of finding objects — group by category
+          const bycat = {};
+          flat.forEach(f => {
+            const k = f.category || 'other';
+            if (!bycat[k]) bycat[k] = [];
+            bycat[k].push(f);
           });
-        });
+          findingCats = Object.entries(bycat).map(([k, v]) => ({ category: k, items: v }));
+        }
       }
 
-      // Pre-select all high-severity findings
+      const totalFindings = findingCats.reduce((s, c) => s + c.items.length, 0);
+
+      // Auto-fixable categories (backed by AWS SDK actions in fix.js)
+      const AUTO_FIXABLE = new Set(['ec2_idle','ebs_unattached','snapshot_old','elastic_ip_unused']);
+
+      // Collect all individual findings
+      allFindings = [];
+      findingCats.forEach(cat => {
+        cat.items.forEach(item => {
+          allFindings.push({
+            ...item,
+            id: item.id,
+            category: item.category || cat.category,
+            monthly_cost: Number(item.monthly_cost || item.monthlyCost || 0),
+            severity: item.severity || 'low',
+            fix_available: item.fix_available !== undefined ? item.fix_available : (AUTO_FIXABLE.has(item.category || cat.category) ? 1 : 0),
+          });
+        });
+      });
+
+      // Pre-select all high-severity, auto-fixable findings
       allFindings.forEach(f => {
-        if ((f.severity || '').toLowerCase() === 'high') {
+        if ((f.severity || '').toLowerCase() === 'high' && f.fix_available && !f.fix_applied) {
           selectedIds.add(f.id);
         }
       });
 
-      const findingsSections = Array.isArray(findings) ? findings.map((cat, idx) => {
-        const catName = cat.category || cat.name || `Category ${idx + 1}`;
+      const fixableFindings = allFindings.filter(f => f.fix_available && !f.fix_applied && f.id);
+      const fixableSavings = fixableFindings.reduce((s, f) => s + f.monthly_cost, 0);
+
+      const findingsSections = findingCats.map((cat, idx) => {
+        const catName = cat.category || `Category ${idx + 1}`;
         const icon = getCategoryIcon(catName);
-        const items = cat.items || cat.findings || [];
-        const catWaste = cat.monthly_waste || cat.monthlyWaste ||
-          items.reduce((sum, i) => sum + Number(i.monthly_cost || i.monthlyCost || 0), 0);
+        const items = cat.items;
+        const catWaste = items.reduce((sum, i) => sum + Number(i.monthly_cost || i.monthlyCost || 0), 0);
         const sectionId = `cat-${idx}`;
 
+        const CATEGORY_LABELS = {
+          ec2_idle: 'Idle EC2 Instances',
+          ebs_unattached: 'Unattached EBS Volumes',
+          snapshot_old: 'Old Snapshots',
+          elastic_ip_unused: 'Unused Elastic IPs',
+          rds_oversized: 'Oversized RDS Instances',
+          s3_inactive: 'Inactive S3 Buckets',
+          reserved_instance_opportunity: 'Reserved Instance Opportunities',
+          savings_plan_opportunity: 'Savings Plan Opportunities',
+          ec2_rightsizing: 'EC2 Rightsizing',
+          lambda_rightsizing: 'Lambda Rightsizing',
+          tag_coverage: 'Tag Coverage Issues',
+          cost_anomaly: 'Cost Anomalies',
+        };
+        const friendlyCatName = CATEGORY_LABELS[catName] || catName.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+
         const rows = items.map(item => {
-          const fId = item.id || `${catName}-${item.resource_id || Math.random()}`;
+          const fId = item.id;
+          if (!fId) return ''; // skip items without DB id — can't be fixed
           const isHigh = (item.severity || '').toLowerCase() === 'high';
+          const isFixable = item.fix_available !== undefined ? item.fix_available : AUTO_FIXABLE.has(item.category || cat.category);
+          const isAlreadyFixed = item.fix_applied;
+          const fixCell = isAlreadyFixed
+            ? `<span style="color:var(--green);font-size:12px;font-weight:600;">✓ Fixed</span>`
+            : isFixable
+              ? `<input type="checkbox" id="cb-${fId}" data-id="${fId}" data-cost="${item.monthly_cost || 0}"
+                  ${isHigh && !isAlreadyFixed ? 'checked' : ''} onchange="toggleFinding(${fId}, ${item.monthly_cost || 0})"
+                  title="Auto-fixable">`
+              : `<span style="color:var(--muted);font-size:11px;" title="Requires manual action in cloud console">Manual</span>`;
           return `
-            <tr>
-              <td class="mono">${item.resource_id || item.resourceId || '—'}</td>
-              <td>${item.name || item.resource_name || '—'}</td>
-              <td class="mono">${item.region || '—'}</td>
-              <td class="mono" style="color:var(--amber)">${fmt(item.monthly_cost || item.monthlyCost)}</td>
+            <tr id="row-${fId}" class="${isAlreadyFixed ? 'row-fixed' : ''}">
+              <td class="mono" style="font-size:12px;">${item.resource_id || '—'}</td>
+              <td style="font-size:13px;">${item.resource_name || item.name || '—'}</td>
+              <td class="mono" style="font-size:12px;">${item.region || '—'}</td>
+              <td class="mono" style="color:var(--amber);font-size:13px;">${fmt(item.monthly_cost)}</td>
               <td>${sevBadge(item.severity)}</td>
-              <td><input type="checkbox" data-id="${fId}" data-cost="${item.monthly_cost || item.monthlyCost || 0}"
-                ${isHigh ? 'checked' : ''} onchange="toggleFinding('${fId}', ${item.monthly_cost || 0})"></td>
+              <td style="text-align:center;">${fixCell}</td>
             </tr>
           `;
         }).join('');
@@ -665,7 +823,7 @@
           <div class="findings-section">
             <div class="findings-header open" id="header-${sectionId}" onclick="toggleSection('${sectionId}')">
               <span class="category-icon">${icon}</span>
-              <span class="category-name">${catName}</span>
+              <span class="category-name">${friendlyCatName}</span>
               <span class="category-count">${items.length}</span>
               <span class="category-waste">${fmt(catWaste)}/mo</span>
               <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
@@ -680,7 +838,7 @@
                       <th>Region</th>
                       <th>Monthly Cost</th>
                       <th>Severity</th>
-                      <th>Fix</th>
+                      <th style="text-align:center;">Auto-Fix</th>
                     </tr>
                   </thead>
                   <tbody>${rows || '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:20px;">No findings in this category</td></tr>'}</tbody>
@@ -689,7 +847,7 @@
             </div>
           </div>
         `;
-      }).join('') : '';
+      }).join('');
 
       container.innerHTML = `
         <div id="success-banner" class="success-banner"></div>
@@ -720,13 +878,33 @@
 
         <div class="ai-card">
           <div class="ai-label">🤖 AI Analysis</div>
-          <div class="ai-text" id="ai-summary-text">${data.ai_summary || '<div class="skeleton" style="width:90%;margin-bottom:8px;"></div><div class="skeleton" style="width:75%;"></div>'}</div>
+          <div class="ai-text" id="ai-summary-text">${data.ai_summary || auditRow.ai_summary || '<div class="skeleton" style="width:90%;margin-bottom:8px;"></div><div class="skeleton" style="width:75%;"></div>'}</div>
         </div>
 
-        ${findings.length === 0 ? `
+        ${fixableFindings.length > 0 ? `
+          <div id="autofix-panel" style="background:linear-gradient(135deg,#0d2240 0%,#0a1628 100%);border:2px solid var(--cyan);border-radius:16px;padding:24px 28px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="font-size:20px;">⚡</span>
+                <span style="font-size:16px;font-weight:600;color:var(--white);">Auto-Fix Available</span>
+              </div>
+              <div style="font-size:14px;color:var(--muted);">
+                <strong style="color:var(--cyan);">${fixableFindings.length} finding${fixableFindings.length !== 1 ? 's' : ''}</strong> can be fixed automatically
+                &nbsp;·&nbsp; <strong style="color:var(--green);">${fmt(fixableSavings)}/month</strong> recoverable
+              </div>
+              <div style="font-size:12px;color:#6b7280;margin-top:4px;">Stops idle EC2s, deletes unattached volumes, releases unused IPs &amp; old snapshots.</div>
+            </div>
+            <div style="display:flex;gap:10px;flex-shrink:0;">
+              <button onclick="previewAutoFix()" style="background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(6,182,212,.1)'" onmouseout="this.style.background='transparent'">Preview →</button>
+              <button onclick="autoFixAll()" id="autofix-btn" style="background:var(--cyan);color:var(--navy);padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:background .2s;" onmouseover="this.style.background='#0891b2'" onmouseout="this.style.background='var(--cyan)'">⚡ Auto-Fix All</button>
+            </div>
+          </div>
+        ` : ''}
+
+        ${totalFindings === 0 ? `
           <div style="text-align:center;padding:48px;color:var(--muted);">
             <p style="font-size:16px;color:var(--white);margin-bottom:8px;">No findings to display</p>
-            <p>Great news — no significant waste was detected in your AWS account.</p>
+            <p>Great news — no significant waste was detected in your cloud account.</p>
           </div>
         ` : findingsSections}
         <div id="billing-activation-panel"></div>
@@ -768,7 +946,7 @@
             </div>
           </div>
 
-          <p style="color:#6b7280;font-size:13px;margin-bottom:20px;">We don't make money until you do. 30-day free trial. Cancel anytime.</p>
+          <p style="color:#6b7280;font-size:13px;margin-bottom:20px;">We don't make money until you do. No upfront cost. Cancel anytime.</p>
           <button onclick="activateBilling(${savings})" style="background:#10b981;color:#fff;border:none;padding:14px 36px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s;" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">
             Activate — Keep $${net.toLocaleString('en-US',{maximumFractionDigits:0})}/mo →
           </button>
