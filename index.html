@@ -7,7 +7,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>Cloud Hero AI — The Platform for Cloud Teams</title>
-<meta name="description" content="Four AI tools for cloud teams. Build automations, slash cloud waste, ship infrastructure faster, and stay ahead with the newsletter every cloud engineer reads.">
+<meta name="description" content="Five AI tools for cloud teams. Build automations, slash cloud waste, ship infrastructure faster, deploy AI bots, and stay ahead with the newsletter every cloud engineer reads.">
 <link rel="canonical" href="https://cloudheroai.com/">
 <meta property="og:title" content="Cloud Hero AI — The Platform for Cloud Teams">
 <meta property="og:description" content="Four AI tools for cloud teams. Build automations, slash cloud waste, ship infrastructure faster, and stay ahead with the newsletter every cloud engineer reads.">
@@ -103,6 +103,10 @@ section{position:relative;z-index:1}
 .product-card.savings .product-tag{background:rgba(0,229,160,0.12);color:var(--green)}
 .product-card.copilot .product-tag{background:rgba(0,217,255,0.12);color:var(--cyan)}
 .product-card.weekly .product-tag{background:rgba(255,181,71,0.12);color:var(--amber)}
+.product-card.bots .product-icon{background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.2)}
+.product-card.bots .product-tag{background:rgba(99,102,241,0.12);color:#818cf8}
+.product-card.bots::after{background:#6366f1}
+.product-card.bots .product-features li::before{background:#6366f1}
 .product-name{font-size:26px;font-weight:500;margin-bottom:12px;letter-spacing:-0.02em;line-height:1.2}
 .product-desc{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:28px;font-weight:300}
 .product-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
@@ -246,6 +250,7 @@ footer{border-top:1px solid var(--border);padding:48px 5vw;display:grid;grid-tem
 <li><a href="#products">Products</a></li>
 <li><a href="/pricing/">Pricing</a></li>
 <li><a href="/blog/">Blog</a></li>
+<li><a href="/bots/app/">Hero Bots</a></li>
 <li><a href="#newsletter">Newsletter</a></li>
 <li><a href="/savings/app/login.html" style="font-size:13px;color:var(--muted);text-decoration:none;margin-right:4px" class="nav-signin">Sign in</a>
   <a href="/savings/app/login.html" class="nav-cta">Get early access</a></li>
@@ -254,7 +259,7 @@ footer{border-top:1px solid var(--border);padding:48px 5vw;display:grid;grid-tem
 <section class="hero">
 <div class="hero-badge">Now in early access</div>
 <h1>The AI platform<br><em>built for cloud teams</em></h1>
-<p class="hero-sub">Four tools. One platform. Build AI automations, slash cloud waste, ship infrastructure faster, and stay ahead with the newsletter every cloud engineer reads.</p>
+<p class="hero-sub">Five tools. One platform. Build AI automations, slash cloud waste, ship infrastructure faster, deploy AI bots, and stay ahead with the newsletter every cloud engineer reads.</p>
 <div class="hero-actions">
 <a href="/savings/app/login.html" class="btn-primary">Run free savings audit →</a>
 <a href="#products" class="btn-secondary">Explore the platform</a>
@@ -278,7 +283,7 @@ footer{border-top:1px solid var(--border);padding:48px 5vw;display:grid;grid-tem
 <section class="products" id="products">
 <div class="products-header reveal">
 <span class="section-label">The Platform</span>
-<h2 class="section-title">Four tools.<br><em>One mission.</em></h2>
+<h2 class="section-title">Five tools.<br><em>One mission.</em></h2>
 <p class="section-sub">Each product is powerful alone. Together they form a flywheel that makes your cloud team unstoppable.</p>
 </div>
 <div class="products-grid reveal">
@@ -313,6 +318,14 @@ footer{border-top:1px solid var(--border);padding:48px 5vw;display:grid;grid-tem
 <p class="product-desc">The weekly briefing for cloud engineers and FinOps leads. Curated AI + cloud news, deep-dives, cost-saving playbooks, and a community of 10,000+ practitioners.</p>
 <ul class="product-features"><li>2 issues per week, AI-curated</li><li>Exclusive cost-saving playbooks</li><li>Community forum + job board</li><li>Sponsor slots for B2B companies</li></ul>
 <div class="product-footer"><div class="product-price">Free <strong style="color:var(--amber)">+$29</strong><span>/mo Pro</span></div><a href="/weekly/" class="product-link">Subscribe free →</a></div>
+</div>
+<div class="product-card bots">
+<div class="product-card-header"><div class="product-tag">Hero Bots</div><span class="status-badge live">Live now!</span></div>
+<div class="product-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 5a1 1 0 011-1h14a1 1 0 011 1v9a1 1 0 01-1 1H12l-4 4v-4H4a1 1 0 01-1-1V5z" stroke="#818cf8" stroke-width="1.5"/><path d="M7 9h8M7 12h5" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+<h3 class="product-name">AI Chatbot Builder</h3>
+<p class="product-desc">Train a bot on your own docs, runbooks, or FAQs and embed it anywhere. Support tickets answered, leads captured, onboarding automated — all without touching a line of code.</p>
+<ul class="product-features"><li>Train on URLs, PDFs, or plain text</li><li>One-line embed for any website</li><li>WhatsApp + Meta integration</li><li>Conversation analytics + A/B testing</li></ul>
+<div class="product-footer"><div class="product-price">Free <strong style="color:#818cf8">+$19</strong><span>/mo Starter</span></div><a href="/bots/app/" class="product-link">Build your bot →</a></div>
 </div>
 </div>
 </section>
