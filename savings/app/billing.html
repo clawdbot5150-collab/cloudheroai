@@ -250,7 +250,7 @@
     <div class="plan-card">
       <div class="plan-info">
         <h3>Hero Savings — Performance Fee</h3>
-        <p>We only charge <strong>15% of your verified monthly cloud savings</strong>. No flat fee, no upfront cost. Your first 30 days are free. We don't make money until you do.</p>
+        <p>We only charge <strong>15% of your verified monthly cloud savings</strong>. No flat fee, no upfront cost. We don't make money until you do.</p>
         <div class="btn-row">
           <button class="btn btn-primary" onclick="openPortal()" id="portal-btn">
             <div class="spinner-sm" id="portal-spinner"></div>
@@ -268,7 +268,7 @@
       </div>
       <div>
         <div class="plan-price">15%<small> of verified savings</small></div>
-        <div style="font-size:12px;color:var(--muted);margin-top:4px;">First 30 days free · Cancel anytime</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">No upfront cost · Cancel anytime</div>
       </div>
     </div>
   </div>
@@ -386,7 +386,7 @@
       <div class="stat-card">
         <div class="stat-label">Last Fee Charged</div>
         <div class="stat-value ${data.last_billing ? '' : 'muted'}">${data.last_billing ? fmt$(data.last_billing.fee_charged) : 'None yet'}</div>
-        <div class="stat-sub">${data.last_billing ? fmtDate(data.last_billing.created_at) : 'First 30 days are free'}</div>
+        <div class="stat-sub">${data.last_billing ? fmtDate(data.last_billing.created_at) : 'No charges until savings are verified'}</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Baseline Period</div>
@@ -406,7 +406,7 @@
     const data = await res.json();
     const records = data.records || [];
     if (!records.length) {
-      tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No billing records yet. Your first 30 days are free — fees begin after your first verified savings audit.</td></tr>';
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No billing records yet. Fees only apply after your first verified savings audit — you pay nothing until savings are confirmed.</td></tr>';
       return;
     }
     tbody.innerHTML = records.map(r => `
